@@ -8,10 +8,12 @@ namespace FindJobAPI.Model.Domain
         public int job_id { get; set; }
 
         //navigation properties: one job just one employer
-        public employer? employer_id { get; set; }
+        public int employer_id { get; set; }
+        public employer? employer { get; set; }
 
         //navigation properties: one job just one type
-        public type? type_id { get; set; }
+        public int type_id { get; set; }
+        public type? type { get; set; }
         public DateTime posted_date { get; set; }
         public DateTime deadline { get; set; }
 

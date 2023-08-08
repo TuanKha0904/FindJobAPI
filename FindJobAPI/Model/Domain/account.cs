@@ -14,7 +14,8 @@ namespace FindJobAPI.Model.Domain
         public DateTime date_create { get; set; }
 
         //navigation properties: one role has many acount
-        public role? role_id {get; set;}
+        public int role_id { get; set; }
+        public role? role {get; set;}
 
         //navigation properties: one account just has seeker or employer
         public List<seeker>? seekers { get; set; }

@@ -3,7 +3,8 @@
     public class job_industry
     {
         //navigation properties: one job-industry has one industry
-        public industry? industry_id { get; set; }
+        public int industry_id { get; set; }
+        public industry? industry { get; set; }
         public string? job { get; set; }
     }
 }

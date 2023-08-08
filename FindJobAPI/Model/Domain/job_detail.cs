@@ -3,7 +3,8 @@
     public class job_detail
     {
         //navigation properties: one job-detail just has one job
-        public job? job_id {  get; set; }
+        public int job_id { get; set; }
+        public job? job {  get; set; }
         public string? job_title { get; set; }
         public string? job_description { get; set; }
 

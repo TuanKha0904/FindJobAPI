@@ -6,7 +6,8 @@ namespace FindJobAPI.Model.Domain
     {
         //navigation properties: one role has many acount
         [Key]
-        public account? employer_id { get; set; }
+        public int employer_id { get; set; }
+        public account? account { get; set; }
         public string? employer_name { get; set; }
         public string? employer_about { get; set;}
         public string? employer_address { get; set; }
