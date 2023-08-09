@@ -1,7 +1,11 @@
-﻿namespace FindJobAPI.Model.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FindJobAPI.Model.Domain
 {
     public class job_detail
     {
+        [Key]
+        public int Id { get; set; }
         //navigation properties: one job-detail just has one job
         public int job_id { get; set; }
         public job? job {  get; set; }
@@ -15,7 +19,8 @@
         public bool status { get; set; }
 
         //navigation properties: one job-detail just has one industry
-        public industry? industry_id { get; set; }
+        public int industry_id { get; set; }
+        public industry? industry { get; set; }
     
     }
 }

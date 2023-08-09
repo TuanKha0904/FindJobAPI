@@ -19,5 +19,8 @@ namespace FindJobAPI.Model.Domain
 
         //navigation properties: one job has one job detail
         public List<job_detail>? job_detail { get; set; }
+
+        //navigation properties: one job has many recruitment
+        public List<recruitment>? recruitment { get; set;}
     }
 }

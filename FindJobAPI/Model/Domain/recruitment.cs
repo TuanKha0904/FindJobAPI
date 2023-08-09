@@ -1,7 +1,11 @@
-﻿namespace FindJobAPI.Model.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FindJobAPI.Model.Domain
 {
     public class recruitment
     {
+        [Key]
+        public int Id { get; set; }
         //navigation properties: one seeker has many recruitment
         public int seeker_id { get; set; }
         public seeker? seeker { get; set; }
