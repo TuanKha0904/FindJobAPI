@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindJobAPI.Data.FindJobAPI_DB
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230809135120_Initial")]
+    [Migration("20230810015500_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,15 +48,18 @@ namespace FindJobAPI.Data.FindJobAPI_DB
             modelBuilder.Entity("FindJobAPI.Model.Domain.admin", b =>
                 {
                     b.Property<int>("admin_id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("username")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("admin_id"), 1L, 1);
 
                     b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("admin_id", "username");
+                    b.Property<string>("username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("admin_id");
 
                     b.ToTable("Admin");
                 });

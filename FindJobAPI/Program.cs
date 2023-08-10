@@ -1,6 +1,7 @@
 using FindJobAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
+using FindJobAPI.Repository.Admins;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
+
+// Register Repository
+builder.Services.AddScoped<IAdmin_repository, admin_repository>();
+
 
 
 var app = builder.Build();

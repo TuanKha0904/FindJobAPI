@@ -13,8 +13,6 @@ namespace FindJobAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<admin>()
-               .HasKey(a => new { a.admin_id, a.username });
             modelBuilder.Entity<account>()
                 .HasOne(a => a.role)
                 .WithMany(a => a.Account)

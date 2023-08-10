@@ -13,13 +13,14 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 name: "Admin",
                 columns: table => new
                 {
-                    admin_id = table.Column<int>(type: "int", nullable: false),
-                    username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    admin_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admin", x => new { x.admin_id, x.username });
+                    table.PrimaryKey("PK_Admin", x => x.admin_id);
                 });
 
             migrationBuilder.CreateTable(
