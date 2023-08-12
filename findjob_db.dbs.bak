@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="SqlServer" id="Project-e09" database="SqlServer" >
+	<schema name="dbo" catalogname="tuankhadev_findjob" >
+		<table name="Account" row_count="0" >
+			<column name="email" type="nvarchar" length="450" decimal="0" jt="12" mandatory="y" />
+			<column name="password" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="date_create" type="datetime2" decimal="7" jt="92" mandatory="y" />
+			<column name="role_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<index name="PK_Account" unique="PRIMARY_KEY" >
+				<column name="email" />
+			</index>
+			<index name="IX_Account_role_id" unique="NORMAL" >
+				<column name="role_id" />
+			</index>
+			<fk name="FK_Account_Role_role_id" to_schema="tuankhadev_findjob.dbo" to_table="Role" delete_action="cascade" >
+				<fk_column name="role_id" pk="role_id" />
+			</fk>
+		</table>
+		<table name="Admin" row_count="1" >
+			<column name="admin_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="username" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="password" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Admin" unique="PRIMARY_KEY" >
+				<column name="admin_id" />
+			</index>
+		</table>
+		<table name="Employer" row_count="0" >
+			<column name="employer_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="email" type="nvarchar" length="450" decimal="0" jt="12" />
+			<column name="employer_name" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="employer_about" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="employer_address" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="contact_phone" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="employer_image" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="employer_website" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Employer" unique="PRIMARY_KEY" >
+				<column name="employer_id" />
+			</index>
+			<index name="IX_Employer_email" unique="NORMAL" >
+				<column name="email" />
+			</index>
+			<fk name="FK_Employer_Account_email" to_schema="tuankhadev_findjob.dbo" to_table="Account" >
+				<fk_column name="email" pk="email" />
+			</fk>
+		</table>
+		<table name="Industry" row_count="0" >
+			<column name="industry_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="industry_name" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Industry" unique="PRIMARY_KEY" >
+				<column name="industry_id" />
+			</index>
+		</table>
+		<table name="Job" row_count="0" >
+			<column name="job_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="employer_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="type_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="posted_date" type="datetime2" decimal="7" jt="92" mandatory="y" />
+			<column name="deadline" type="datetime2" decimal="7" jt="92" mandatory="y" />
+			<index name="PK_Job" unique="PRIMARY_KEY" >
+				<column name="job_id" />
+			</index>
+			<index name="IX_Job_employer_id" unique="NORMAL" >
+				<column name="employer_id" />
+			</index>
+			<index name="IX_Job_type_id" unique="NORMAL" >
+				<column name="type_id" />
+			</index>
+			<fk name="FK_Job_Employer_employer_id" to_schema="tuankhadev_findjob.dbo" to_table="Employer" delete_action="cascade" >
+				<fk_column name="employer_id" pk="employer_id" />
+			</fk>
+			<fk name="FK_Job_Type_type_id" to_schema="tuankhadev_findjob.dbo" to_table="Type" delete_action="cascade" >
+				<fk_column name="type_id" pk="type_id" />
+			</fk>
+		</table>
+		<table name="Job_Detail" row_count="0" >
+			<column name="Id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="job_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="job_title" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="job_description" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="location" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="requirement" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="minimum_salary" type="real" length="24" decimal="0" jt="7" mandatory="y" />
+			<column name="maximum_salary" type="real" length="24" decimal="0" jt="7" mandatory="y" />
+			<column name="status" type="bit" length="1" decimal="0" jt="-7" mandatory="y" />
+			<column name="industry_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<index name="PK_Job_Detail" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="IX_Job_Detail_industry_id" unique="NORMAL" >
+				<column name="industry_id" />
+			</index>
+			<index name="IX_Job_Detail_job_id" unique="NORMAL" >
+				<column name="job_id" />
+			</index>
+			<fk name="FK_Job_Detail_Industry_industry_id" to_schema="tuankhadev_findjob.dbo" to_table="Industry" delete_action="cascade" >
+				<fk_column name="industry_id" pk="industry_id" />
+			</fk>
+			<fk name="FK_Job_Detail_Job_job_id" to_schema="tuankhadev_findjob.dbo" to_table="Job" delete_action="cascade" >
+				<fk_column name="job_id" pk="job_id" />
+			</fk>
+		</table>
+		<table name="Job_Industry" row_count="0" >
+			<column name="id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="industry_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="job" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Job_Industry" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="IX_Job_Industry_industry_id" unique="NORMAL" >
+				<column name="industry_id" />
+			</index>
+			<fk name="FK_Job_Industry_Industry_industry_id" to_schema="tuankhadev_findjob.dbo" to_table="Industry" delete_action="cascade" >
+				<fk_column name="industry_id" pk="industry_id" />
+			</fk>
+		</table>
+		<table name="Recruitment" row_count="0" >
+			<column name="Id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="seeker_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="job_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="seeker_desire" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="registation_date" type="datetime2" decimal="7" jt="92" mandatory="y" />
+			<index name="PK_Recruitment" unique="PRIMARY_KEY" >
+				<column name="Id" />
+			</index>
+			<index name="IX_Recruitment_job_id" unique="NORMAL" >
+				<column name="job_id" />
+			</index>
+			<index name="IX_Recruitment_seeker_id" unique="NORMAL" >
+				<column name="seeker_id" />
+			</index>
+			<fk name="FK_Recruitment_Job_job_id" to_schema="tuankhadev_findjob.dbo" to_table="Job" delete_action="cascade" >
+				<fk_column name="job_id" pk="job_id" />
+			</fk>
+			<fk name="FK_Recruitment_Seeker_seeker_id" to_schema="tuankhadev_findjob.dbo" to_table="Seeker" delete_action="cascade" >
+				<fk_column name="seeker_id" pk="seeker_id" />
+			</fk>
+		</table>
+		<table name="Role" row_count="0" >
+			<column name="role_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="role_name" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Role" unique="PRIMARY_KEY" >
+				<column name="role_id" />
+			</index>
+		</table>
+		<table name="Seeker" row_count="0" >
+			<column name="seeker_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="email" type="nvarchar" length="450" decimal="0" jt="12" />
+			<column name="first_name" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="last_name" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="address" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="birthday" type="datetime2" decimal="7" jt="92" mandatory="y" />
+			<column name="phone_number" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="seeker_image" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="academic_level" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="skills" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="url_cv" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<column name="website_seeker" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Seeker" unique="PRIMARY_KEY" >
+				<column name="seeker_id" />
+			</index>
+			<index name="IX_Seeker_email" unique="NORMAL" >
+				<column name="email" />
+			</index>
+			<fk name="FK_Seeker_Account_email" to_schema="tuankhadev_findjob.dbo" to_table="Account" >
+				<fk_column name="email" pk="email" />
+			</fk>
+		</table>
+		<table name="Type" row_count="0" >
+			<column name="type_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="type_name" type="nvarchar(max)" length="0" decimal="0" jt="12" />
+			<index name="PK_Type" unique="PRIMARY_KEY" >
+				<column name="type_id" />
+			</index>
+		</table>
+		<table name="__EFMigrationsHistory" row_count="1" >
+			<column name="MigrationId" type="nvarchar" length="150" decimal="0" jt="12" mandatory="y" />
+			<column name="ProductVersion" type="nvarchar" length="32" decimal="0" jt="12" mandatory="y" />
+			<index name="PK___EFMigrationsHistory" unique="PRIMARY_KEY" >
+				<column name="MigrationId" />
+			</index>
+		</table>
+		<table name="sysdiagrams" row_count="1" >
+			<column name="diagram_id" type="int" length="10" decimal="0" jt="4" mandatory="y" >
+				<identity><![CDATA[IDENTITY]]></identity>
+			</column>
+			<column name="name" type="sysname" length="128" decimal="0" jt="12" mandatory="y" />
+			<column name="principal_id" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="version" type="int" length="10" decimal="0" jt="4" />
+			<column name="definition" type="varbinary(max)" length="0" decimal="0" jt="-3" />
+			<index name="PK__sysdiagr__C2B05B61E89FA458" unique="PRIMARY_KEY" >
+				<column name="diagram_id" />
+			</index>
+			<index name="UK_principal_name" unique="UNIQUE_KEY" >
+				<column name="principal_id" />
+				<column name="name" />
+			</index>
+		</table>
+		<procedure name="sp_alterdiagram" id="Procedure-1178" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_alterdiagram
+	(
+		@diagramname 	sysname,
+		@owner_id	int	= null,
+		@version 	int,
+		@definition 	varbinary(max)
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+	
+		declare @theId 			int
+		declare @retval 		int
+		declare @IsDbo 			int
+		
+		declare @UIDFound 		int
+		declare @DiagId			int
+		declare @ShouldChangeUID	int
+	
+		if(@diagramname is null)
+		begin
+			RAISERROR ('Invalid ARG', 16, 1)
+			return -1
+		end
+	
+		execute as caller;
+		select @theId = DATABASE_PRINCIPAL_ID();	 
+		select @IsDbo = IS_MEMBER(N'db_owner'); 
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		revert;
+	
+		select @ShouldChangeUID = 0
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname 
+		
+		if(@DiagId IS NULL or (@IsDbo = 0 and @theId <> @UIDFound))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1);
+			return -3
+		end
+	
+		if(@IsDbo <> 0)
+		begin
+			if(@UIDFound is null or USER_NAME(@UIDFound) is null) -- invalid principal_id
+			begin
+				select @ShouldChangeUID = 1 ;
+			end
+		end
+		-- update dds data			
+		update dbo.sysdiagrams set definition = @definition where diagram_id = @DiagId ;
+		-- change owner
+		if(@ShouldChangeUID = 1)
+			update dbo.sysdiagrams set principal_id = @theId where diagram_id = @DiagId ;
+		-- update dds version
+		if(@version is not null)
+			update dbo.sysdiagrams set version = @version where diagram_id = @DiagId ;
+		return 0
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="-9" type="sysname" inOut="1" />
+			<input_param name="@owner_id" jt="4" type="int" inOut="1" />
+			<input_param name="@version" jt="4" type="int" inOut="1" />
+			<input_param name="@definition" jt="-3" type="varbinary" inOut="1" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_creatediagram" id="Procedure-ec3" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_creatediagram
+	(
+		@diagramname 	sysname,
+		@owner_id		int	= null, 	
+		@version 		int,
+		@definition 	varbinary(max)
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+	
+		declare @theId int
+		declare @retval int
+		declare @IsDbo	int
+		declare @userName sysname
+		if(@version is null or @diagramname is null)
+		begin
+			RAISERROR (N'E_INVALIDARG', 16, 1);
+			return -1
+		end
+	
+		execute as caller;
+		select @theId = DATABASE_PRINCIPAL_ID(); 
+		select @IsDbo = IS_MEMBER(N'db_owner');
+		revert; 
+		
+		if @owner_id is null
+		begin
+			select @owner_id = @theId;
+		end
+		else
+		begin
+			if @theId <> @owner_id
+			begin
+				if @IsDbo = 0
+				begin
+					RAISERROR (N'E_INVALIDARG', 16, 1);
+					return -1
+				end
+				select @theId = @owner_id
+			end
+		end
+		-- next 2 line only for test, will be removed after define name unique
+		if EXISTS(select diagram_id from dbo.sysdiagrams where principal_id = @theId and name = @diagramname)
+		begin
+			RAISERROR ('The name is already used.', 16, 1);
+			return -2
+		end
+	
+		insert into dbo.sysdiagrams(name, principal_id , version, definition)
+				VALUES(@diagramname, @theId, @version, @definition) ;
+		
+		select @retval = @@IDENTITY 
+		return @retval
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="-9" type="sysname" inOut="1" />
+			<input_param name="@owner_id" jt="4" type="int" inOut="1" />
+			<input_param name="@version" jt="4" type="int" inOut="1" />
+			<input_param name="@definition" jt="-3" type="varbinary" inOut="1" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_dropdiagram" id="Procedure-24ac" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_dropdiagram
+	(
+		@diagramname 	sysname,
+		@owner_id	int	= null
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+		declare @theId 			int
+		declare @IsDbo 			int
+		
+		declare @UIDFound 		int
+		declare @DiagId			int
+	
+		if(@diagramname is null)
+		begin
+			RAISERROR ('Invalid value', 16, 1);
+			return -1
+		end
+	
+		EXECUTE AS CALLER;
+		select @theId = DATABASE_PRINCIPAL_ID();
+		select @IsDbo = IS_MEMBER(N'db_owner'); 
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		REVERT; 
+		
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname 
+		if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1)
+			return -3
+		end
+	
+		delete from dbo.sysdiagrams where diagram_id = @DiagId;
+	
+		return 0;
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="-9" type="sysname" inOut="1" />
+			<input_param name="@owner_id" jt="4" type="int" inOut="1" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_helpdiagramdefinition" id="Procedure-129d" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_helpdiagramdefinition
+	(
+		@diagramname 	sysname,
+		@owner_id	int	= null 		
+	)
+	WITH EXECUTE AS N'dbo'
+	AS
+	BEGIN
+		set nocount on
+		declare @theId 		int
+		declare @IsDbo 		int
+		declare @DiagId		int
+		declare @UIDFound	int
+	
+		if(@diagramname is null)
+		begin
+			RAISERROR (N'E_INVALIDARG', 16, 1);
+			return -1
+		end
+	
+		execute as caller;
+		select @theId = DATABASE_PRINCIPAL_ID();
+		select @IsDbo = IS_MEMBER(N'db_owner');
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		revert; 
+	
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname;
+		if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId ))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1);
+			return -3
+		end
+		select version, definition FROM dbo.sysdiagrams where diagram_id = @DiagId ; 
+		return 0
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="-9" type="sysname" inOut="1" />
+			<input_param name="@owner_id" jt="4" type="int" inOut="1" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_helpdiagrams" id="Procedure-842" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_helpdiagrams
+	(
+		@diagramname sysname = NULL,
+		@owner_id int = NULL
+	)
+	WITH EXECUTE AS N'dbo'
+	AS
+	BEGIN
+		DECLARE @user sysname
+		DECLARE @dboLogin bit
+		EXECUTE AS CALLER;
+			SET @user = USER_NAME();
+			SET @dboLogin = CONVERT(bit,IS_MEMBER('db_owner'));
+		REVERT;
+		SELECT
+			[Database] = DB_NAME(),
+			[Name] = name,
+			[ID] = diagram_id,
+			[Owner] = USER_NAME(principal_id),
+			[OwnerID] = principal_id
+		FROM
+			sysdiagrams
+		WHERE
+			(@dboLogin = 1 OR USER_NAME(principal_id) = @user) AND
+			(@diagramname IS NULL OR name = @diagramname) AND
+			(@owner_id IS NULL OR principal_id = @owner_id)
+		ORDER BY
+			4, 5, 1
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="-9" type="sysname" inOut="1" />
+			<input_param name="@owner_id" jt="4" type="int" inOut="1" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_renamediagram" id="Procedure-180b" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_renamediagram
+	(
+		@diagramname 		sysname,
+		@owner_id		int	= null,
+		@new_diagramname	sysname
+	
+	)
+	WITH EXECUTE AS 'dbo'
+	AS
+	BEGIN
+		set nocount on
+		declare @theId 			int
+		declare @IsDbo 			int
+		
+		declare @UIDFound 		int
+		declare @DiagId			int
+		declare @DiagIdTarg		int
+		declare @u_name			sysname
+		if((@diagramname is null) or (@new_diagramname is null))
+		begin
+			RAISERROR ('Invalid value', 16, 1);
+			return -1
+		end
+	
+		EXECUTE AS CALLER;
+		select @theId = DATABASE_PRINCIPAL_ID();
+		select @IsDbo = IS_MEMBER(N'db_owner'); 
+		if(@owner_id is null)
+			select @owner_id = @theId;
+		REVERT;
+	
+		select @u_name = USER_NAME(@owner_id)
+	
+		select @DiagId = diagram_id, @UIDFound = principal_id from dbo.sysdiagrams where principal_id = @owner_id and name = @diagramname 
+		if(@DiagId IS NULL or (@IsDbo = 0 and @UIDFound <> @theId))
+		begin
+			RAISERROR ('Diagram does not exist or you do not have permission.', 16, 1)
+			return -3
+		end
+	
+		-- if((@u_name is not null) and (@new_diagramname = @diagramname))	-- nothing will change
+		--	return 0;
+	
+		if(@u_name is null)
+			select @DiagIdTarg = diagram_id from dbo.sysdiagrams where principal_id = @theId and name = @new_diagramname
+		else
+			select @DiagIdTarg = diagram_id from dbo.sysdiagrams where principal_id = @owner_id and name = @new_diagramname
+	
+		if((@DiagIdTarg is not null) and  @DiagId <> @DiagIdTarg)
+		begin
+			RAISERROR ('The name is already used.', 16, 1);
+			return -2
+		end		
+	
+		if(@u_name is null)
+			update dbo.sysdiagrams set [name] = @new_diagramname, principal_id = @theId where diagram_id = @DiagId
+		else
+			update dbo.sysdiagrams set [name] = @new_diagramname where diagram_id = @DiagId
+		return 0
+	END
+	]]></string>
+			<input_param name="@diagramname" jt="-9" type="sysname" inOut="1" />
+			<input_param name="@owner_id" jt="4" type="int" inOut="1" />
+			<input_param name="@new_diagramname" jt="-9" type="sysname" inOut="1" />
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<procedure name="sp_upgraddiagrams" id="Procedure-1ec8" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE PROCEDURE dbo.sp_upgraddiagrams
+	AS
+	BEGIN
+		IF OBJECT_ID(N'dbo.sysdiagrams') IS NOT NULL
+			return 0;
+	
+		CREATE TABLE dbo.sysdiagrams
+		(
+			name sysname NOT NULL,
+			principal_id int NOT NULL,	-- we may change it to varbinary(85)
+			diagram_id int PRIMARY KEY IDENTITY,
+			version int,
+	
+			definition varbinary(max)
+			CONSTRAINT UK_principal_name UNIQUE
+			(
+				principal_id,
+				name
+			)
+		);
+
+		/* Add this if we need to have some form of extended properties for diagrams */
+		/*
+		IF OBJECT_ID(N'dbo.sysdiagram_properties') IS NULL
+		BEGIN
+			CREATE TABLE dbo.sysdiagram_properties
+			(
+				diagram_id int,
+				name sysname,
+				value varbinary(max) NOT NULL
+			)
+		END
+		*/
+		IF OBJECT_ID(N'dbo.dtproperties') IS NOT NULL
+		begin
+			insert into dbo.sysdiagrams
+			(
+				[name],
+				[principal_id],
+				[version],
+				[definition]
+			)
+			select	 
+				convert(sysname, dgnm.[uvalue]),
+				DATABASE_PRINCIPAL_ID(N'dbo'),			-- will change to the sid of sa
+				0,							-- zero for old format, dgdef.[version],
+				dgdef.[lvalue]
+			from dbo.[dtproperties] dgnm
+				inner join dbo.[dtproperties] dggd on dggd.[property] = 'DtgSchemaGUID' and dggd.[objectid] = dgnm.[objectid]	
+				inner join dbo.[dtproperties] dgdef on dgdef.[property] = 'DtgSchemaDATA' and dgdef.[objectid] = dgnm.[objectid]
+				
+			where dgnm.[property] = 'DtgSchemaNAME' and dggd.[uvalue] like N'_EA3E6268-D998-11CE-9454-00AA00A3F36E_' 
+			return 2;
+		end
+		return 1;
+	END
+	]]></string>
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</procedure>
+		<function name="fn_diagramobjects" id="Function-1bb8" isSystem="false" params_known="y" >
+			<string><![CDATA[
+	CREATE FUNCTION dbo.fn_diagramobjects() 
+	RETURNS int
+	WITH EXECUTE AS N'dbo'
+	AS
+	BEGIN
+		declare @id_upgraddiagrams		int
+		declare @id_sysdiagrams			int
+		declare @id_helpdiagrams		int
+		declare @id_helpdiagramdefinition	int
+		declare @id_creatediagram	int
+		declare @id_renamediagram	int
+		declare @id_alterdiagram 	int 
+		declare @id_dropdiagram		int
+		declare @InstalledObjects	int
+		select @InstalledObjects = 0
+		select 	@id_upgraddiagrams = object_id(N'dbo.sp_upgraddiagrams'),
+			@id_sysdiagrams = object_id(N'dbo.sysdiagrams'),
+			@id_helpdiagrams = object_id(N'dbo.sp_helpdiagrams'),
+			@id_helpdiagramdefinition = object_id(N'dbo.sp_helpdiagramdefinition'),
+			@id_creatediagram = object_id(N'dbo.sp_creatediagram'),
+			@id_renamediagram = object_id(N'dbo.sp_renamediagram'),
+			@id_alterdiagram = object_id(N'dbo.sp_alterdiagram'), 
+			@id_dropdiagram = object_id(N'dbo.sp_dropdiagram')
+		if @id_upgraddiagrams is not null
+			select @InstalledObjects = @InstalledObjects + 1
+		if @id_sysdiagrams is not null
+			select @InstalledObjects = @InstalledObjects + 2
+		if @id_helpdiagrams is not null
+			select @InstalledObjects = @InstalledObjects + 4
+		if @id_helpdiagramdefinition is not null
+			select @InstalledObjects = @InstalledObjects + 8
+		if @id_creatediagram is not null
+			select @InstalledObjects = @InstalledObjects + 16
+		if @id_renamediagram is not null
+			select @InstalledObjects = @InstalledObjects + 32
+		if @id_alterdiagram  is not null
+			select @InstalledObjects = @InstalledObjects + 64
+		if @id_dropdiagram is not null
+			select @InstalledObjects = @InstalledObjects + 128
+		
+		return @InstalledObjects 
+	END
+	]]></string>
+			<result_param name="@RETURN_VALUE" jt="4" type="int" />
+		</function>
+	</schema>
+	<connector name="SqlServer" database="SqlServer" driver_class="com.microsoft.sqlserver.jdbc.SQLServerDriver" driver_jar="mssql-jdbc-12.2.0.jre11.jar" driver_desc="SQL Server Authentication" host="sql.bsite.net\MSSQL2016" port="1433" instance="tuankhadev_findjob" user="tuankhadev_findjob" passwd="VDdVdTk5d1hLWktudkBq" useSystemProxy="false" />
+	<layout name="Main Layout" id="Layout-2583" confirmed="y" show_relation="columns" >
+		<entity schema="tuankhadev_findjob.dbo" name="Account" color="C7F4BE" x="272" y="400" />
+		<entity schema="tuankhadev_findjob.dbo" name="Admin" color="BED3F4" x="960" y="896" />
+		<entity schema="tuankhadev_findjob.dbo" name="Employer" color="C7F4BE" x="464" y="400" />
+		<entity schema="tuankhadev_findjob.dbo" name="Industry" color="F4DDBE" x="1168" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job" color="F4DDBE" x="736" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job_Detail" color="F4DDBE" x="944" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job_Industry" color="F4DDBE" x="1376" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Recruitment" color="C7F4BE" x="240" y="608" />
+		<entity schema="tuankhadev_findjob.dbo" name="Role" color="C7F4BE" x="272" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Seeker" color="C7F4BE" x="48" y="272" />
+		<entity schema="tuankhadev_findjob.dbo" name="Type" color="F4DDBE" x="736" y="448" />
+		<entity schema="tuankhadev_findjob.dbo" name="__EFMigrationsHistory" color="BED3F4" x="736" y="880" />
+		<entity schema="tuankhadev_findjob.dbo" name="sysdiagrams" color="BED3F4" x="736" y="1056" />
+		<callout x="736" y="80" pointer="Round" >
+			<comment><![CDATA[This is a layout. You can create multiple layouts with the same or different tables. 
+
+Edit tables by double-clicking the table headers.]]></comment>
+		</callout>
+		<group name="__EFMigrationsHistory" color="ECF0F7" >
+			<entity schema="tuankhadev_findjob.dbo" name="Admin" />
+			<entity schema="tuankhadev_findjob.dbo" name="sysdiagrams" />
+			<entity schema="tuankhadev_findjob.dbo" name="__EFMigrationsHistory" />
+		</group>
+		<group name="Account" color="EEF7EC" >
+			<entity schema="tuankhadev_findjob.dbo" name="Account" />
+			<entity schema="tuankhadev_findjob.dbo" name="Recruitment" />
+			<entity schema="tuankhadev_findjob.dbo" name="Seeker" />
+			<entity schema="tuankhadev_findjob.dbo" name="Role" />
+			<entity schema="tuankhadev_findjob.dbo" name="Employer" />
+		</group>
+		<group name="Job" color="F7F2EC" >
+			<entity schema="tuankhadev_findjob.dbo" name="Job" />
+			<entity schema="tuankhadev_findjob.dbo" name="Job_Detail" />
+			<entity schema="tuankhadev_findjob.dbo" name="Industry" />
+			<entity schema="tuankhadev_findjob.dbo" name="Type" />
+			<entity schema="tuankhadev_findjob.dbo" name="Job_Industry" />
+		</group>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-788" confirmed="y" show_column_type="y" show_relation="columns" >
+		<entity schema="tuankhadev_findjob.dbo" name="Account" color="C7F4BE" x="336" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Admin" color="BED3F4" x="1216" y="704" />
+		<entity schema="tuankhadev_findjob.dbo" name="Employer" color="C7F4BE" x="592" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Industry" color="F4DDBE" x="1488" y="48" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job" color="F4DDBE" x="944" y="48" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job_Detail" color="F4DDBE" x="1200" y="48" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job_Industry" color="F4DDBE" x="1776" y="48" />
+		<entity schema="tuankhadev_findjob.dbo" name="Recruitment" color="C7F4BE" x="304" y="432" />
+		<entity schema="tuankhadev_findjob.dbo" name="Role" color="C7F4BE" x="336" y="48" />
+		<entity schema="tuankhadev_findjob.dbo" name="Seeker" color="C7F4BE" x="48" y="96" />
+		<entity schema="tuankhadev_findjob.dbo" name="Type" color="F4DDBE" x="928" y="272" />
+		<entity schema="tuankhadev_findjob.dbo" name="__EFMigrationsHistory" color="BED3F4" x="928" y="704" />
+		<entity schema="tuankhadev_findjob.dbo" name="sysdiagrams" color="BED3F4" x="928" y="880" />
+		<script name="SQL Editor" id="Editor-1182" language="SQL" >
+			<string><![CDATA[SELECT
+	job_id, employer_id, type_id, posted_date, deadline
+FROM
+	tuankhadev_findjob.dbo.Job b;
+GO]]></string>
+		</script>
+		<browser id="Browse-a07" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="tuankhadev_findjob.dbo" entity="Job" x="-2147483648" y="-2147483648" width="-2147483648" height="-2147483648" >
+				<browse_table schema="tuankhadev_findjob.dbo" entity="Job_Detail" fk="FK_Job_Detail_Job_job_id" x="40" y="-2147483648" width="500" height="350" >
+					<browse_table schema="tuankhadev_findjob.dbo" entity="Industry" fk="FK_Job_Detail_Industry_industry_id" x="580" y="-2147483648" width="500" height="350" record_view="y" />
+				</browse_table>
+			</browse_table>
+		</browser>
+		<query id="Query-a2e" name="Query Builder" >
+			<query_table schema="tuankhadev_findjob.dbo" name="Job" alias="j" x="48" y="48" >
+				<column name="job_id" />
+				<column name="employer_id" />
+				<column name="type_id" />
+				<column name="posted_date" />
+				<column name="deadline" />
+				<query_table schema="tuankhadev_findjob.dbo" name="Job_Detail" alias="jd" x="256" y="48" fk="FK_Job_Detail_Job_job_id" type="Inner Join" >
+					<column name="Id" />
+					<column name="job_id" />
+					<column name="job_title" />
+					<column name="job_description" />
+					<column name="location" />
+					<column name="requirement" />
+					<column name="minimum_salary" />
+					<column name="maximum_salary" />
+					<column name="status" />
+					<column name="industry_id" />
+					<query_table schema="tuankhadev_findjob.dbo" name="Industry" alias="i" x="480" y="48" fk="FK_Job_Detail_Industry_industry_id" type="Inner Join" >
+						<column name="industry_id" />
+						<column name="industry_name" />
+					</query_table>
+				</query_table>
+			</query_table>
+		</query>
+		<form name="Report" id="Report-1207" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Job Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="job_id" type="4" />
+						<var name="employer_id" type="4" />
+						<var name="type_id" type="4" />
+						<var name="posted_date" type="92" />
+						<var name="deadline" type="92" />
+						<script ><![CDATA[SELECT * FROM tuankhadev_findjob.dbo.Job]]></script>
+					</form_script>
+					<param name="width" value="100%" />
+					<param name="title" value="Sample Chart" />
+					<param name="value" value="type_id" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="job_id" type="4" />
+						<var name="employer_id" type="4" />
+						<var name="type_id" type="4" />
+						<var name="posted_date" type="92" />
+						<var name="deadline" type="92" />
+						<script ><![CDATA[SELECT * FROM tuankhadev_findjob.dbo.Job]]></script>
+					</form_script>
+					<cell type="label" name="job_id" template="Plain" pos="0,0,0,0,c,c" />
+					<cell type="label" name="employer_id" template="Plain" pos="1,0,1,0,c,c" />
+					<cell type="label" name="type_id" template="Plain" pos="2,0,2,0,c,c" />
+					<cell type="label" name="posted_date" template="Plain" pos="3,0,3,0,c,c" />
+					<cell type="label" name="deadline" template="Plain" pos="4,0,4,0,c,c" />
+					<cell type="label" name="${job_id}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${employer_id}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${type_id}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${posted_date}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${deadline}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-sm btn-secondary" pos="5,1,5,1,c,c" ref_id="Report-1207" />
+				</tableview>
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-1207" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" template="Plain" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-1207" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" template="Plain" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" template="Plain" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-1207" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

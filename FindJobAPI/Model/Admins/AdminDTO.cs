@@ -1,4 +1,6 @@
-﻿namespace FindJobAPI.Model.Admins
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FindJobAPI.Model.Admins
 {
     public class AdminDTO
     {
@@ -9,12 +11,16 @@
 
     public class AdminNoId
     {
+        [Required (ErrorMessage = "Please enter username!")]
         public string? UserName { get; set; }
+
+        [Required(ErrorMessage = "Please enter password!")]
         public string? Password { get; set; }
     }
 
     public class UpdateAdmin
     {
+        [Required(ErrorMessage = "Please enter password!")]
         public string? Password { get; set; }
     }
 }

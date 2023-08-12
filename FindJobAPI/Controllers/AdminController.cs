@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FindJobAPI.Repository.Admins;
 using FindJobAPI.Model.Admins;
+using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
 {
@@ -38,7 +39,11 @@ namespace FindJobAPI.Controllers
         {
             try
             {
-                var AddAdmin = await _adminRepository.CreateAdmin(adminNoId); ;
+                var AddAdmin = await _adminRepository.CreateAdmin(adminNoId); 
+                if (AddAdmin == null)
+                {
+                    return BadRequest($"Username đã tồn tại");
+                }
                 return Ok(AddAdmin);
             }
             catch
@@ -48,7 +53,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAdmin(string username, UpdateAdmin updateAdmin)
+        public async Task<IActionResult> UpdateAdmin([Required]string username, UpdateAdmin updateAdmin)
         {
             try
             {

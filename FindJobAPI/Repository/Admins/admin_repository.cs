@@ -27,6 +27,11 @@ namespace FindJobAPI.Repository.Admins
 
         public async Task<AdminNoId> CreateAdmin(AdminNoId adminNoId)
         {
+            var existingAdmin = await _appDbContext.Admin.FirstOrDefaultAsync(a => a.username == adminNoId.UserName);
+            if (existingAdmin != null)
+            {
+                return null!;
+            }
             var adminDomain = new admin
             {
                 username = adminNoId.UserName, 
