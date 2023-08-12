@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using FindJobAPI.Repository.Admins;
 using FindJobAPI.Repository.Roles;
+using FindJobAPI.Repository.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register Repository
 builder.Services.AddScoped<IAdmin_repository, admin_repository>();
 builder.Services.AddScoped<IRole_Repository, Role_Repository>();
+builder.Services.AddScoped<IType_Repository, Type_Repository>();
 
 
 

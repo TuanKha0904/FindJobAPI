@@ -22,7 +22,7 @@ namespace FindJobAPI.Repository.Roles
                 role_id = role.role_id,
                 role_name = role.role_name,
             }).ToListAsync();
-            return ListRole!;
+            return ListRole;
         }
         public async Task<RoleNoId> CreateRole(RoleNoId roleNoId)
         {
