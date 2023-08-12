@@ -15,14 +15,14 @@ namespace FindJobAPI.Repository.Admins
 
         public async Task<List<AdminDTO>> GetAll()
         {
-            var AllAuthorize = _appDbContext.Admin.AsQueryable();
-            var ListAuthorize = await AllAuthorize.Select(admin => new AdminDTO
+            var AllAdmin = _appDbContext.Admin.AsQueryable();
+            var ListAdmin = await AllAdmin.Select(admin => new AdminDTO
             {
                 Admin_Id = admin.admin_id,
                 UserName = admin.username, 
                 Password = admin.password
             }).ToListAsync();
-            return ListAuthorize!;
+            return ListAdmin!;
         }
 
         public async Task<AdminNoId> CreateAdmin(AdminNoId adminNoId)
