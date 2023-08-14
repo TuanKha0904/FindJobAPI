@@ -655,14 +655,14 @@
 		<entity schema="tuankhadev_findjob.dbo" name="Account" color="C7F4BE" x="272" y="400" />
 		<entity schema="tuankhadev_findjob.dbo" name="Admin" color="BED3F4" x="960" y="896" />
 		<entity schema="tuankhadev_findjob.dbo" name="Employer" color="C7F4BE" x="464" y="400" />
-		<entity schema="tuankhadev_findjob.dbo" name="Industry" color="F4DDBE" x="1168" y="224" />
-		<entity schema="tuankhadev_findjob.dbo" name="Job" color="F4DDBE" x="736" y="224" />
-		<entity schema="tuankhadev_findjob.dbo" name="Job_Detail" color="F4DDBE" x="944" y="224" />
-		<entity schema="tuankhadev_findjob.dbo" name="Job_Industry" color="F4DDBE" x="1376" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Industry" color="F4DDBE" x="1216" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job" color="F4DDBE" x="784" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job_Detail" color="F4DDBE" x="992" y="224" />
+		<entity schema="tuankhadev_findjob.dbo" name="Job_Industry" color="F4DDBE" x="1424" y="224" />
 		<entity schema="tuankhadev_findjob.dbo" name="Recruitment" color="C7F4BE" x="240" y="608" />
 		<entity schema="tuankhadev_findjob.dbo" name="Role" color="C7F4BE" x="272" y="224" />
 		<entity schema="tuankhadev_findjob.dbo" name="Seeker" color="C7F4BE" x="48" y="272" />
-		<entity schema="tuankhadev_findjob.dbo" name="Type" color="F4DDBE" x="736" y="448" />
+		<entity schema="tuankhadev_findjob.dbo" name="Type" color="F4DDBE" x="784" y="448" />
 		<entity schema="tuankhadev_findjob.dbo" name="__EFMigrationsHistory" color="BED3F4" x="736" y="880" />
 		<entity schema="tuankhadev_findjob.dbo" name="sysdiagrams" color="BED3F4" x="736" y="1056" />
 		<callout x="736" y="80" pointer="Round" >

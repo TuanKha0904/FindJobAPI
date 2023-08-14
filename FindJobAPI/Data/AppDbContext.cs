@@ -13,23 +13,19 @@ namespace FindJobAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<account>()
-                .HasOne(a => a.role)
-                .WithMany(a => a.Account)
-                .HasForeignKey(a => a.role_id);
             modelBuilder.Entity<seeker>()
               .HasOne(s => s.account)
               .WithMany(a => a.seekers)
-              .HasForeignKey(s => s.email )
+              .HasForeignKey(s => s.account_id )
               .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<employer>()
                 .HasOne(s => s.account)
                 .WithMany(s => s.employers)
-                .HasForeignKey(s => s.email);
+                .HasForeignKey(s => s.account_id);
             modelBuilder.Entity<recruitment>()
                 .HasOne(r => r.seeker)
                 .WithMany(r => r.recruitments)
-                .HasForeignKey(r => r.seeker_id);
+                .HasForeignKey(r => r.account_id);
             modelBuilder.Entity<recruitment>()
                .HasOne(r => r.job)
                .WithMany(r => r.recruitment)
@@ -37,7 +33,7 @@ namespace FindJobAPI.Data
             modelBuilder.Entity<job>()
                 .HasOne(j => j.employer)
                 .WithMany(j => j.jobs)
-                .HasForeignKey(j => j.employer_id);
+                .HasForeignKey(j => j.account_id);
             modelBuilder.Entity<job>()
                .HasOne(j => j.type)
                .WithMany(j => j.jobs)
@@ -65,7 +61,6 @@ namespace FindJobAPI.Data
         public DbSet<job_detail> Job_Detail { get; set; }
         public DbSet<job_industry> Job_Industry { get; set;}
         public DbSet<recruitment> Recruitment { get; set;}
-        public DbSet<role> Role { get; set; }
         public DbSet<type> Type { get; set; }
     }
 }

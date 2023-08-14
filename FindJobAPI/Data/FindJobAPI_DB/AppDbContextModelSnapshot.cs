@@ -24,21 +24,22 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.account", b =>
                 {
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("account_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("account_id"), 1L, 1);
 
                     b.Property<DateTime>("date_create")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("role_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("email");
-
-                    b.HasIndex("role_id");
+                    b.HasKey("account_id");
 
                     b.ToTable("Account");
                 });
@@ -64,17 +65,11 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.employer", b =>
                 {
-                    b.Property<int>("employer_id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("account_id")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("employer_id"), 1L, 1);
 
                     b.Property<string>("contact_phone")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("employer_about")
                         .HasColumnType("nvarchar(max)");
@@ -91,9 +86,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<string>("employer_website")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("employer_id");
-
-                    b.HasIndex("email");
+                    b.HasKey("account_id");
 
                     b.ToTable("Employer");
                 });
@@ -122,11 +115,11 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("job_id"), 1L, 1);
 
+                    b.Property<int>("account_id")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("deadline")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("employer_id")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("posted_date")
                         .HasColumnType("datetime2");
@@ -136,7 +129,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     b.HasKey("job_id");
 
-                    b.HasIndex("employer_id");
+                    b.HasIndex("account_id");
 
                     b.HasIndex("type_id");
 
@@ -216,6 +209,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("account_id")
+                        .HasColumnType("int");
+
                     b.Property<int>("job_id")
                         .HasColumnType("int");
 
@@ -225,41 +221,19 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<string>("seeker_desire")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("seeker_id")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("job_id");
+                    b.HasIndex("account_id");
 
-                    b.HasIndex("seeker_id");
+                    b.HasIndex("job_id");
 
                     b.ToTable("Recruitment");
                 });
 
-            modelBuilder.Entity("FindJobAPI.Model.Domain.role", b =>
-                {
-                    b.Property<int>("role_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("role_id"), 1L, 1);
-
-                    b.Property<string>("role_name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("role_id");
-
-                    b.ToTable("Role");
-                });
-
             modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>
                 {
-                    b.Property<int>("seeker_id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("account_id")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("seeker_id"), 1L, 1);
 
                     b.Property<string>("academic_level")
                         .HasColumnType("nvarchar(max)");
@@ -269,9 +243,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     b.Property<DateTime>("birthday")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("first_name")
                         .HasColumnType("nvarchar(max)");
@@ -294,9 +265,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<string>("website_seeker")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("seeker_id");
-
-                    b.HasIndex("email");
+                    b.HasKey("account_id");
 
                     b.ToTable("Seeker");
                 });
@@ -317,22 +286,13 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.ToTable("Type");
                 });
 
-            modelBuilder.Entity("FindJobAPI.Model.Domain.account", b =>
-                {
-                    b.HasOne("FindJobAPI.Model.Domain.role", "role")
-                        .WithMany("Account")
-                        .HasForeignKey("role_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("role");
-                });
-
             modelBuilder.Entity("FindJobAPI.Model.Domain.employer", b =>
                 {
                     b.HasOne("FindJobAPI.Model.Domain.account", "account")
                         .WithMany("employers")
-                        .HasForeignKey("email");
+                        .HasForeignKey("account_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("account");
                 });
@@ -341,7 +301,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 {
                     b.HasOne("FindJobAPI.Model.Domain.employer", "employer")
                         .WithMany("jobs")
-                        .HasForeignKey("employer_id")
+                        .HasForeignKey("account_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -388,15 +348,15 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
                 {
-                    b.HasOne("FindJobAPI.Model.Domain.job", "job")
-                        .WithMany("recruitment")
-                        .HasForeignKey("job_id")
+                    b.HasOne("FindJobAPI.Model.Domain.seeker", "seeker")
+                        .WithMany("recruitments")
+                        .HasForeignKey("account_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FindJobAPI.Model.Domain.seeker", "seeker")
-                        .WithMany("recruitments")
-                        .HasForeignKey("seeker_id")
+                    b.HasOne("FindJobAPI.Model.Domain.job", "job")
+                        .WithMany("recruitment")
+                        .HasForeignKey("job_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -409,8 +369,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 {
                     b.HasOne("FindJobAPI.Model.Domain.account", "account")
                         .WithMany("seekers")
-                        .HasForeignKey("email")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("account_id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("account");
                 });
@@ -439,11 +400,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Navigation("job_detail");
 
                     b.Navigation("recruitment");
-                });
-
-            modelBuilder.Entity("FindJobAPI.Model.Domain.role", b =>
-                {
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>

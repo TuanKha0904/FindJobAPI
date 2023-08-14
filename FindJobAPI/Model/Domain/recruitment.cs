@@ -7,7 +7,7 @@ namespace FindJobAPI.Model.Domain
         [Key]
         public int Id { get; set; }
         //navigation properties: one seeker has many recruitment
-        public int seeker_id { get; set; }
+        public int account_id { get; set; }
         public seeker? seeker { get; set; }
 
         //navigation properties: one job has many recruitment

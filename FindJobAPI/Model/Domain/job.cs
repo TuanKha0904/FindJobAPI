@@ -8,7 +8,7 @@ namespace FindJobAPI.Model.Domain
         public int job_id { get; set; }
 
         //navigation properties: one job just one employer
-        public int employer_id { get; set; }
+        public int account_id { get; set; }
         public employer? employer { get; set; }
 
         //navigation properties: one job just one type
