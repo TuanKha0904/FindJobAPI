@@ -4,6 +4,7 @@ using System;
 using FindJobAPI.Repository.Admins;
 using FindJobAPI.Repository.Roles;
 using FindJobAPI.Repository.Types;
+using FindJobAPI.Repository.Industries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAdmin_repository, admin_repository>();
 builder.Services.AddScoped<IRole_Repository, Role_Repository>();
 builder.Services.AddScoped<IType_Repository, Type_Repository>();
+builder.Services.AddScoped<IIndustry_Repository, Industry_Repository>();
 
 
 

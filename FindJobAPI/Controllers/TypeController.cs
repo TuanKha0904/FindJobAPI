@@ -3,6 +3,7 @@ using FindJobAPI.Model.Types;
 using FindJobAPI.Repository.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
 {
@@ -53,7 +54,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update-Type")]
-        public async Task<IActionResult> UpdateType (int id, TypeNoId typeNoId)
+        public async Task<IActionResult> UpdateType ([Required] int id, TypeNoId typeNoId)
         {
             try
             {
@@ -71,7 +72,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete-type")]
-        public async Task<IActionResult> DeleteType (int id)
+        public async Task<IActionResult> DeleteType ([Required] int id)
         {
             try
             {

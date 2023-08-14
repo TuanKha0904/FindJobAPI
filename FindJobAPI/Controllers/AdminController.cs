@@ -69,7 +69,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAdmin(int id)
+        public async Task<IActionResult> DeleteAdmin([Required] int id)
         {
             try
             {
