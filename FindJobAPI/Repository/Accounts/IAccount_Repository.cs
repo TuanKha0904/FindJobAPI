@@ -7,7 +7,7 @@ namespace FindJobAPI.Repository.Accounts
     {
         Task<List<AccountDTO>> GetAll();
         Task<CreateAccount> CreateAccount(CreateAccount createAccount);
-        Task<UpdateAccount> UpdateAccount(UpdateAccount updateAccount);
+        Task<UpdateAccount> UpdateAccount(int id, UpdateAccount updateAccount);
         Task<account> DeleteAccount(int id);
     }
 }
