@@ -1,4 +1,6 @@
-﻿namespace FindJobAPI.Model.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FindJobAPI.Model.DTO
 {
     public class SeekerDTO
     {
@@ -21,6 +23,8 @@
         public string? last_name { get; set; }
         public string? address { get; set; }
         public DateTime birthday { get; set; }
+
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid PhoneNumber!")]
         public string? phone_number { get; set; }
         public string? seeker_image { get; set; }
         public string? academic_level { get; set; }
