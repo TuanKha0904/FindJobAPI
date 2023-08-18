@@ -1,9 +1,10 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
-using FindJobAPI.Model.Admins;
 using Microsoft.EntityFrameworkCore;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Interfaces;
 
-namespace FindJobAPI.Repository.Admins
+namespace FindJobAPI.Repository.Queries
 {
     public class admin_repository : IAdmin_repository
     {
@@ -19,7 +20,7 @@ namespace FindJobAPI.Repository.Admins
             var ListAdmin = await AllAdmin.Select(admin => new AdminDTO
             {
                 Admin_Id = admin.admin_id,
-                UserName = admin.username, 
+                UserName = admin.username,
                 Password = admin.password
             }).ToListAsync();
             return ListAdmin!;
@@ -34,7 +35,7 @@ namespace FindJobAPI.Repository.Admins
             }
             var adminDomain = new admin
             {
-                username = adminNoId.UserName, 
+                username = adminNoId.UserName,
                 password = adminNoId.Password
             };
             await _appDbContext.Admin.AddAsync(adminDomain);

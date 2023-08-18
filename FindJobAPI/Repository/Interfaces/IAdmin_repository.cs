@@ -1,13 +1,13 @@
 ﻿using FindJobAPI.Model.Domain;
-using FindJobAPI.Model.Admins;
+using FindJobAPI.Model.DTO;
 
-namespace FindJobAPI.Repository.Admins
+namespace FindJobAPI.Repository.Interfaces
 {
     public interface IAdmin_repository
     {
         Task<List<AdminDTO>> GetAll();
         Task<AdminNoId> CreateAdmin(AdminNoId adminNoId);
         Task<UpdateAdmin> UpdateAdmin(string username, UpdateAdmin updateAdmin);
-        Task<admin> DeleteAdmin (int id);
+        Task<admin> DeleteAdmin(int id);
     }
 }

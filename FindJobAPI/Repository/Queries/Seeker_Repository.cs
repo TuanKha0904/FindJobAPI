@@ -1,9 +1,10 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
-using FindJobAPI.Model.Seekers;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace FindJobAPI.Repository.Seekers
+namespace FindJobAPI.Repository.Queries
 {
     public class Seeker_Repository : ISeeker_Repository
     {
@@ -15,7 +16,7 @@ namespace FindJobAPI.Repository.Seekers
 
         public async Task<List<SeekerDTO>> GetAll()
         {
-            var AllSeeker =  _appDbContext.Seeker.AsQueryable();
+            var AllSeeker = _appDbContext.Seeker.AsQueryable();
             var ListSeeker = await AllSeeker.Select(seeker => new SeekerDTO
             {
                 seeker_id = seeker.account_id,

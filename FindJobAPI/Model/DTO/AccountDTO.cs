@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FindJobAPI.Model.Accounts
+namespace FindJobAPI.Model.DTO
 {
     public class AccountDTO
     {
@@ -12,11 +12,11 @@ namespace FindJobAPI.Model.Accounts
 
     public class CreateAccount
     {
-        [Required (ErrorMessage = "Please enter your email!")]
-        [EmailAddress (ErrorMessage = "Invalid email address. Please Check!")]
+        [Required(ErrorMessage = "Please enter your email!")]
+        [EmailAddress(ErrorMessage = "Invalid email address. Please Check!")]
         public string? email { get; set; }
 
-        [Required (ErrorMessage = "Password can't be null!")]
+        [Required(ErrorMessage = "Password can't be null!")]
         public string? password { get; set; }
     }
 

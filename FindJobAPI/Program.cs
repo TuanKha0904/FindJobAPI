@@ -1,12 +1,8 @@
 using FindJobAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
-using FindJobAPI.Repository.Admins;
-using FindJobAPI.Repository.Types;
-using FindJobAPI.Repository.Industries;
-using FindJobAPI.Repository.Accounts;
-using FindJobAPI.Repository.Seekers;
-using FindJobAPI.Repository.Employers;
+using FindJobAPI.Repository.Interfaces;
+using FindJobAPI.Repository.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 

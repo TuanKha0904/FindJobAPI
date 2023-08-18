@@ -1,4 +1,4 @@
-﻿namespace FindJobAPI.Model.Seekers
+﻿namespace FindJobAPI.Model.DTO
 {
     public class SeekerDTO
     {

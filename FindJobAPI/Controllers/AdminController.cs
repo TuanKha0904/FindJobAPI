@@ -1,9 +1,9 @@
 ﻿using FindJobAPI.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using FindJobAPI.Repository.Admins;
-using FindJobAPI.Model.Admins;
 using System.ComponentModel.DataAnnotations;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Interfaces;
 
 namespace FindJobAPI.Controllers
 {

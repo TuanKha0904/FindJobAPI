@@ -1,5 +1,6 @@
-﻿using FindJobAPI.Model.Seekers;
-namespace FindJobAPI.Repository.Seekers
+﻿using FindJobAPI.Model.DTO;
+
+namespace FindJobAPI.Repository.Interfaces
 {
     public interface ISeeker_Repository
     {

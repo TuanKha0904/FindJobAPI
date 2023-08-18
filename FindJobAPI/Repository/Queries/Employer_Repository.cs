@@ -1,10 +1,10 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
-using FindJobAPI.Model.Employers;
-using FindJobAPI.Model.Seekers;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace FindJobAPI.Repository.Employers
+namespace FindJobAPI.Repository.Queries
 {
     public class Employer_Repository : IEmployer_Repository
     {

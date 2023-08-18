@@ -1,7 +1,7 @@
 ﻿using FindJobAPI.Model.Domain;
 using System.ComponentModel.DataAnnotations;
 
-namespace FindJobAPI.Model.Employers
+namespace FindJobAPI.Model.DTO
 {
     public class EmployerDTO
     {

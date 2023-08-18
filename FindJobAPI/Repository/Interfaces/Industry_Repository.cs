@@ -1,10 +1,11 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
-using FindJobAPI.Model.Industries;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Queries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace FindJobAPI.Repository.Industries
+namespace FindJobAPI.Repository.Interfaces
 {
     public class Industry_Repository : IIndustry_Repository
     {
@@ -44,7 +45,7 @@ namespace FindJobAPI.Repository.Industries
 
         public async Task<IndustryNoId> UpdateIndustry(int id, IndustryNoId industryNoId)
         {
-            var IndustryDomain =  _appDbContext.Industry.FirstOrDefault(i => i.industry_id == id);
+            var IndustryDomain = _appDbContext.Industry.FirstOrDefault(i => i.industry_id == id);
             if (IndustryDomain == null)
                 return null!;
             IndustryDomain.industry_name = industryNoId.industry;
@@ -55,7 +56,7 @@ namespace FindJobAPI.Repository.Industries
         public async Task<industry> DeleteIndustry(int id)
         {
             var IndustryDomain = _appDbContext.Industry.SingleOrDefault(i => i.industry_id == id);
-            if(IndustryDomain != null)
+            if (IndustryDomain != null)
             {
                 _appDbContext.Industry.Remove(IndustryDomain);
                 await _appDbContext.SaveChangesAsync();

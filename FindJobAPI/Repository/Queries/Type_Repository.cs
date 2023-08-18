@@ -1,9 +1,10 @@
 ﻿using FindJobAPI.Data;
-using FindJobAPI.Model.Types;
 using FindJobAPI.Model.Domain;
 using Microsoft.EntityFrameworkCore;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Interfaces;
 
-namespace FindJobAPI.Repository.Types
+namespace FindJobAPI.Repository.Queries
 {
     public class Type_Repository : IType_Repository
     {
@@ -16,8 +17,9 @@ namespace FindJobAPI.Repository.Types
 
         public async Task<List<TypeDTO>> GetAll()
         {
-            var AllType =  _context.Type.AsQueryable();
-            var ListType = await AllType.Select(type => new TypeDTO{
+            var AllType = _context.Type.AsQueryable();
+            var ListType = await AllType.Select(type => new TypeDTO
+            {
                 type_id = type.type_id,
                 type_name = type.type_name
             }).ToListAsync();

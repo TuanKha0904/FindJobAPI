@@ -1,10 +1,11 @@
 ﻿using FindJobAPI.Data;
-using FindJobAPI.Model.Accounts;
 using FindJobAPI.Model.Domain;
+using FindJobAPI.Model.DTO;
+using FindJobAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-    
-namespace FindJobAPI.Repository.Accounts
+
+namespace FindJobAPI.Repository.Queries
 {
     public class Account_Repository : IAccount_Repository
     {
@@ -16,7 +17,7 @@ namespace FindJobAPI.Repository.Accounts
 
         public async Task<List<AccountDTO>> GetAll()
         {
-            var AllAccount =  _context.Account.AsQueryable();
+            var AllAccount = _context.Account.AsQueryable();
             var listAccount = await AllAccount.Select(account => new AccountDTO
             {
                 account_id = account.account_id,
@@ -70,7 +71,7 @@ namespace FindJobAPI.Repository.Accounts
         {
             var accountDomain = await _context.Account.FirstOrDefaultAsync(a => a.account_id == id);
             var seekerDomain = await _context.Seeker.FirstOrDefaultAsync(s => s.account_id == id);
-            var employerDomain = await _context.Employer.FirstOrDefaultAsync(e =>  e.account_id == id);
+            var employerDomain = await _context.Employer.FirstOrDefaultAsync(e => e.account_id == id);
             if (accountDomain == null)
                 return null!;
             _context.Seeker.Remove(seekerDomain!);

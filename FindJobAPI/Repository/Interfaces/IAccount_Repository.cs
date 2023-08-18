@@ -1,7 +1,7 @@
-﻿using FindJobAPI.Model.Accounts;
-using FindJobAPI.Model.Domain;
+﻿using FindJobAPI.Model.Domain;
+using FindJobAPI.Model.DTO;
 
-namespace FindJobAPI.Repository.Accounts
+namespace FindJobAPI.Repository.Interfaces
 {
     public interface IAccount_Repository
     {
