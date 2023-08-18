@@ -6,6 +6,7 @@ using FindJobAPI.Repository.Types;
 using FindJobAPI.Repository.Industries;
 using FindJobAPI.Repository.Accounts;
 using FindJobAPI.Repository.Seekers;
+using FindJobAPI.Repository.Employers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IType_Repository, Type_Repository>();
 builder.Services.AddScoped<IIndustry_Repository, Industry_Repository>();
 builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
 builder.Services.AddScoped<ISeeker_Repository, Seeker_Repository>();
+builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
 
 
 

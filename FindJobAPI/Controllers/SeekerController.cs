@@ -53,6 +53,8 @@ namespace FindJobAPI.Controllers
             try
             {
                 var SeekerDomain = await seeker_Repository.UpdateSeeker(id, seekerNoId);
+                if (SeekerDomain == null)
+                    return BadRequest($"Không tìm thấy seeker có id: {id}");
                 return Ok(SeekerDomain);
             }
             catch { return BadRequest(); }
