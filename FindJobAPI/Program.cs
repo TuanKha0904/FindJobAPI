@@ -27,6 +27,7 @@ builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
 builder.Services.AddScoped<ISeeker_Repository, Seeker_Repository>();
 builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
 builder.Services.AddScoped<IJob_Repository, Job_Repository>();
+builder.Services.AddScoped<IRecruitment_Repository, Recruitment_Repository>();
 
 
 
