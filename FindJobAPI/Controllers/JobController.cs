@@ -3,6 +3,7 @@ using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
@@ -49,6 +50,16 @@ namespace FindJobAPI.Controllers
         {
             try
             {
+                var ExistingEmployer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.account_id == createJob.account_id);
+                var ExistingType = await _appDbContext.Type.FirstOrDefaultAsync(t => t.type_id == createJob.type_id);
+                if (ExistingEmployer == null && ExistingType == null)
+                    return BadRequest("Employer and Type not found");
+                else if (ExistingEmployer == null)
+                    return BadRequest("Employer not found");
+                else if (ExistingType == null)
+                    return BadRequest("Type not found");
+                if (createJob.deadline < DateTime.Now)
+                    return BadRequest("Deadline must more than today");
                 var Job = await _jobRepository.CreateJob(createJob);
                 return Ok(Job);
             }

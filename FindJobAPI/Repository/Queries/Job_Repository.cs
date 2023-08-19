@@ -46,8 +46,6 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<CreateJob> CreateJob(CreateJob createJob)
         {
-            var ExistingEmployer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.account_id == createJob.account_id);
-            var ExistingType = await _appDbContext.Type.FirstOrDefaultAsync(t => t.type_id == createJob.type_id);
             var CreateJob = new job
             {
                 account_id = createJob.account_id,
