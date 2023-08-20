@@ -1,11 +1,11 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
-using FindJobAPI.Repository.Queries;
+using FindJobAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace FindJobAPI.Repository.Interfaces
+namespace FindJobAPI.Repository.Queries
 {
     public class Industry_Repository : IIndustry_Repository
     {

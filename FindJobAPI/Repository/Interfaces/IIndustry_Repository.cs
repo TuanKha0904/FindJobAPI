@@ -1,7 +1,7 @@
 ﻿using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
 
-namespace FindJobAPI.Repository.Queries
+namespace FindJobAPI.Repository.Interfaces
 {
     public interface IIndustry_Repository
     {

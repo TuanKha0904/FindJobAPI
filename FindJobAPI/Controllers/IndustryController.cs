@@ -1,6 +1,6 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
-using FindJobAPI.Repository.Queries;
+using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;

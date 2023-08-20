@@ -55,6 +55,13 @@ namespace FindJobAPI.Repository.Queries
             };
             await _appDbContext.Job.AddAsync(CreateJob);
             await _appDbContext.SaveChangesAsync();
+            var JobDetail = new job_detail
+            {
+                job_id = CreateJob.job_id,
+                status = false
+            };
+            await _appDbContext.Job_Detail.AddAsync(JobDetail);
+            await _appDbContext.SaveChangesAsync();
             return createJob;
         }
 
@@ -72,7 +79,9 @@ namespace FindJobAPI.Repository.Queries
         public async Task<job> DeleteJob(int id)
         {
             var JobDomain = await _appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == id);
+            var JobDetailDomain = await _appDbContext.Job_Detail.FirstOrDefaultAsync (j => j.job_id == id);
             if( JobDomain == null ) return null!;
+            _appDbContext.Job_Detail.Remove(JobDetailDomain!);
             _appDbContext.Job.Remove(JobDomain);
             await _appDbContext.SaveChangesAsync();
             return JobDomain;
