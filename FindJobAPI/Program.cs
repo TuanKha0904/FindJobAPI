@@ -29,6 +29,7 @@ builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
 builder.Services.AddScoped<IJob_Repository, Job_Repository>();
 builder.Services.AddScoped<IRecruitment_Repository, Recruitment_Repository>();
 builder.Services.AddScoped<IJob_Detail_Repository, Job_Detail_Repository>();
+builder.Services.AddScoped<IJob_Industry_Repository,  Job_Industry_Repository>();
 
 
 
