@@ -138,20 +138,14 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.job_detail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("job_id")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("industry_id")
                         .HasColumnType("int");
 
                     b.Property<string>("job_description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("job_id")
-                        .HasColumnType("int");
 
                     b.Property<string>("job_title")
                         .HasColumnType("nvarchar(max)");
@@ -171,44 +165,15 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<bool>("status")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("job_id");
 
                     b.HasIndex("industry_id");
-
-                    b.HasIndex("job_id");
 
                     b.ToTable("Job_Detail");
                 });
 
-            modelBuilder.Entity("FindJobAPI.Model.Domain.job_industry", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("industry_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("job")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("industry_id");
-
-                    b.ToTable("Job_Industry");
-                });
-
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<int>("account_id")
                         .HasColumnType("int");
 
@@ -221,9 +186,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<string>("seeker_desire")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("account_id");
+                    b.HasKey("account_id", "job_id");
 
                     b.HasIndex("job_id");
 
@@ -335,17 +298,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Navigation("job");
                 });
 
-            modelBuilder.Entity("FindJobAPI.Model.Domain.job_industry", b =>
-                {
-                    b.HasOne("FindJobAPI.Model.Domain.industry", "industry")
-                        .WithMany("job_industry")
-                        .HasForeignKey("industry_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("industry");
-                });
-
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
                 {
                     b.HasOne("FindJobAPI.Model.Domain.seeker", "seeker")
@@ -391,8 +343,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
             modelBuilder.Entity("FindJobAPI.Model.Domain.industry", b =>
                 {
                     b.Navigation("job_detail");
-
-                    b.Navigation("job_industry");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.job", b =>

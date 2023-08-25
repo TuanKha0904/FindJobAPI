@@ -12,6 +12,5 @@ namespace FindJobAPI.Model.Domain
         public List<job_detail>? job_detail { get; set; }
 
         //navigation properties: one industry has many job-industry
-        public List<job_industry>? job_industry { get; set; }
     }
 }

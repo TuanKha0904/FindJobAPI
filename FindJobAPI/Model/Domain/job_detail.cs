@@ -4,9 +4,8 @@ namespace FindJobAPI.Model.Domain
 {
     public class job_detail
     {
-        [Key]
-        public int Id { get; set; }
         //navigation properties: one job-detail just has one job
+        [Key]
         public int job_id { get; set; }
         public job? job {  get; set; }
         public string? job_title { get; set; }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FindJobAPI.Data.FindJobAPI_DB
 {
-    public partial class Initial : Migration
+    public partial class FindJobAPI : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -115,26 +115,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 });
 
             migrationBuilder.CreateTable(
-                name: "Job_Industry",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    industry_id = table.Column<int>(type: "int", nullable: false),
-                    job = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Job_Industry", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Job_Industry_Industry_industry_id",
-                        column: x => x.industry_id,
-                        principalTable: "Industry",
-                        principalColumn: "industry_id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Job",
                 columns: table => new
                 {
@@ -166,8 +146,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 name: "Job_Detail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     job_id = table.Column<int>(type: "int", nullable: false),
                     job_title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     job_description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -180,7 +158,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Job_Detail", x => x.Id);
+                    table.PrimaryKey("PK_Job_Detail", x => x.job_id);
                     table.ForeignKey(
                         name: "FK_Job_Detail_Industry_industry_id",
                         column: x => x.industry_id,
@@ -199,8 +177,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 name: "Recruitment",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     account_id = table.Column<int>(type: "int", nullable: false),
                     job_id = table.Column<int>(type: "int", nullable: false),
                     seeker_desire = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -208,7 +184,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recruitment", x => x.Id);
+                    table.PrimaryKey("PK_Recruitment", x => new { x.account_id, x.job_id });
                     table.ForeignKey(
                         name: "FK_Recruitment_Job_job_id",
                         column: x => x.job_id,
@@ -239,21 +215,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 column: "industry_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Job_Detail_job_id",
-                table: "Job_Detail",
-                column: "job_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Job_Industry_industry_id",
-                table: "Job_Industry",
-                column: "industry_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Recruitment_account_id",
-                table: "Recruitment",
-                column: "account_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Recruitment_job_id",
                 table: "Recruitment",
                 column: "job_id");
@@ -266,9 +227,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             migrationBuilder.DropTable(
                 name: "Job_Detail");
-
-            migrationBuilder.DropTable(
-                name: "Job_Industry");
 
             migrationBuilder.DropTable(
                 name: "Recruitment");
