@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             _adminRepository = adminRepository;
         }
 
-        [HttpGet("Get-all-admin")]
+        [HttpGet("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -34,7 +34,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPost("Create-Admin")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateAdmin(AdminNoId adminNoId)
         {
             try
@@ -52,7 +52,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut ("Update-password")]
         public async Task<IActionResult> UpdateAdmin([Required]string username, UpdateAdmin updateAdmin)
         {
             try
@@ -68,7 +68,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete ("Delete")]
         public async Task<IActionResult> DeleteAdmin([Required] int id)
         {
             try

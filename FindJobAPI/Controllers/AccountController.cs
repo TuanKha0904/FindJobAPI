@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             _accountRepository = accountRepository;
         }
 
-        [HttpGet ("Get-all-account")]
+        [HttpGet ("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -31,7 +31,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPost ("Create-account")]
+        [HttpPost ("Create")]
         public async Task<IActionResult> CreateAccount (CreateAccount createAccount)
         {
             try
@@ -44,7 +44,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut("Update-account")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateAccount ([Required] int id, UpdateAccount updateAccount)
         {
             try
@@ -57,7 +57,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpDelete("Delete-account")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteAccount ([Required] int id)
         {
             try

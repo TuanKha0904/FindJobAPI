@@ -66,7 +66,7 @@ namespace FindJobAPI.Repository.Queries
                 SeekerDomain.last_name = seekerNoId.last_name;
             if (!string.IsNullOrEmpty(seekerNoId.address))
                 SeekerDomain.address = seekerNoId.address;
-            if (seekerNoId.birthday != DateTime.Now)
+            if (seekerNoId.birthday.Date != DateTime.Today.Date)
                 SeekerDomain.birthday = seekerNoId.birthday;
             if (!string.IsNullOrEmpty(seekerNoId.phone_number))
                 SeekerDomain.phone_number = seekerNoId.phone_number;

@@ -60,7 +60,7 @@ namespace FindJobAPI.Repository.Queries
                 job_id = CreateJob.job_id,
                 status = false
             };
-            await _appDbContext.Job_Detail.AddAsync(JobDetail);
+            await _appDbContext.Job_Detail.AddAsync(JobDetail);           
             await _appDbContext.SaveChangesAsync();
             return createJob;
         }
