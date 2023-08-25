@@ -3,6 +3,7 @@ using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FindJobAPI.Controllers
@@ -32,7 +33,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet ("Get-by-id")]
-        public async Task<IActionResult> GetById (int id)
+        public async Task<IActionResult> GetById ([Required] int id)
         {
             try
             {
@@ -56,7 +57,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut ("Update-job-industry")]
-        public async Task<IActionResult> UpdateJobIndustry(int id, string job, Job_IndustryDTO job_IndustryDTO)
+        public async Task<IActionResult> UpdateJobIndustry([Required] int id, [Required] string job, Job_IndustryDTO job_IndustryDTO)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete-job-industry")]
-        public async Task<IActionResult> DeleteJobIndustry(int id, string job)
+        public async Task<IActionResult> DeleteJobIndustry([Required] int id, [Required] string job)
         {
             try
             {

@@ -57,7 +57,7 @@ namespace FindJobAPI.Repository.Queries
             return null!;
         }
 
-        public async Task<UpdateAccount> UpdateAccount([Required] int id, UpdateAccount updateAccount)
+        public async Task<UpdateAccount> UpdateAccount( int id, UpdateAccount updateAccount)
         {
             var accountDomain = await _context.Account.FirstOrDefaultAsync(a => a.account_id == id);
             if (accountDomain == null)
@@ -67,7 +67,7 @@ namespace FindJobAPI.Repository.Queries
             return updateAccount;
         }
 
-        public async Task<account> DeleteAccount([Required] int id)
+        public async Task<account> DeleteAccount( int id)
         {
             var accountDomain = await _context.Account.FirstOrDefaultAsync(a => a.account_id == id);
             var seekerDomain = await _context.Seeker.FirstOrDefaultAsync(s => s.account_id == id);

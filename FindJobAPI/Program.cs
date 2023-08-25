@@ -35,11 +35,6 @@ builder.Services.AddScoped<IJob_Industry_Repository,  Job_Industry_Repository>()
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    
-}
 app.UseSwagger();
 app.UseSwaggerUI();
 

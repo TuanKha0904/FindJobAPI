@@ -3,6 +3,7 @@ using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
 {
@@ -44,7 +45,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update-account")]
-        public async Task<IActionResult> UpdateAccount (int id, UpdateAccount updateAccount)
+        public async Task<IActionResult> UpdateAccount ([Required] int id, UpdateAccount updateAccount)
         {
             try
             {
@@ -57,7 +58,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete-account")]
-        public async Task<IActionResult> DeleteAccount (int id)
+        public async Task<IActionResult> DeleteAccount ([Required] int id)
         {
             try
             {

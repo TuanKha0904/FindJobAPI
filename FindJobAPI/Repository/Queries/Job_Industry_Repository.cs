@@ -37,7 +37,7 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<Job_IndustryDTO> CreateJobIndustry(Job_IndustryDTO job_IndustryDTO)
         {
-            var Add = await _appDbContext.Job_Industry.FirstOrDefaultAsync(job => job.industry_id == job_IndustryDTO.id && job.job == job_IndustryDTO.job);
+            var Add = await _appDbContext.Job_Industry.FirstOrDefaultAsync(j => j.industry_id == job_IndustryDTO.id && j.job == job_IndustryDTO.job);
             if (Add == null) return null!;
             var AddJob = new job_industry
             {
