@@ -8,6 +8,7 @@ namespace FindJobAPI.Model.DTO
         public int job_id { get; set; }
         public int account_id { get; set; }
         public int type_id { get; set; }
+        public int industry_id { get; set; }
         public DateTime posted_date { get; set; }
         public DateTime deadline { get; set; }
     }
@@ -16,6 +17,7 @@ namespace FindJobAPI.Model.DTO
     {
         public int account_id { get; set; }
         public int type_id { get; set; }
+        public int industry_id { get; set; }
         public DateTime posted_date { get; set; }
         public DateTime deadline { get; set; }
     }
@@ -28,6 +30,9 @@ namespace FindJobAPI.Model.DTO
         [Required(ErrorMessage = "Please enter type of job!")]
         public int type_id { get; set; }
 
+        [Required(ErrorMessage = "Please enter industry of job!")]
+        public int industry_id { get; set; }
+
         [Required(ErrorMessage = "Please enter deadline for job!")]
         public DateTime deadline { get; set; }
 
@@ -37,6 +42,9 @@ namespace FindJobAPI.Model.DTO
     {
         [Required (ErrorMessage = "Type job not null")]
         public int type_id { get; set; }
+
+        [Required(ErrorMessage = "Industry of job not null")]
+        public int industry_id { get; set; }
 
         [Required(ErrorMessage = "Deadline job not null")]
         public DateTime deadline { get; set; }

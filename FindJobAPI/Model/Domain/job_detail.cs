@@ -15,11 +15,6 @@ namespace FindJobAPI.Model.Domain
         public string? requirement { get; set; }
         public float minimum_salary { get; set; }
         public float maximum_salary { get; set; }
-        public bool status { get; set; }
-
-        //navigation properties: one job-detail just has one industry
-        public int industry_id { get; set; }
-        public industry? industry { get; set; }
-    
+        public bool status { get; set; }    
     }
 }

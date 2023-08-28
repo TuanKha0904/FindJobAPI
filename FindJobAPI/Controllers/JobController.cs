@@ -52,12 +52,15 @@ namespace FindJobAPI.Controllers
             {
                 var ExistingEmployer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.account_id == createJob.account_id);
                 var ExistingType = await _appDbContext.Type.FirstOrDefaultAsync(t => t.type_id == createJob.type_id);
-                if (ExistingEmployer == null && ExistingType == null)
-                    return BadRequest("Employer and Type not found");
+                var ExistingIndustry = await _appDbContext.Industry.FirstOrDefaultAsync(i => i.industry_id == createJob.industry_id);
+                if (ExistingEmployer == null && ExistingType == null && ExistingIndustry == null)
+                    return BadRequest("Employer, Type and Industry not found");
                 else if (ExistingEmployer == null)
                     return BadRequest("Employer not found");
                 else if (ExistingType == null)
                     return BadRequest("Type not found");
+                else if (ExistingIndustry == null)
+                    return BadRequest("Industry not found");
                 if (createJob.deadline < DateTime.Now)
                     return BadRequest("Deadline must more than today");
                 var Job = await _jobRepository.CreateJob(createJob);

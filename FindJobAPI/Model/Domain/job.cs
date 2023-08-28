@@ -14,13 +14,18 @@ namespace FindJobAPI.Model.Domain
         //navigation properties: one job just one type
         public int type_id { get; set; }
         public type? type { get; set; }
+
+        //navigation properties: one job has one industry
+        public int industry_id { get; set; }
+        public industry? industry { get; set; }
         public DateTime posted_date { get; set; }
         public DateTime deadline { get; set; }
 
-        //navigation properties: one job has one job detail
-        public List<job_detail>? job_detail { get; set; }
 
         //navigation properties: one job has many recruitment
         public List<recruitment>? recruitment { get; set;}
+
+        // navigation properties: one job has one jobdetail
+        public List<job_detail>? job_detail { get; set; }
     }
 }

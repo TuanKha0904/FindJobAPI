@@ -122,6 +122,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                         .Annotation("SqlServer:Identity", "1, 1"),
                     account_id = table.Column<int>(type: "int", nullable: false),
                     type_id = table.Column<int>(type: "int", nullable: false),
+                    industry_id = table.Column<int>(type: "int", nullable: false),
                     posted_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     deadline = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -133,6 +134,12 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                         column: x => x.account_id,
                         principalTable: "Employer",
                         principalColumn: "account_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Job_Industry_industry_id",
+                        column: x => x.industry_id,
+                        principalTable: "Industry",
+                        principalColumn: "industry_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Job_Type_type_id",
@@ -153,18 +160,11 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     requirement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     minimum_salary = table.Column<float>(type: "real", nullable: false),
                     maximum_salary = table.Column<float>(type: "real", nullable: false),
-                    status = table.Column<bool>(type: "bit", nullable: false),
-                    industry_id = table.Column<int>(type: "int", nullable: false)
+                    status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Job_Detail", x => x.job_id);
-                    table.ForeignKey(
-                        name: "FK_Job_Detail_Industry_industry_id",
-                        column: x => x.industry_id,
-                        principalTable: "Industry",
-                        principalColumn: "industry_id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Job_Detail_Job_job_id",
                         column: x => x.job_id,
@@ -205,14 +205,14 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 column: "account_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Job_industry_id",
+                table: "Job",
+                column: "industry_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Job_type_id",
                 table: "Job",
                 column: "type_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Job_Detail_industry_id",
-                table: "Job_Detail",
-                column: "industry_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recruitment_job_id",
@@ -232,9 +232,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 name: "Recruitment");
 
             migrationBuilder.DropTable(
-                name: "Industry");
-
-            migrationBuilder.DropTable(
                 name: "Job");
 
             migrationBuilder.DropTable(
@@ -242,6 +239,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             migrationBuilder.DropTable(
                 name: "Employer");
+
+            migrationBuilder.DropTable(
+                name: "Industry");
 
             migrationBuilder.DropTable(
                 name: "Type");

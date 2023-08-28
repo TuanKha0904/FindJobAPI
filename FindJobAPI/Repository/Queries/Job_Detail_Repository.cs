@@ -27,7 +27,6 @@ namespace FindJobAPI.Repository.Queries
                 minimum_salary = JobDetail.minimum_salary,
                 maximum_salary = JobDetail.maximum_salary,
                 status = JobDetail.status,
-                industry_id = JobDetail.industry_id
             };
             return Job;
         }
@@ -48,8 +47,6 @@ namespace FindJobAPI.Repository.Queries
                 JobDetailDomain.minimum_salary = update_JobDetail.minimum_salary;
             if (JobDetailDomain.maximum_salary != update_JobDetail.maximum_salary)
                 JobDetailDomain.maximum_salary = update_JobDetail.maximum_salary;
-            if (JobDetailDomain.industry_id != update_JobDetail.industry_id)
-                JobDetailDomain.industry_id = update_JobDetail.industry_id;
             await _context.SaveChangesAsync();
             return update_JobDetail;
         }

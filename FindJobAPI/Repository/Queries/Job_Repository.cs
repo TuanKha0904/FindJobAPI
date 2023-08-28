@@ -23,6 +23,7 @@ namespace FindJobAPI.Repository.Queries
                 job_id = job.job_id,
                 account_id = job.account_id,
                 type_id = job.type_id,
+                industry_id = job.industry_id,
                 posted_date = job.posted_date,  
                 deadline = job.deadline,
             }).ToListAsync();
@@ -38,6 +39,7 @@ namespace FindJobAPI.Repository.Queries
             {
                 account_id = JobDomain.account_id,
                 type_id = JobDomain.type_id,
+                industry_id = JobDomain.industry_id,
                 posted_date = JobDomain.posted_date,
                 deadline = JobDomain.deadline
             };
@@ -50,6 +52,7 @@ namespace FindJobAPI.Repository.Queries
             {
                 account_id = createJob.account_id,
                 type_id = createJob.type_id,
+                industry_id = createJob.industry_id,
                 posted_date = DateTime.Now,
                 deadline = createJob.deadline,
             };
@@ -72,6 +75,8 @@ namespace FindJobAPI.Repository.Queries
                 JobDomain.type_id = updateJob.type_id;
             if (updateJob.deadline != JobDomain.deadline )
                 JobDomain.deadline = updateJob.deadline;
+            if (updateJob.industry_id != JobDomain.industry_id )
+                JobDomain.industry_id = updateJob.industry_id;
             await _appDbContext.SaveChangesAsync();
             return updateJob;
         }

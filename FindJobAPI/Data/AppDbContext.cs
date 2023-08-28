@@ -40,14 +40,14 @@ namespace FindJobAPI.Data
                .HasOne(j => j.type)
                .WithMany(j => j.jobs)
                .HasForeignKey(j => j.type_id);
+            modelBuilder.Entity<job>()
+              .HasOne(j => j.industry)
+              .WithMany(j => j.job)
+              .HasForeignKey(j => j.industry_id);
             modelBuilder.Entity<job_detail>()
               .HasOne(j => j.job)
               .WithMany(j => j.job_detail)
               .HasForeignKey(j => j.job_id);
-            modelBuilder.Entity<job_detail>()
-              .HasOne(j => j.industry)
-              .WithMany(j => j.job_detail)
-              .HasForeignKey(j => j.industry_id);
         }
 
         public DbSet<account> Account { get; set; }

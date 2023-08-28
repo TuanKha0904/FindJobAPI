@@ -121,6 +121,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<DateTime>("deadline")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("industry_id")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("posted_date")
                         .HasColumnType("datetime2");
 
@@ -131,6 +134,8 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     b.HasIndex("account_id");
 
+                    b.HasIndex("industry_id");
+
                     b.HasIndex("type_id");
 
                     b.ToTable("Job");
@@ -139,9 +144,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
             modelBuilder.Entity("FindJobAPI.Model.Domain.job_detail", b =>
                 {
                     b.Property<int>("job_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("industry_id")
                         .HasColumnType("int");
 
                     b.Property<string>("job_description")
@@ -166,8 +168,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                         .HasColumnType("bit");
 
                     b.HasKey("job_id");
-
-                    b.HasIndex("industry_id");
 
                     b.ToTable("Job_Detail");
                 });
@@ -268,6 +268,12 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FindJobAPI.Model.Domain.industry", "industry")
+                        .WithMany("job")
+                        .HasForeignKey("industry_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FindJobAPI.Model.Domain.type", "type")
                         .WithMany("jobs")
                         .HasForeignKey("type_id")
@@ -276,24 +282,18 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     b.Navigation("employer");
 
+                    b.Navigation("industry");
+
                     b.Navigation("type");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.job_detail", b =>
                 {
-                    b.HasOne("FindJobAPI.Model.Domain.industry", "industry")
-                        .WithMany("job_detail")
-                        .HasForeignKey("industry_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FindJobAPI.Model.Domain.job", "job")
                         .WithMany("job_detail")
                         .HasForeignKey("job_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("industry");
 
                     b.Navigation("job");
                 });
@@ -342,7 +342,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.industry", b =>
                 {
-                    b.Navigation("job_detail");
+                    b.Navigation("job");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.job", b =>
