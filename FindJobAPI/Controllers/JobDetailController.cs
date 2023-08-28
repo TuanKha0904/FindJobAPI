@@ -3,6 +3,7 @@ using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
 {
@@ -19,7 +20,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Get-jobdetail-by-id")]
-        public async Task<IActionResult> GetJobDetailById(int id)
+        public async Task<IActionResult> GetJobDetailById([Required] int id)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update-job-detail")]
-        public async Task<IActionResult> UpdateJobDetail (int id, Update_JobDetail update_JobDetail)
+        public async Task<IActionResult> UpdateJobDetail ([Required] int id, Update_JobDetail update_JobDetail)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update-status-job")]
-        public async Task<IActionResult> UpdateStatus (int id, Update_Status_Job update_Status_Job)
+        public async Task<IActionResult> UpdateStatus ([Required] int id, Update_Status_Job update_Status_Job)
         {
             try
             {

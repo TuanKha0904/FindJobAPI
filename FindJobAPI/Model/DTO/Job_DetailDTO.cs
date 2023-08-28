@@ -11,7 +11,6 @@ namespace FindJobAPI.Model.DTO
         public float minimum_salary { get; set; }
         public float maximum_salary { get; set; }
         public bool status { get; set; }
-        public int industry_id { get; set; }
     }
 
     public class Update_JobDetail
@@ -22,7 +21,6 @@ namespace FindJobAPI.Model.DTO
         public string? requirement { get; set; }
         public float minimum_salary { get; set; }
         public float maximum_salary { get; set; }
-        public int industry_id { get; set; }
     }
 
     public class Update_Status_Job

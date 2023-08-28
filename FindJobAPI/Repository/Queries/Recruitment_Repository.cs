@@ -42,7 +42,7 @@ namespace FindJobAPI.Repository.Queries
         {
             var JobDomain = await _appDbContext.Recruitment.Where(r => r.job_id == id).Select(r => new RecruitmentJob
             {
-                seeker_id = r.job_id,
+                seeker_id = r.account_id,
                 seeker_desire = r.seeker_desire,
                 registration_date = r.registation_date
             }).ToListAsync();
