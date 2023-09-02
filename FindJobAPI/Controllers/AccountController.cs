@@ -3,6 +3,7 @@ using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
@@ -27,6 +28,22 @@ namespace FindJobAPI.Controllers
             {
                 var AllAccount = await _accountRepository.GetAll();
                 return Ok(AllAccount);
+            }
+            catch { return BadRequest(); }
+        }
+
+        [HttpGet("Get-one")]
+        public async Task<IActionResult> GetOne( [Required] string email, [Required] string password)
+        {
+            try
+            {
+                var checkemail = await _appDbContext.Account.FirstOrDefaultAsync(c => c.email == email);
+                if (checkemail == null) return BadRequest($"{email} chưa được đăng kí");
+                var Account = await _accountRepository.GetOne(email, password);
+                if (Account != null)
+                    return Ok(Account);
+                else
+                    return BadRequest("Sai email hoặc mật khẩu");
             }
             catch { return BadRequest(); }
         }

@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             this.recruitmentRepository = recruitmentRepository;
         }
 
-        [HttpGet ("Get-all-recruitment")]
+        [HttpGet ("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -31,7 +31,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpGet ("Get-seeker-recruitment")]
+        [HttpGet ("Seeker-recruitment")]
         public async Task<IActionResult> GetSeekerRecruitment([Required] int id)
         {
             try
@@ -44,7 +44,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpGet("Get-recruitment-job")]
+        [HttpGet("Recruitment-job")]
         public async Task<IActionResult> GetRecruitmentJob ([Required] int id)
         {
             try
@@ -57,7 +57,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPost("Create-recruitment")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateRecruitment (CreateRecruitment createRecruitment)
         {
             try
@@ -78,7 +78,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut("Update-recruitment")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateRecruitment ([Required] int seeker, [Required] int job, UpdateRecruitment updateRecruitment)
         {
             try
@@ -97,7 +97,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpDelete ("Delete-recruitment")]
+        [HttpDelete ("Delete")]
         public async Task<IActionResult> DeleteRecruitment ([Required] int seeker, [Required] int job)
         {
             try

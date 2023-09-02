@@ -34,6 +34,18 @@ namespace FindJobAPI.Controllers
             }
         }
 
+        [HttpGet("Get-one")]
+        public async Task<IActionResult> GetOne([Required] string username, [Required] string password)
+        {
+            try
+            {
+                var AdminDomain = await _adminRepository.GetOne(username, password);
+                if(AdminDomain == null) { return BadRequest("Không có tài khoản này"); }
+                return Ok(AdminDomain);
+            }
+            catch { return BadRequest(); }
+        }
+
         [HttpPost("Create")]
         public async Task<IActionResult> CreateAdmin(AdminNoId adminNoId)
         {
@@ -52,7 +64,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPut ("Update-password")]
+        [HttpPut ("Update")]
         public async Task<IActionResult> UpdateAdmin([Required]string username, UpdateAdmin updateAdmin)
         {
             try

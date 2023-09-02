@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             this.industry_repository = industry_repository;
         }
 
-        [HttpGet("Get-all-industry")]
+        [HttpGet("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             var ListIndustry = await industry_repository.GetAll();
@@ -29,7 +29,7 @@ namespace FindJobAPI.Controllers
             return Ok(ListIndustry);
         }
 
-        [HttpPost("Create-industry")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateIndustry(IndustryNoId industryNoId)
         {
             var IndustryDomain = await industry_repository.CreateIndustry(industryNoId);
@@ -38,7 +38,7 @@ namespace FindJobAPI.Controllers
             return Ok(IndustryDomain);
         }
 
-        [HttpPut("Update-industry")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateIndustry ([Required] int id, IndustryNoId industryNoId)
         {
             var IndustryDomain = await industry_repository.UpdateIndustry(id, industryNoId);
@@ -47,7 +47,7 @@ namespace FindJobAPI.Controllers
             return Ok(IndustryDomain);
         }
 
-        [HttpDelete("Delete_industry")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteIndustry ([Required] int id)
         {
             var industryDomain = await industry_repository.DeleteIndustry(id);

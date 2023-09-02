@@ -26,6 +26,19 @@ namespace FindJobAPI.Repository.Queries
             return ListAdmin!;
         }
 
+        public async Task<AdminDTO> GetOne(string username, string password)
+        {
+            var AdminDomain = await _appDbContext.Admin.FirstOrDefaultAsync(a => a.username == username && a.password == password);
+            if (AdminDomain == null) return null!;
+            var Admin = new AdminDTO
+            {
+                Admin_Id = AdminDomain.admin_id,
+                UserName = AdminDomain.username,
+                Password = AdminDomain.password
+            };
+            return Admin;
+        }
+
         public async Task<AdminNoId> CreateAdmin(AdminNoId adminNoId)
         {
             var existingAdmin = await _appDbContext.Admin.FirstOrDefaultAsync(a => a.username == adminNoId.UserName);

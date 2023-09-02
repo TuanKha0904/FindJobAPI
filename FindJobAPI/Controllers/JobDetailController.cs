@@ -19,7 +19,7 @@ namespace FindJobAPI.Controllers
             _repository = repository;
         }
 
-        [HttpGet("Get-jobdetail-by-id")]
+        [HttpGet("Get-one")]
         public async Task<IActionResult> GetJobDetailById([Required] int id)
         {
             try
@@ -31,7 +31,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut("Update-job-detail")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateJobDetail ([Required] int id, Update_JobDetail update_JobDetail)
         {
             try
@@ -43,7 +43,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut("Update-status-job")]
+        [HttpPut("Update-status")]
         public async Task<IActionResult> UpdateStatus ([Required] int id, Update_Status_Job update_Status_Job)
         {
             try

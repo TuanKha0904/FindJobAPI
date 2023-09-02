@@ -34,7 +34,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpGet("Get-seeker-by-id")]
+        [HttpGet("Get-one")]
         public async Task<IActionResult> GetSeekerById([Required] int id)
         {
             try
@@ -47,7 +47,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut("Update-seeker")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateSeeker([Required] int id, SeekerNoId seekerNoId)
         {
             try

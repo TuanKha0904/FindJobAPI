@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             _typeRepository = typeRepository;
         }
 
-        [HttpGet ("Get-all-type")]
+        [HttpGet ("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -35,7 +35,7 @@ namespace FindJobAPI.Controllers
            
         }
 
-        [HttpPost ("Create-type")]
+        [HttpPost ("Create")]
         public async Task<IActionResult> CreateType(TypeNoId typeNoId)
         {
             try
@@ -53,7 +53,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPut("Update-Type")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateType ([Required] int id, TypeNoId typeNoId)
         {
             try
@@ -71,7 +71,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpDelete("Delete-type")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteType ([Required] int id)
         {
             try

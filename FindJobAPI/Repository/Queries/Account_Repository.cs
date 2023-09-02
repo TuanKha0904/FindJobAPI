@@ -28,6 +28,20 @@ namespace FindJobAPI.Repository.Queries
             return listAccount;
         }
 
+        public async Task<AccountDTO> GetOne(string email, string password)
+        {
+            var AccountDomain = await _context.Account.FirstOrDefaultAsync(a => a.email == email && a.password == password);
+            if (AccountDomain == null) return null!;
+            var Account = new AccountDTO
+            {
+                account_id = AccountDomain.account_id,
+                email = AccountDomain.email,
+                password = AccountDomain.password,
+                date_create = AccountDomain.date_create,
+            };
+            return Account;
+        }
+
         public async Task<CreateAccount> CreateAccount(CreateAccount createAccount)
         {
             var exitstingEmail = await _context.Account.FirstOrDefaultAsync(a => a.email == createAccount.email);

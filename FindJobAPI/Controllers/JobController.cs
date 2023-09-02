@@ -21,7 +21,7 @@ namespace FindJobAPI.Controllers
             _jobRepository = jobRepository;
         }
 
-        [HttpGet("Get-all-job")]
+        [HttpGet("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -32,7 +32,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpGet ("Get-job-by-id")]        
+        [HttpGet ("Get-one")]        
         public async Task<IActionResult> GetJobById ([Required] int id)
         {
             try
@@ -45,7 +45,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPost ("Create-job")]
+        [HttpPost ("Create")]
         public async Task<IActionResult> CreateJob (CreateJob createJob)
         {
             try
@@ -69,7 +69,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut ("Update-job")]
+        [HttpPut ("Update")]
         public async Task<IActionResult> UpdateJob ([Required] int id, UpdateJob updateJob)
         {
             try
@@ -82,7 +82,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpDelete ("Delete-job")]
+        [HttpDelete ("Delete")]
         public async Task<IActionResult> DeleteJob ([Required] int id)
         {
             try
