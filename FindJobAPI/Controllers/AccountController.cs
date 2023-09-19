@@ -1,6 +1,9 @@
-﻿using FindJobAPI.Data;
+﻿/*using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +17,13 @@ namespace FindJobAPI.Controllers
     {
         private readonly AppDbContext _appDbContext;
         private readonly IAccount_Repository _accountRepository;
+        private readonly FirebaseAuth _firebaseAuth;
 
-        public AccountController(AppDbContext appDbContext, IAccount_Repository accountRepository)
+        public AccountController(AppDbContext appDbContext, IAccount_Repository accountRepository, FirebaseApp firebaseApp )
         {
             _appDbContext = appDbContext;
             _accountRepository = accountRepository;
+            _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
         [HttpGet ("Get-all")]
@@ -86,5 +91,19 @@ namespace FindJobAPI.Controllers
             }
             catch { return BadRequest(); }
         }
+
+        [HttpGet("Get")]
+        [Authorize]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var id = await _firebaseAuth.GetUserAsync(User.FindFirst("Id")!.Value);
+                return Ok(id);
+            }
+            catch { return BadRequest(); }
+        }
+
     }
 }
+*/

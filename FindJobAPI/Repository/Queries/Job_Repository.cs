@@ -1,4 +1,4 @@
-﻿using FindJobAPI.Data;
+﻿/*using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
@@ -58,7 +58,7 @@ namespace FindJobAPI.Repository.Queries
             };
             await _appDbContext.Job.AddAsync(CreateJob);
             await _appDbContext.SaveChangesAsync();
-            var JobDetail = new job_detail
+            var JobDetail = new recruitment_no_account
             {
                 job_id = CreateJob.job_id,
                 status = false
@@ -87,9 +87,11 @@ namespace FindJobAPI.Repository.Queries
             var JobDetailDomain = await _appDbContext.Job_Detail.FirstOrDefaultAsync (j => j.job_id == id);
             if( JobDomain == null ) return null!;
             _appDbContext.Job_Detail.Remove(JobDetailDomain!);
+            await _appDbContext.SaveChangesAsync();
             _appDbContext.Job.Remove(JobDomain);
             await _appDbContext.SaveChangesAsync();
             return JobDomain;
         }
     }
 }
+*/

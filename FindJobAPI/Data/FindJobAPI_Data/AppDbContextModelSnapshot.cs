@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace FindJobAPI.Data.FindJobAPI_DB
+namespace FindJobAPI.Data.FindJobAPI_Data
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -24,22 +24,10 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.account", b =>
                 {
-                    b.Property<int>("account_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("UID")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("account_id"), 1L, 1);
-
-                    b.Property<DateTime>("date_create")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("account_id");
+                    b.HasKey("UID");
 
                     b.ToTable("Account");
                 });
@@ -65,10 +53,13 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.employer", b =>
                 {
-                    b.Property<int>("account_id")
-                        .HasColumnType("int");
+                    b.Property<string>("UID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("contact_phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("employer_about")
@@ -80,13 +71,16 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<string>("employer_image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("employer_image_cover")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("employer_name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("employer_website")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("account_id");
+                    b.HasKey("UID");
 
                     b.ToTable("Employer");
                 });
@@ -115,35 +109,13 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("job_id"), 1L, 1);
 
-                    b.Property<int>("account_id")
-                        .HasColumnType("int");
+                    b.Property<string>("UID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("deadline")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("industry_id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("posted_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("type_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("job_id");
-
-                    b.HasIndex("account_id");
-
-                    b.HasIndex("industry_id");
-
-                    b.HasIndex("type_id");
-
-                    b.ToTable("Job");
-                });
-
-            modelBuilder.Entity("FindJobAPI.Model.Domain.job_detail", b =>
-                {
-                    b.Property<int>("job_id")
                         .HasColumnType("int");
 
                     b.Property<string>("job_description")
@@ -161,21 +133,33 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<float>("minimum_salary")
                         .HasColumnType("real");
 
+                    b.Property<DateTime>("posted_date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("requirement")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("status")
                         .HasColumnType("bit");
 
+                    b.Property<int>("type_id")
+                        .HasColumnType("int");
+
                     b.HasKey("job_id");
 
-                    b.ToTable("Job_Detail");
+                    b.HasIndex("UID");
+
+                    b.HasIndex("industry_id");
+
+                    b.HasIndex("type_id");
+
+                    b.ToTable("Job");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
                 {
-                    b.Property<int>("account_id")
-                        .HasColumnType("int");
+                    b.Property<string>("UID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("job_id")
                         .HasColumnType("int");
@@ -183,52 +167,88 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<DateTime>("registation_date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("seeker_desire")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("status")
+                        .HasColumnType("bit");
 
-                    b.HasKey("account_id", "job_id");
+                    b.HasKey("UID", "job_id");
 
                     b.HasIndex("job_id");
 
                     b.ToTable("Recruitment");
                 });
 
-            modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>
+            modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment_no_account", b =>
                 {
-                    b.Property<int>("account_id")
+                    b.Property<int>("recruitment_ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("academic_level")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("recruitment_ID"), 1L, 1);
 
                     b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("birthday")
+                    b.Property<DateTime?>("birthday")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("first_name")
+                    b.Property<string>("education")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("last_name")
+                    b.Property<string>("email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("experience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("fullname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("job_id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("major")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("phone_number")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("seeker_image")
+                    b.Property<DateTime>("registration_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("skills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("recruitment_ID");
+
+                    b.HasIndex("job_id");
+
+                    b.ToTable("Recruitment_No_Accounts");
+                });
+
+            modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>
+                {
+                    b.Property<string>("UID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("education")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("experience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("major")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("skills")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("url_cv")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("website_seeker")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("account_id");
+                    b.HasKey("UID");
 
                     b.ToTable("Seeker");
                 });
@@ -253,7 +273,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 {
                     b.HasOne("FindJobAPI.Model.Domain.account", "account")
                         .WithMany("employers")
-                        .HasForeignKey("account_id")
+                        .HasForeignKey("UID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -264,9 +284,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 {
                     b.HasOne("FindJobAPI.Model.Domain.employer", "employer")
                         .WithMany("jobs")
-                        .HasForeignKey("account_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UID");
 
                     b.HasOne("FindJobAPI.Model.Domain.industry", "industry")
                         .WithMany("job")
@@ -287,22 +305,11 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Navigation("type");
                 });
 
-            modelBuilder.Entity("FindJobAPI.Model.Domain.job_detail", b =>
-                {
-                    b.HasOne("FindJobAPI.Model.Domain.job", "job")
-                        .WithMany("job_detail")
-                        .HasForeignKey("job_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("job");
-                });
-
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
                 {
                     b.HasOne("FindJobAPI.Model.Domain.seeker", "seeker")
                         .WithMany("recruitments")
-                        .HasForeignKey("account_id")
+                        .HasForeignKey("UID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -317,11 +324,22 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Navigation("seeker");
                 });
 
+            modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment_no_account", b =>
+                {
+                    b.HasOne("FindJobAPI.Model.Domain.job", "job")
+                        .WithMany("recruitment_no_account")
+                        .HasForeignKey("job_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("job");
+                });
+
             modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>
                 {
                     b.HasOne("FindJobAPI.Model.Domain.account", "account")
                         .WithMany("seekers")
-                        .HasForeignKey("account_id")
+                        .HasForeignKey("UID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -347,9 +365,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.job", b =>
                 {
-                    b.Navigation("job_detail");
-
                     b.Navigation("recruitment");
+
+                    b.Navigation("recruitment_no_account");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>
