@@ -1,4 +1,4 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
 using Microsoft.EntityFrameworkCore;
 using FindJobAPI.Model.DTO;
@@ -26,7 +26,7 @@ namespace FindJobAPI.Repository.Queries
             return ListAdmin!;
         }
 
-        public async Task<AdminDTO> GetOne(string username, string password)
+        public async Task<AdminDTO> Login(string username, string password)
         {
             var AdminDomain = await _appDbContext.Admin.FirstOrDefaultAsync(a => a.username == username && a.password == password);
             if (AdminDomain == null) return null!;
@@ -81,4 +81,3 @@ namespace FindJobAPI.Repository.Queries
         }
     }
 }
-*/

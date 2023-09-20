@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             this.recruitmentRepository = recruitmentRepository;
         }
 
-        [HttpGet ("Get-all")]
+        [HttpGet("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -31,12 +31,12 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpGet ("Seeker-recruitment")]
-        public async Task<IActionResult> GetSeekerRecruitment([Required] int id)
+        [HttpGet("Seeker-recruitment")]
+        public async Task<IActionResult> GetSeekerRecruitment([Required] string id)
         {
             try
             {
-                var Check = await appDbContext.Seeker.FirstOrDefaultAsync(r => r.account_id == id);
+                var Check = await appDbContext.Seeker.FirstOrDefaultAsync(r => r.UID == id);
                 if (Check == null) return BadRequest($"Không tìm thấy seeker có id: {id}");
                 var Recruitment = await recruitmentRepository.GetSeekerRecruitment(id);
                 return Ok(Recruitment);
@@ -45,7 +45,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Recruitment-job")]
-        public async Task<IActionResult> GetRecruitmentJob ([Required] int id)
+        public async Task<IActionResult> GetRecruitmentJob([Required] int id)
         {
             try
             {
@@ -58,11 +58,11 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateRecruitment (CreateRecruitment createRecruitment)
+        public async Task<IActionResult> CreateRecruitment(CreateRecruitment createRecruitment)
         {
             try
             {
-                var Seeker = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == createRecruitment.seeker_id);
+                var Seeker = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == createRecruitment.seeker_id);
                 var Job = await appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == createRecruitment.job_id);
                 var Recruitment = await appDbContext.Recruitment.FirstOrDefaultAsync(r => r.account_id == createRecruitment.seeker_id && r.job_id == createRecruitment.job_id);
                 if (Seeker == null && Job == null) return BadRequest($"Không tìm thấy seeker có id: {createRecruitment.seeker_id} và job có id: {createRecruitment.job_id}");
@@ -79,26 +79,26 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateRecruitment ([Required] int seeker, [Required] int job, UpdateRecruitment updateRecruitment)
+        public async Task<IActionResult> UpdateRecruitment([Required] int seeker, [Required] int job, UpdateRecruitment updateRecruitment)
         {
             try
             {
                 var Seeker = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == seeker);
-                var Job = await appDbContext.Job.FirstOrDefaultAsync(j => j.job_id ==job);
+                var Job = await appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == job);
                 if (Seeker == null && Job == null) return BadRequest($"Không tìm thấy seeker có id: {seeker} và job có id: {job}");
                 else if (Seeker == null) return BadRequest($"Không tìm thấy seeker có id: {seeker}");
                 else if (Job == null) return BadRequest($"Không tìm thấy job có id: {job}");
                 else
                 {
-                    var Update = await recruitmentRepository.UpdateRecruitment(seeker,job,updateRecruitment);
+                    var Update = await recruitmentRepository.UpdateRecruitment(seeker, job, updateRecruitment);
                     return Ok(Update);
                 }
             }
             catch { return BadRequest(); }
         }
 
-        [HttpDelete ("Delete")]
-        public async Task<IActionResult> DeleteRecruitment ([Required] int seeker, [Required] int job)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteRecruitment([Required] int seeker, [Required] int job)
         {
             try
             {

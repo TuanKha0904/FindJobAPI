@@ -32,7 +32,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateJobDetail ([Required] int id, Update_JobDetail update_JobDetail)
+        public async Task<IActionResult> UpdateJobDetail([Required] int id, Update_JobDetail update_JobDetail)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update-status")]
-        public async Task<IActionResult> UpdateStatus ([Required] int id, Update_Status_Job update_Status_Job)
+        public async Task<IActionResult> UpdateStatus([Required] int id, Update_Status_Job update_Status_Job)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace FindJobAPI.Controllers
                 if (Job_Detail == null) { return BadRequest($"Không tìm thấy job có id: {id}"); }
                 return Ok(Job_Detail);
             }
-            catch { return BadRequest() ; }
+            catch { return BadRequest(); }
         }
     }
 }

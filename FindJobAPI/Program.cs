@@ -2,8 +2,8 @@ using FindJobAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using FindJobAPI.Repository.Interfaces;
-/*using FindJobAPI.Repository.Queries;
-*/using FirebaseAdmin;
+using FindJobAPI.Repository.Queries;
+using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,18 +66,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
-/*// Register Repository
+// Register Repository
 builder.Services.AddScoped<IAdmin_repository, admin_repository>();
 builder.Services.AddScoped<IType_Repository, Type_Repository>();
 builder.Services.AddScoped<IIndustry_Repository, Industry_Repository>();
-builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
+/*builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
 builder.Services.AddScoped<ISeeker_Repository, Seeker_Repository>();
 builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
 builder.Services.AddScoped<IJob_Repository, Job_Repository>();
 builder.Services.AddScoped<IRecruitment_Repository, Recruitment_Repository>();
 builder.Services.AddScoped<IJob_Detail_Repository, Job_Detail_Repository>();
-*/
 
+*/
 
 
 var app = builder.Build();

@@ -1,4 +1,4 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +20,7 @@ namespace FindJobAPI.Controllers
             _typeRepository = typeRepository;
         }
 
-        [HttpGet ("Get-all")]
+        [HttpGet("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -32,10 +32,10 @@ namespace FindJobAPI.Controllers
             {
                 return BadRequest();
             }
-           
+
         }
 
-        [HttpPost ("Create")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateType(TypeNoId typeNoId)
         {
             try
@@ -54,7 +54,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateType ([Required] int id, TypeNoId typeNoId)
+        public async Task<IActionResult> UpdateType(int id, TypeNoId typeNoId)
         {
             try
             {
@@ -65,14 +65,14 @@ namespace FindJobAPI.Controllers
                 }
                 else return BadRequest($"Không tìm thấy type có id: {id}");
             }
-            catch 
+            catch
             {
                 return BadRequest();
             }
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteType ([Required] int id)
+        public async Task<IActionResult> DeleteType(int id)
         {
             try
             {
@@ -90,4 +90,3 @@ namespace FindJobAPI.Controllers
         }
     }
 }
-*/

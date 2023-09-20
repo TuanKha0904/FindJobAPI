@@ -13,10 +13,10 @@ namespace FindJobAPI.Controllers
     {
         private readonly AppDbContext _appDbContext;
         private readonly IEmployer_Repository _employer_Repository;
-        public EmployerController(AppDbContext appDbContext, IEmployer_Repository  employer_Repository)
+        public EmployerController(AppDbContext appDbContext, IEmployer_Repository employer_Repository)
         {
             _appDbContext = appDbContext;
-           _employer_Repository = employer_Repository;
+            _employer_Repository = employer_Repository;
         }
 
         [HttpGet("Get-all")]

@@ -1,4 +1,4 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
 using Microsoft.EntityFrameworkCore;
 using FindJobAPI.Model.DTO;
@@ -68,4 +68,3 @@ namespace FindJobAPI.Repository.Queries
         }
     }
 }
-*/

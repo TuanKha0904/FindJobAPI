@@ -19,14 +19,14 @@ namespace FindJobAPI.Controllers
         private readonly IAccount_Repository _accountRepository;
         private readonly FirebaseAuth _firebaseAuth;
 
-        public AccountController(AppDbContext appDbContext, IAccount_Repository accountRepository, FirebaseApp firebaseApp )
+        public AccountController(AppDbContext appDbContext, IAccount_Repository accountRepository, FirebaseApp firebaseApp)
         {
             _appDbContext = appDbContext;
             _accountRepository = accountRepository;
             _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
-        [HttpGet ("Get-all")]
+        [HttpGet("Get-all")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -38,7 +38,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Get-one")]
-        public async Task<IActionResult> GetOne( [Required] string email, [Required] string password)
+        public async Task<IActionResult> GetOne([Required] string email, [Required] string password)
         {
             try
             {
@@ -53,8 +53,8 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPost ("Create")]
-        public async Task<IActionResult> CreateAccount (CreateAccount createAccount)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateAccount(CreateAccount createAccount)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateAccount ([Required] int id, UpdateAccount updateAccount)
+        public async Task<IActionResult> UpdateAccount([Required] int id, UpdateAccount updateAccount)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteAccount ([Required] int id)
+        public async Task<IActionResult> DeleteAccount([Required] int id)
         {
             try
             {

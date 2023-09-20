@@ -11,5 +11,6 @@ namespace FindJobAPI.Repository.Interfaces
         Task<CreateRecruitment> CreateRecruitment(CreateRecruitment createRecruitment);
         Task<UpdateRecruitment> UpdateRecruitment (int seeker, int job, UpdateRecruitment updateRecruitment);
         Task<recruitment> DeleteRecruitment (int seeker, int job);
+        Task GetSeekerRecruitment(string id);
     }
 }

@@ -1,4 +1,4 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +39,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateIndustry ([Required] int id, IndustryNoId industryNoId)
+        public async Task<IActionResult> UpdateIndustry(int id, IndustryNoId industryNoId)
         {
             var IndustryDomain = await industry_repository.UpdateIndustry(id, industryNoId);
             if (IndustryDomain == null)
@@ -48,7 +48,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteIndustry ([Required] int id)
+        public async Task<IActionResult> DeleteIndustry(int id)
         {
             var industryDomain = await industry_repository.DeleteIndustry(id);
             if (industryDomain == null)
@@ -57,4 +57,3 @@ namespace FindJobAPI.Controllers
         }
     }
 }
-*/

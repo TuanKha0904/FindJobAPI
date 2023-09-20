@@ -14,7 +14,7 @@ namespace FindJobAPI.Controllers
     {
         private readonly AppDbContext _appDbContext;
         private readonly ISeeker_Repository seeker_Repository;
-        public SeekerController (AppDbContext appDbContext, ISeeker_Repository seeker_repository)
+        public SeekerController(AppDbContext appDbContext, ISeeker_Repository seeker_repository)
         {
             _appDbContext = appDbContext;
             seeker_Repository = seeker_repository;

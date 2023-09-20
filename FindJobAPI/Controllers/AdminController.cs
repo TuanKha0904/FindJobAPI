@@ -1,4 +1,4 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -34,13 +34,13 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpGet("Get-one")]
-        public async Task<IActionResult> GetOne([Required] string username, [Required] string password)
+        [HttpGet("Login")]
+        public async Task<IActionResult> Login(string username,  string password)
         {
             try
             {
-                var AdminDomain = await _adminRepository.GetOne(username, password);
-                if(AdminDomain == null) { return BadRequest("Không có tài khoản này"); }
+                var AdminDomain = await _adminRepository.Login(username, password);
+                if (AdminDomain == null) { return BadRequest("Không có tài khoản này"); }
                 return Ok(AdminDomain);
             }
             catch { return BadRequest(); }
@@ -51,7 +51,7 @@ namespace FindJobAPI.Controllers
         {
             try
             {
-                var AddAdmin = await _adminRepository.CreateAdmin(adminNoId); 
+                var AddAdmin = await _adminRepository.CreateAdmin(adminNoId);
                 if (AddAdmin == null)
                 {
                     return BadRequest($"Username đã tồn tại");
@@ -64,8 +64,8 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPut ("Update")]
-        public async Task<IActionResult> UpdateAdmin([Required]string username, UpdateAdmin updateAdmin)
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateAdmin(string username, UpdateAdmin updateAdmin)
         {
             try
             {
@@ -80,8 +80,8 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpDelete ("Delete")]
-        public async Task<IActionResult> DeleteAdmin([Required] int id)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteAdmin(int id)
         {
             try
             {
@@ -98,4 +98,3 @@ namespace FindJobAPI.Controllers
 
     }
 }
-*/

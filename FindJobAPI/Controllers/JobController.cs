@@ -15,7 +15,7 @@ namespace FindJobAPI.Controllers
         private readonly AppDbContext _appDbContext;
         private readonly IJob_Repository _jobRepository;
 
-        public JobController (AppDbContext appDbContext, IJob_Repository jobRepository)
+        public JobController(AppDbContext appDbContext, IJob_Repository jobRepository)
         {
             _appDbContext = appDbContext;
             _jobRepository = jobRepository;
@@ -32,8 +32,8 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpGet ("Get-one")]        
-        public async Task<IActionResult> GetJobById ([Required] int id)
+        [HttpGet("Get-one")]
+        public async Task<IActionResult> GetJobById([Required] int id)
         {
             try
             {
@@ -45,8 +45,8 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPost ("Create")]
-        public async Task<IActionResult> CreateJob (CreateJob createJob)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateJob(CreateJob createJob)
         {
             try
             {
@@ -69,8 +69,8 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut ("Update")]
-        public async Task<IActionResult> UpdateJob ([Required] int id, UpdateJob updateJob)
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateJob([Required] int id, UpdateJob updateJob)
         {
             try
             {
@@ -82,8 +82,8 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpDelete ("Delete")]
-        public async Task<IActionResult> DeleteJob ([Required] int id)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteJob([Required] int id)
         {
             try
             {
