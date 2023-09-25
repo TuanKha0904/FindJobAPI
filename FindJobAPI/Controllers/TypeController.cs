@@ -1,14 +1,14 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TypeController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -32,7 +32,6 @@ namespace FindJobAPI.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpPost("Create")]
