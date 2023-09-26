@@ -56,7 +56,8 @@ namespace FindJobAPI
             new(FirebaseUserClaimType.Id, claims.GetValueOrDefault("user_id", "").ToString() ?? string.Empty),
             new(FirebaseUserClaimType.Email, claims.GetValueOrDefault("email", "").ToString() ?? string.Empty),
             new(FirebaseUserClaimType.Username, claims.GetValueOrDefault("name", "").ToString() ?? string.Empty),
-            new(FirebaseUserClaimType.Avatar, claims.GetValueOrDefault("picture", "").ToString() ?? string.Empty)
+            new(FirebaseUserClaimType.Avatar, claims.GetValueOrDefault("picture", "").ToString() ?? string.Empty),
+            new(FirebaseUserClaimType.Phone, claims.GetValueOrDefault("phone", "").ToString() ?? string.Empty),
         };
         }
     }
@@ -67,5 +68,6 @@ namespace FindJobAPI
         public const string Email = "email";
         public const string Username = "username";
         public const string Avatar = "avatar";
+        public const string Phone = "phone";
     }
 }

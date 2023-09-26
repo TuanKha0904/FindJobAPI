@@ -15,9 +15,13 @@ namespace FindJobAPI.Model.Domain
         public float minimum_salary { get; set; }
         public float maximum_salary { get; set; }
         public string? requirement { get; set; }
-        public string? location { get; set; }
         public DateTime deadline { get; set; }
         public bool status { get; set; }
+
+        //navigation properties: one job has one location
+        public int? location_id { get; set; }
+        public location? location { get; set; }
+
 
         //navigation properties: one job has one industry
         public int industry_id { get; set; }

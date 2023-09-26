@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace FindJobAPI.Data.FindJobAPI_Data
+namespace FindJobAPI.Data.FindJobAPI_DB
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230919184948_init")]
-    partial class init
+    [Migration("20230925091229_InitialDB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -126,8 +126,8 @@ namespace FindJobAPI.Data.FindJobAPI_Data
                     b.Property<string>("job_title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("location_id")
+                        .HasColumnType("int");
 
                     b.Property<float>("maximum_salary")
                         .HasColumnType("real");
@@ -153,9 +153,27 @@ namespace FindJobAPI.Data.FindJobAPI_Data
 
                     b.HasIndex("industry_id");
 
+                    b.HasIndex("location_id");
+
                     b.HasIndex("type_id");
 
                     b.ToTable("Job");
+                });
+
+            modelBuilder.Entity("FindJobAPI.Model.Domain.location", b =>
+                {
+                    b.Property<int>("location_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("location_id"), 1L, 1);
+
+                    b.Property<string>("location_name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("location_id");
+
+                    b.ToTable("location");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
@@ -294,6 +312,10 @@ namespace FindJobAPI.Data.FindJobAPI_Data
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FindJobAPI.Model.Domain.location", "location")
+                        .WithMany("job")
+                        .HasForeignKey("location_id");
+
                     b.HasOne("FindJobAPI.Model.Domain.type", "type")
                         .WithMany("jobs")
                         .HasForeignKey("type_id")
@@ -303,6 +325,8 @@ namespace FindJobAPI.Data.FindJobAPI_Data
                     b.Navigation("employer");
 
                     b.Navigation("industry");
+
+                    b.Navigation("location");
 
                     b.Navigation("type");
                 });
@@ -370,6 +394,11 @@ namespace FindJobAPI.Data.FindJobAPI_Data
                     b.Navigation("recruitment");
 
                     b.Navigation("recruitment_no_account");
+                });
+
+            modelBuilder.Entity("FindJobAPI.Model.Domain.location", b =>
+                {
+                    b.Navigation("job");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.seeker", b =>

@@ -1,13 +1,9 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
-using FirebaseAdmin;
-using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Controllers
 {
@@ -17,93 +13,109 @@ namespace FindJobAPI.Controllers
     {
         private readonly AppDbContext _appDbContext;
         private readonly IAccount_Repository _accountRepository;
-        private readonly FirebaseAuth _firebaseAuth;
 
-        public AccountController(AppDbContext appDbContext, IAccount_Repository accountRepository, FirebaseApp firebaseApp)
+        public AccountController(AppDbContext appDbContext, IAccount_Repository accountRepository)
         {
             _appDbContext = appDbContext;
             _accountRepository = accountRepository;
-            _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
-        [HttpGet("Get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("All")]
+        [Authorize]
+        public async Task<IActionResult> GetAllAccounts()
         {
             try
             {
-                var AllAccount = await _accountRepository.GetAll();
-                return Ok(AllAccount);
+                var allAccount = await _accountRepository.GetAll();
+                return Ok(allAccount);
+
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("Login")]
+        [Authorize]
+        public async Task<IActionResult> Login()
+        {
+            try
+            {
+                var accessToken = User.FindFirst("Id")?.Value;
+                if (accessToken == null)
+                {
+                    return BadRequest("Không tìm thấy account");
+                }
+                var account = await _accountRepository.Login(accessToken);
+                return Ok(account);
             }
             catch { return BadRequest(); }
         }
 
-        [HttpGet("Get-one")]
-        public async Task<IActionResult> GetOne([Required] string email, [Required] string password)
+/*        [HttpPost("Create")]
+        [Authorize]
+        public async Task<IActionResult> CreateAccount()
         {
             try
             {
-                var checkemail = await _appDbContext.Account.FirstOrDefaultAsync(c => c.email == email);
-                if (checkemail == null) return BadRequest($"{email} chưa được đăng kí");
-                var Account = await _accountRepository.GetOne(email, password);
-                if (Account != null)
-                    return Ok(Account);
-                else
-                    return BadRequest("Sai email hoặc mật khẩu");
+                var userId = User.FindFirst("Id")?.Value;
+                var accountDomain = await _appDbContext.Account.FirstOrDefaultAsync(a => a.UID == userId);
+                if (accountDomain == null)
+                {
+                    var addAccount = await _accountRepository.CreateAccount(userId!);
+                    return Ok(addAccount);
+                }
+                return BadRequest("Account already exists");
             }
-            catch { return BadRequest(); }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex);
+            }
+        }
+*/
+        [HttpPut("Infor")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAccount(Infor infor)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var inforUpdate = await _accountRepository.Infor(userId!, infor);
+                if (inforUpdate == null) return BadRequest("Không tìm thấy account");
+                return Ok("Cập nhật thành công");
+            }
+            catch { return BadRequest("Cập nhật thất bại"); }
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateAccount(CreateAccount createAccount)
+        [HttpPut("Photo")]
+        [Authorize]
+        public async Task<IActionResult> Photo(Photo photo)
         {
             try
             {
-                var AddAccount = await _accountRepository.CreateAccount(createAccount);
-                if (AddAccount == null)
-                    return BadRequest("Email đã tồn tại");
-                return Ok(AddAccount);
+                var userId = User.FindFirst("Id")?.Value;
+                var inforUpdate = await _accountRepository.Photo(userId!, photo);
+                if (inforUpdate == null) return BadRequest("Không tìm thấy account");
+                return Ok("Cập nhật thành công");
             }
-            catch { return BadRequest(); }
+            catch { return BadRequest("Cập nhật thất bại"); }
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateAccount([Required] int id, UpdateAccount updateAccount)
-        {
-            try
-            {
-                var UpdateAccount = await _accountRepository.UpdateAccount(id, updateAccount);
-                if (UpdateAccount == null)
-                    return BadRequest($"Không tìm thấy account có id: {id}");
-                return Ok(UpdateAccount);
-            }
-            catch { return BadRequest(); }
-        }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteAccount([Required] int id)
-        {
-            try
-            {
-                var DeleteAccount = await _accountRepository.DeleteAccount(id);
-                if (DeleteAccount == null)
-                    return BadRequest($"Không tìm thấy account có id: {id}");
-                return Ok(DeleteAccount);
-            }
-            catch { return BadRequest(); }
-        }
-
-        [HttpGet("Get")]
         [Authorize]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> DeleteAccount(string userId)
         {
             try
             {
-                var id = await _firebaseAuth.GetUserAsync(User.FindFirst("Id")!.Value);
-                return Ok(id);
+                var DeleteAccount = await _accountRepository.DeleteAccount(userId);
+                if (DeleteAccount == null)
+                    return BadRequest("Không tìm thấy account");
+                return Ok("Xóa thành công");
             }
-            catch { return BadRequest(); }
+            catch { return BadRequest("Xóa thất bại"); }
         }
 
     }
 }
-*/
