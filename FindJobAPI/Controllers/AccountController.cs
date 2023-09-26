@@ -9,6 +9,7 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -21,7 +22,6 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("All")]
-        [Authorize]
         public async Task<IActionResult> GetAllAccounts()
         {
             try
@@ -37,7 +37,6 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Login")]
-        [Authorize]
         public async Task<IActionResult> Login()
         {
             try
@@ -53,29 +52,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-/*        [HttpPost("Create")]
-        [Authorize]
-        public async Task<IActionResult> CreateAccount()
-        {
-            try
-            {
-                var userId = User.FindFirst("Id")?.Value;
-                var accountDomain = await _appDbContext.Account.FirstOrDefaultAsync(a => a.UID == userId);
-                if (accountDomain == null)
-                {
-                    var addAccount = await _accountRepository.CreateAccount(userId!);
-                    return Ok(addAccount);
-                }
-                return BadRequest("Account already exists");
-            }
-            catch (Exception ex) 
-            {
-                return BadRequest(ex);
-            }
-        }
-*/
-        [HttpPut("Infor")]
-        [Authorize]
+        [HttpPatch("Infor")]
         public async Task<IActionResult> UpdateAccount(Infor infor)
         {
             try
@@ -88,8 +65,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Cập nhật thất bại"); }
         }
 
-        [HttpPut("Photo")]
-        [Authorize]
+        [HttpPatch("Photo")]
         public async Task<IActionResult> Photo(Photo photo)
         {
             try
@@ -102,9 +78,21 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Cập nhật thất bại"); }
         }
 
+        [HttpPatch("Password")]
+        public async Task<IActionResult> Password (Password password)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var updatePassword = await _accountRepository.Password(userId!, password);
+                if (updatePassword == null) return BadRequest("Không tìm thấy account");
+                return Ok("Cập nhật thành công");
+            }
+            catch { return BadRequest("Cập nhật thất bại"); }
+        }
+
 
         [HttpDelete("Delete")]
-        [Authorize]
         public async Task<IActionResult> DeleteAccount(string userId)
         {
             try

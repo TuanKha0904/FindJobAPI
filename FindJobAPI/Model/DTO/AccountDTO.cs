@@ -22,8 +22,6 @@ namespace FindJobAPI.Model.DTO
     public class Infor
     {
         public string? Name { get; set; }
-
-        [Phone (ErrorMessage ="số điện thoại không đúng")]
         public string? PhoneNumber { get; set; }
     }
 
@@ -32,10 +30,8 @@ namespace FindJobAPI.Model.DTO
         public string? PhotoUrl { get; set; }
     }
 
-    public class UpdateAccount
+    public class Password
     {
-        public string? Name { get; set; }
-        public string? email { get; set; }
-        public string? avatar { get; set; }
+        public string? password { get; set; }
     }
 }

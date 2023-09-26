@@ -5,7 +5,6 @@ using FindJobAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
-
 namespace FindJobAPI.Repository.Queries
 {
     public class Account_Repository : IAccount_Repository
@@ -68,6 +67,17 @@ namespace FindJobAPI.Repository.Queries
                 };
                 _context.Account.Add(Account);
                 await _context.SaveChangesAsync();
+                var Seeker = new seeker
+                {
+                    UID = Account.UID
+                };
+                var employer = new employer
+                {
+                    UID = Account.UID
+                };
+                _context.Seeker.Add(Seeker);
+                _context.Employer.Add(employer);
+                await _context.SaveChangesAsync();
             }
             var account = new Login
             {
@@ -80,12 +90,6 @@ namespace FindJobAPI.Repository.Queries
             return account;
         }
 
-/*        public async Task<account> CreateAccount(string userId)
-        {
-            var accessToken = await _firebaseAuth.GetUserAsync(userId);
-            return account;
-        }
-*/
         public async Task<UserRecord> Infor(string userId, Infor infor)
         {
             var accountDomain = await _firebaseAuth.GetUserAsync(userId);
@@ -94,9 +98,9 @@ namespace FindJobAPI.Repository.Queries
             var updateArgs = new UserRecordArgs
             {
                 Uid = accountDomain.Uid,
-                DisplayName = infor.Name,
-                PhoneNumber = infor.PhoneNumber,
             };
+            if (!string.IsNullOrEmpty(infor.Name)) updateArgs.DisplayName = infor.Name;
+            if (!string.IsNullOrEmpty(infor.PhoneNumber)) updateArgs.PhoneNumber = infor.PhoneNumber;
             UserRecord userRecord = await _firebaseAuth.UpdateUserAsync(updateArgs);
             return userRecord;
         }
@@ -109,6 +113,19 @@ namespace FindJobAPI.Repository.Queries
             {
                 Uid = accountDomain.Uid,
                 PhotoUrl = photo.PhotoUrl,
+            };
+            UserRecord userRecord = await _firebaseAuth.UpdateUserAsync(updateArgs);
+            return userRecord;
+        }
+
+        public async Task<UserRecord> Password(string userId, Password password)
+        {
+            var accountDomain = await _firebaseAuth.GetUserAsync(userId);
+            if (accountDomain == null) { return null!; }
+            var updateArgs = new UserRecordArgs
+            {
+                Uid = accountDomain.Uid,
+                Password = password.password
             };
             UserRecord userRecord = await _firebaseAuth.UpdateUserAsync(updateArgs);
             return userRecord;

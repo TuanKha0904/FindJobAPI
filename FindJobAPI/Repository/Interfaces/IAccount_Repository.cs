@@ -8,12 +8,9 @@ namespace FindJobAPI.Repository.Interfaces
     {
         Task<List<AllAccountDTO>> GetAll();
         Task<Login> Login(string userId);
-
-/*        Task<account> CreateAccount(string userId);
-*/        Task<UserRecord> Infor(string userId, Infor infor);
+        Task<UserRecord> Infor(string userId, Infor infor);
         Task<UserRecord> Photo(string userId, Photo photo);
+        Task<UserRecord> Password(string userId, Password password);
         Task<account> DeleteAccount(string userId);
-
-
     }
 }
