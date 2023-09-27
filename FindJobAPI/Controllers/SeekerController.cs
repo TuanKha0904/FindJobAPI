@@ -1,6 +1,8 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using FindJobAPI.Repository.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +12,7 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SeekerController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -20,13 +23,18 @@ namespace FindJobAPI.Controllers
             seeker_Repository = seeker_repository;
         }
 
-        [HttpGet("Get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("CV")]
+        public async Task<IActionResult> CV()
         {
             try
             {
-                var ListSeeker = await seeker_Repository.GetAll();
-                return Ok(ListSeeker);
+                var userId = User.FindFirst("Id")?.Value;
+                var seekerCV = await seeker_Repository.CV(userId!);
+                if (seekerCV != null)
+                {
+                    return Ok(seekerCV);
+                }
+                else { return BadRequest("Không tìm thấy seeker"); }
             }
             catch
             {
@@ -34,7 +42,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpGet("Get-one")]
+/*        [HttpGet("Get-one")]
         public async Task<IActionResult> GetSeekerById([Required] int id)
         {
             try
@@ -46,8 +54,8 @@ namespace FindJobAPI.Controllers
             }
             catch { return BadRequest(); }
         }
-
-        [HttpPut("Update")]
+*/
+/*        [HttpPut("Update")]
         public async Task<IActionResult> UpdateSeeker([Required] int id, SeekerNoId seekerNoId)
         {
             try
@@ -59,6 +67,5 @@ namespace FindJobAPI.Controllers
             }
             catch { return BadRequest(); }
         }
-    }
+*/    }
 }
-*/

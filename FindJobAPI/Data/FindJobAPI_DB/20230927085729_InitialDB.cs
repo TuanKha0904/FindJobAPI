@@ -103,6 +103,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 columns: table => new
                 {
                     UID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    birthday = table.Column<DateTime>(type: "datetime2", nullable: true),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     skills = table.Column<string>(type: "nvarchar(max)", nullable: true),
