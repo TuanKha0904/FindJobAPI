@@ -4,16 +4,18 @@ using FindJobAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace FindJobAPI.Data.FindJobAPI_DB
+namespace FindJobAPI.Data.FinJobAPI_DB
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230927164807_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +173,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     b.HasKey("location_id");
 
-                    b.ToTable("location");
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.recruitment", b =>
@@ -250,6 +252,15 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 {
                     b.Property<string>("UID")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");

@@ -5,6 +5,7 @@ using FindJobAPI.Repository.Interfaces;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FindJobAPI.Repository.Queries
 {
@@ -25,67 +26,81 @@ namespace FindJobAPI.Repository.Queries
             if (seekerDomain == null || accountFB == null) return null!;
             var seeker = new CV()
             {
-                Name = accountFB.DisplayName,
-                Email = accountFB.Email,
-                Phone_Number = accountFB.PhoneNumber,
-                Birthday = seekerDomain.birthday!.Value.ToString("dd-MM-yyyy"),
-                Address = seekerDomain.address,
+                Address = seekerDomain!.address,
                 Experience = seekerDomain.experience,
                 Skills = seekerDomain.skills,
                 Education = seekerDomain.education,
                 Major = seekerDomain.major
             };
+            if (seekerDomain.Name == null)
+                seeker.Name = accountFB.DisplayName;
+            else
+                seeker.Name = seekerDomain.Name;
+            if (seekerDomain.Email == null)
+                seeker.Email = accountFB.Email;
+            else
+                seeker.Email = seekerDomain.Email;
+            if (seekerDomain.PhoneNumber == null)
+                seeker.Phone_Number = accountFB.PhoneNumber;
+            else
+                seeker.Phone_Number = seekerDomain.PhoneNumber;
+            if (seekerDomain.birthday.HasValue)
+                seeker.Birthday = seekerDomain.birthday.Value.ToString("dd-MM-yyyy");
             return seeker;
         }
 
-/*        public async Task<SeekerNoId> GetById(int id)
+        public async Task<CV> CVUpdate(string userId, CV cV)
         {
-            var SeekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == id);
-            if (SeekerDomain == null)
-                return null!;
-            var Seeker = new SeekerNoId
+            var seekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == userId);
+            if (seekerDomain == null) return null!;
+            if(!string.IsNullOrEmpty(cV.Name))
+                seekerDomain.Name = cV.Name;
+            if(!string.IsNullOrEmpty(cV.Email))
+                seekerDomain.Email = cV.Email;
+            if(!string.IsNullOrEmpty(cV.Phone_Number))
+                seekerDomain.PhoneNumber = cV.Phone_Number;
+            if (!string.IsNullOrEmpty(cV.Birthday))
             {
-                first_name = SeekerDomain.first_name,
-                last_name = SeekerDomain.last_name,
-                address = SeekerDomain.address,
-                birthday = SeekerDomain.birthday,
-                phone_number = SeekerDomain.phone_number,
-                seeker_image = SeekerDomain.seeker_image,
-                academic_level = SeekerDomain.academic_level,
-                skills = SeekerDomain.skills,
-                url_cv = SeekerDomain.url_cv,
-                website_seeker = SeekerDomain.website_seeker,
-            };
-            return Seeker;
-        }
-*/
-/*        public async Task<SeekerNoId> UpdateSeeker(int id, SeekerNoId seekerNoId)
-        {
-            var SeekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == id);
-            if (SeekerDomain == null)
-                return null!;
-            if (!string.IsNullOrEmpty(seekerNoId.first_name))
-                SeekerDomain.first_name = seekerNoId.first_name;
-            if (!string.IsNullOrEmpty(seekerNoId.last_name))
-                SeekerDomain.last_name = seekerNoId.last_name;
-            if (!string.IsNullOrEmpty(seekerNoId.address))
-                SeekerDomain.address = seekerNoId.address;
-            if (seekerNoId.birthday.Date != DateTime.Today.Date)
-                SeekerDomain.birthday = seekerNoId.birthday;
-            if (!string.IsNullOrEmpty(seekerNoId.phone_number))
-                SeekerDomain.phone_number = seekerNoId.phone_number;
-            if (!string.IsNullOrEmpty(seekerNoId.seeker_image))
-                SeekerDomain.seeker_image = seekerNoId.seeker_image;
-            if (!string.IsNullOrEmpty(seekerNoId.academic_level))
-                SeekerDomain.academic_level = seekerNoId.academic_level;
-            if (!string.IsNullOrEmpty(seekerNoId.skills))
-                SeekerDomain.skills = seekerNoId.skills;
-            if (!string.IsNullOrEmpty(seekerNoId.url_cv))
-                SeekerDomain.url_cv = seekerNoId.url_cv;
-            if (!string.IsNullOrEmpty(seekerNoId.website_seeker))
-                SeekerDomain.website_seeker = seekerNoId.website_seeker;
+                seekerDomain.birthday = DateTime.Parse(cV.Birthday);
+            }    
+            if (!string.IsNullOrEmpty(cV.Address))
+                seekerDomain.address = cV.Address;
+            if(!string.IsNullOrEmpty(cV.Experience))
+                seekerDomain.experience = cV.Experience;
+            if(!string.IsNullOrEmpty(cV.Skills))
+                seekerDomain.skills = cV.Skills;
+            if(!string.IsNullOrEmpty(cV.Education))
+                seekerDomain.education = cV.Education;
+            if(!string.IsNullOrEmpty(cV.Major))
+                seekerDomain.major = cV.Major;
             await _appDbContext.SaveChangesAsync();
-            return seekerNoId;
+            return cV;
         }
-*/    }
+
+        public async Task<InforSeeker> Infor(string userId)
+        {
+            var seekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == userId);
+            var seekerFB = await _firebaseAuth.GetUserAsync(userId);
+            if (seekerDomain == null) return null!;
+            var seekerInfor = new InforSeeker()
+            {
+                birthday = seekerDomain.birthday!.Value.ToString("dd-MM-yyyy"),
+                address = seekerDomain.address,
+                photo = seekerFB.PhotoUrl
+            };
+            if (seekerDomain.Name == null)
+                seekerInfor.name = seekerFB.DisplayName;
+            else
+                seekerInfor.name = seekerDomain.Name;
+            if (seekerDomain.Email == null)
+                seekerInfor.email = seekerFB.Email;
+            else
+                seekerInfor.email = seekerDomain.Email;
+            if (seekerDomain.PhoneNumber == null)
+                seekerInfor.phoneNumber = seekerFB.PhoneNumber;
+            else
+                seekerInfor.phoneNumber = seekerDomain.PhoneNumber;
+            return seekerInfor;
+        }
+    }
 }

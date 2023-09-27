@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FindJobAPI.Data.FindJobAPI_DB
+namespace FindJobAPI.Data.FinJobAPI_DB
 {
-    public partial class InitialDB : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,7 +48,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 });
 
             migrationBuilder.CreateTable(
-                name: "location",
+                name: "Location",
                 columns: table => new
                 {
                     location_id = table.Column<int>(type: "int", nullable: false)
@@ -57,7 +57,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_location", x => x.location_id);
+                    table.PrimaryKey("PK_Location", x => x.location_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,6 +103,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 columns: table => new
                 {
                     UID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     birthday = table.Column<DateTime>(type: "datetime2", nullable: true),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     experience = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -155,9 +158,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                         principalColumn: "industry_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Job_location_location_id",
+                        name: "FK_Job_Location_location_id",
                         column: x => x.location_id,
-                        principalTable: "location",
+                        principalTable: "Location",
                         principalColumn: "location_id");
                     table.ForeignKey(
                         name: "FK_Job_Type_type_id",
@@ -278,7 +281,7 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 name: "Industry");
 
             migrationBuilder.DropTable(
-                name: "location");
+                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "Type");

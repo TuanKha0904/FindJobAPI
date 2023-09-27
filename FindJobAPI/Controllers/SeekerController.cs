@@ -1,12 +1,8 @@
 ﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
-using FindJobAPI.Repository.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata.Ecma335;
 
 namespace FindJobAPI.Controllers
 {
@@ -42,30 +38,39 @@ namespace FindJobAPI.Controllers
             }
         }
 
-/*        [HttpGet("Get-one")]
-        public async Task<IActionResult> GetSeekerById([Required] int id)
+        [HttpPut("UpdateCV")]
+        public async Task<IActionResult> CV(CV cV)
         {
             try
             {
-                var SeekerDomain = await seeker_Repository.GetById(id);
-                if (SeekerDomain == null)
-                    return BadRequest($"Không tìm thấy seeker có id: {id}");
-                return Ok(SeekerDomain);
+                var userId = User.FindFirst("Id")?.Value;
+                var updateCv = await seeker_Repository.CVUpdate(userId!, cV);
+                if (updateCv != null)
+                {
+                    return Ok("Cập nhật thành công");
+                }
+                else { return BadRequest("Cập nhật thất bại"); }
             }
-            catch { return BadRequest(); }
+            catch
+            {
+                return BadRequest();
+            }
         }
-*/
-/*        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateSeeker([Required] int id, SeekerNoId seekerNoId)
+
+        [HttpGet("Infor")]
+        public async Task<IActionResult> Infor(string userId)
         {
             try
             {
-                var SeekerDomain = await seeker_Repository.UpdateSeeker(id, seekerNoId);
-                if (SeekerDomain == null)
-                    return BadRequest($"Không tìm thấy seeker có id: {id}");
-                return Ok(SeekerDomain);
+                var seekerInfor = await seeker_Repository.Infor(userId);
+                if (seekerInfor != null)
+                    return Ok(seekerInfor);
+                else { return BadRequest("Không tìm thấy tài khoản"); }
             }
-            catch { return BadRequest(); }
+            catch
+            {
+                return BadRequest();
+            }
         }
-*/    }
+    }
 }

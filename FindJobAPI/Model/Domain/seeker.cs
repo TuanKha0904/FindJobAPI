@@ -9,6 +9,9 @@ namespace FindJobAPI.Model.Domain
 
         //navigation properties: one seeker has one account
         public account? account { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
         public DateTime? birthday { get; set; }
         public string? address { get; set; }
         public string? experience { get; set; }

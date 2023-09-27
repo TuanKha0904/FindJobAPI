@@ -5,7 +5,7 @@ namespace FindJobAPI.Repository.Interfaces
     public interface ISeeker_Repository
     {
         Task<CV> CV(string userId);
-/*        Task<SeekerNoId> GetById(int id);
-        Task<SeekerNoId> UpdateSeeker(int id, SeekerNoId seekerNoId);
-*/    }
+        Task<CV> CVUpdate(string userId, CV cV);
+        Task<InforSeeker> Infor(string userId);
+    }
 }
