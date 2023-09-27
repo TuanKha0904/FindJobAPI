@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindJobAPI.Data.FindJobAPI_DB
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230925091229_InitialDB")]
+    [Migration("20230927085729_InitialDB")]
     partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,6 +255,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
                     b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("birthday")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("education")
                         .HasColumnType("nvarchar(max)");

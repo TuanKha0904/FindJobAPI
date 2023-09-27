@@ -1,7 +1,9 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindJobAPI.Repository.Queries
@@ -9,32 +11,34 @@ namespace FindJobAPI.Repository.Queries
     public class Seeker_Repository : ISeeker_Repository
     {
         private readonly AppDbContext _appDbContext;
-        public Seeker_Repository(AppDbContext appDbContext)
+        private readonly FirebaseAuth _firebaseAuth;
+        public Seeker_Repository(AppDbContext appDbContext, FirebaseApp firebaseApp)
         {
             _appDbContext = appDbContext;
+            _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
-        public async Task<List<SeekerDTO>> GetAll()
+        public async Task<CV> CV(string userId)
         {
-            var AllSeeker = _appDbContext.Seeker.AsQueryable();
-            var ListSeeker = await AllSeeker.Select(seeker => new SeekerDTO
+            var seekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == userId);
+            var accountFB = await _firebaseAuth.GetUserAsync(userId);
+            if (seekerDomain == null || accountFB == null) return null!;
+            var seeker = new CV()
             {
-                seeker_id = seeker.account_id,
-                first_name = seeker.first_name,
-                last_name = seeker.last_name,
-                address = seeker.address,
-                birthday = seeker.birthday,
-                phone_number = seeker.phone_number,
-                seeker_image = seeker.seeker_image,
-                academic_level = seeker.academic_level,
-                skills = seeker.skills,
-                url_cv = seeker.url_cv,
-                website_seeker = seeker.website_seeker,
-            }).ToListAsync();
-            return ListSeeker;
+                Name = accountFB.DisplayName,
+                Email = accountFB.Email,
+                Phone_Number = accountFB.PhoneNumber,
+                Birthday = seekerDomain.birthday!.Value.ToString("dd-MM-yyyy"),
+                Address = seekerDomain.address,
+                Experience = seekerDomain.experience,
+                Skills = seekerDomain.skills,
+                Education = seekerDomain.education,
+                Major = seekerDomain.major
+            };
+            return seeker;
         }
 
-        public async Task<SeekerNoId> GetById(int id)
+/*        public async Task<SeekerNoId> GetById(int id)
         {
             var SeekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == id);
             if (SeekerDomain == null)
@@ -54,8 +58,8 @@ namespace FindJobAPI.Repository.Queries
             };
             return Seeker;
         }
-
-        public async Task<SeekerNoId> UpdateSeeker(int id, SeekerNoId seekerNoId)
+*/
+/*        public async Task<SeekerNoId> UpdateSeeker(int id, SeekerNoId seekerNoId)
         {
             var SeekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == id);
             if (SeekerDomain == null)
@@ -83,6 +87,5 @@ namespace FindJobAPI.Repository.Queries
             await _appDbContext.SaveChangesAsync();
             return seekerNoId;
         }
-    }
+*/    }
 }
-*/

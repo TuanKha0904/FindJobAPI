@@ -254,6 +254,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("birthday")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("education")
                         .HasColumnType("nvarchar(max)");
 
