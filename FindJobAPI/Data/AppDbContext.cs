@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using FindJobAPI.Model.Domain;
-using Microsoft.AspNetCore.Identity;
-
+﻿using FindJobAPI.Model.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace FindJobAPI.Data
 {
-    public class AppDbContext :DbContext
+    public class AppDbContext : DbContext
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { } // constructor
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        } // constructor
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,7 +18,7 @@ namespace FindJobAPI.Data
             modelBuilder.Entity<seeker>()
               .HasOne(s => s.account)
               .WithMany(a => a.seekers)
-              .HasForeignKey(s => s.UID )
+              .HasForeignKey(s => s.UID)
               .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<employer>()
                 .HasOne(s => s.account)
@@ -61,7 +63,8 @@ namespace FindJobAPI.Data
         public DbSet<seeker> Seeker { get; set; }
         public DbSet<industry> Industry { get; set; }
         public DbSet<recruitment_no_account> Recruitment_No_Accounts { get; set; }
-        public DbSet<recruitment> Recruitment { get; set;}
+        public DbSet<recruitment> Recruitment { get; set; }
         public DbSet<type> Type { get; set; }
+        public DbSet<location> Location { get; set; }
     }
 }

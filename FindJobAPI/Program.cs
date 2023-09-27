@@ -71,6 +71,7 @@ builder.Services.AddScoped<IAdmin_repository, admin_repository>();
 builder.Services.AddScoped<IType_Repository, Type_Repository>();
 builder.Services.AddScoped<IIndustry_Repository, Industry_Repository>();
 builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
+builder.Services.AddScoped<ILocation_Repository, Location_Repository>();
 /*builder.Services.AddScoped<ISeeker_Repository, Seeker_Repository>();
 builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
 builder.Services.AddScoped<IJob_Repository, Job_Repository>();
