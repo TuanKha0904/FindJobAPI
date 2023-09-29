@@ -1,7 +1,9 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace FindJobAPI.Repository.Queries
@@ -9,77 +11,62 @@ namespace FindJobAPI.Repository.Queries
     public class Recruitment_Repository : IRecruitment_Repository
     {
         private readonly AppDbContext _appDbContext;
-        public Recruitment_Repository(AppDbContext appDbContext)
+        private readonly FirebaseAuth _firebaseAuth;
+        public Recruitment_Repository(AppDbContext appDbContext, FirebaseApp firebaseApp)
         {
             _appDbContext = appDbContext;
+            _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
-        public async Task<List<RecruitmentDTO>> GetAll()
+        public async Task<recruitment> Post(string userId, int job_id)
         {
-            var AllRecruitment =  _appDbContext.Recruitment.AsQueryable();
-            var ListRecruitment = await AllRecruitment.Select(recruit => new RecruitmentDTO
+            var job = await _appDbContext.Job.FindAsync(job_id);
+            if (job == null) { return null!; }
+            var recruitment = new recruitment()
             {
-                seeker_id = recruit.account_id,
-                job_id = recruit.job_id,
-                seeker_desire = recruit.seeker_desire,
-                registration_date = recruit.registation_date
-            }).ToListAsync();
-            return ListRecruitment;
-        }
-
-        public async Task<List<SeekerRecruitment>> GetSeekerRecruitment(int id)
-        {
-            var SeekerDomain = await _appDbContext.Recruitment.Where(r => r.account_id == id).Select(r => new SeekerRecruitment
-            {
-                job_id = r.job_id,
-                seeker_desire = r.seeker_desire,
-                registration_date = r.registation_date
-            }).ToListAsync();
-            return SeekerDomain;
-        }
-
-        public async Task<List<RecruitmentJob>> GetRecruitmentJob(int id)
-        {
-            var JobDomain = await _appDbContext.Recruitment.Where(r => r.job_id == id).Select(r => new RecruitmentJob
-            {
-                seeker_id = r.account_id,
-                seeker_desire = r.seeker_desire,
-                registration_date = r.registation_date
-            }).ToListAsync();
-            return JobDomain;
-        }
-
-        public async Task<CreateRecruitment> CreateRecruitment(CreateRecruitment createRecruitment)
-        {
-            var CreateRecruitment = new recruitment
-            {
-                account_id = createRecruitment.seeker_id,
-                job_id = createRecruitment.job_id,
-                seeker_desire = createRecruitment.seeker_desire,
-                registation_date = DateTime.Now
+                UID = userId,
+                job_id = job_id,
+                status = false,
+                registation_date = DateTime.Now.Date,
             };
-            await _appDbContext.Recruitment.AddAsync(CreateRecruitment);
+            _appDbContext.Recruitment.Add(recruitment);
             await _appDbContext.SaveChangesAsync();
-            return createRecruitment;
+            return recruitment;
         }
 
-        public async Task<UpdateRecruitment> UpdateRecruitment(int seeker, int job, UpdateRecruitment updateRecruitment)
+        public async Task<recruitment> Delete(string userId, int job_id)
         {
-            var RecruitmentDomain = await _appDbContext.Recruitment.FirstOrDefaultAsync(r => r.account_id == seeker && r.job_id == job);
-            if (RecruitmentDomain == null) return null!;
-            RecruitmentDomain.seeker_desire = updateRecruitment.seeker_desire;
+            var recruitment = await _appDbContext.Recruitment.FindAsync(userId, job_id);
+            if(recruitment == null) { return null!; }
+            _appDbContext.Recruitment.Remove(recruitment);
             await _appDbContext.SaveChangesAsync();
-            return updateRecruitment;
+            return recruitment;
         }
 
-        public async Task<recruitment> DeleteRecruitment(int seeker, int job)
+        public async Task<List<Seeker>> Seeker(string userId)
         {
-            var RecruitmentDomain = await _appDbContext.Recruitment.FirstOrDefaultAsync(r => r.account_id == seeker && r.job_id == job);
-            if (RecruitmentDomain == null) return null!;
-            _appDbContext.Recruitment.Remove(RecruitmentDomain);
+            var allRecruitment =  _appDbContext.Recruitment.AsQueryable();
+            var listRecruitment = await allRecruitment.Where(r => r.UID == userId).Select(recruitment => new Seeker()
+            {
+                id = recruitment.job_id,
+                job_title = recruitment.job!.job_title,
+                minimum_salary = recruitment.job.minimum_salary,
+                maximum_salary = recruitment.job.maximum_salary,
+                location = recruitment.job.location!.location_name,
+                industry = recruitment.job.industry!.industry_name,
+                type = recruitment.job.type!.type_name,
+                logo = recruitment.job.employer!.employer_image
+            }).ToListAsync();
+            return listRecruitment;
+        }
+
+        public async Task<recruitment> Status(string userId, int job_id)
+        {
+            var recruitment = await _appDbContext.Recruitment.FindAsync(userId, job_id);
+            if (recruitment == null) return null!;
+            recruitment.status = true;
             await _appDbContext.SaveChangesAsync();
-            return RecruitmentDomain;
+            return recruitment;
         }
     }
 }
-*/

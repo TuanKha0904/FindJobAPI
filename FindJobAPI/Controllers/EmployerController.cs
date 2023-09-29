@@ -1,6 +1,7 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,7 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployerController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -19,13 +21,15 @@ namespace FindJobAPI.Controllers
             _employer_Repository = employer_Repository;
         }
 
-        [HttpGet("Get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("Get")]
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var ListEmployer = await _employer_Repository.GetAll();
-                return Ok(ListEmployer);
+                var userId = User.FindFirst("Id")?.Value;
+                var employer = await _employer_Repository.Get(userId!);
+                if (employer == null) { return BadRequest("Không tìm thấy tài khoản"); }
+                return Ok(employer);
             }
             catch
             {
@@ -33,31 +37,70 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpGet("Get-one")]
-        public async Task<IActionResult> GetEmployerById([Required] int id)
+        [HttpGet("Profile")]
+        public async Task<IActionResult> Proflie(string userId)
         {
             try
             {
-                var EmployerDomain = await _employer_Repository.GetById(id);
-                if (EmployerDomain == null)
-                    return BadRequest($"Không tìm thấy employer có id: {id}");
-                return Ok(EmployerDomain);
+                var employer = await _employer_Repository.Get(userId);
+                if (employer == null) { return BadRequest("Không tìm thấy tài khoản"); }
+                return Ok(employer);
             }
-            catch { return BadRequest(); }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateEmployer([Required] int id, EmployerNoId employerNoId)
+
+        [HttpPatch("Image")]
+        public async Task<IActionResult> Image(Image image)
         {
             try
             {
-                var EmployerDomain = await _employer_Repository.UpdateEmployer(id, employerNoId);
-                if (EmployerDomain == null)
-                    return BadRequest($"Không tìm thấy employer có id: {id}");
-                return Ok(EmployerDomain);
+                var userId = User.FindFirst("Id")?.Value;
+                var Image = await _employer_Repository.Image(userId!, image);
+                if (Image == null) { return BadRequest("Cập nhật thất bại"); }
+                return Ok("Cập nhật thành công");
             }
-            catch { return BadRequest(); }
+            catch
+            {
+                return BadRequest("Cập nhật thất bại");
+
+            }
+        }
+
+        [HttpPatch("ImageCover")]
+        public async Task<IActionResult> ImageCover(Cover cover)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var Image = await _employer_Repository.ImageCover(userId!, cover);
+                if (Image == null) { return BadRequest("Cập nhật thất bại"); }
+                return Ok("Cập nhật thành công");
+            }
+            catch
+            {
+                return BadRequest("Cập nhật thất bại");
+
+            }
+        }
+
+        [HttpPatch("Infor")]
+        public async Task<IActionResult> Infor(InforEmployer infor)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var Infor = await _employer_Repository.Infor(userId!, infor);
+                if (Infor == null) { return BadRequest("Cập nhật thất bại"); }
+                return Ok("Cập nhật thành công");
+            }
+            catch
+            {
+                return BadRequest("Cập nhật thất bại");
+            }
         }
     }
 }
-*/

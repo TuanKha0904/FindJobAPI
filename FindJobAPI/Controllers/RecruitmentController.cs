@@ -1,6 +1,8 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
+using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RecruitmentController : ControllerBase
     {
         private readonly AppDbContext appDbContext;
@@ -20,103 +23,59 @@ namespace FindJobAPI.Controllers
             this.recruitmentRepository = recruitmentRepository;
         }
 
-        [HttpGet("Get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpPost ("Post")]
+        public async Task<IActionResult> Post (int job_id)
         {
             try
             {
-                var RecruitmentDomain = await recruitmentRepository.GetAll();
-                return Ok(RecruitmentDomain);
+                var userId = User.FindFirst("Id")?.Value;
+                var jobDomain = await appDbContext.Recruitment.FindAsync (job_id, userId);
+                if (jobDomain == null) { return Ok("Bạn đã đăng kí công việc này"); }
+                var create = await recruitmentRepository.Post(userId!, job_id);
+                if (create == null) { return NotFound("Không tìm thấy công việc này"); }
+                return Ok("Đăng kí thành công");
             }
-            catch { return BadRequest(); }
-        }
-
-        [HttpGet("Seeker-recruitment")]
-        public async Task<IActionResult> GetSeekerRecruitment([Required] string id)
-        {
-            try
-            {
-                var Check = await appDbContext.Seeker.FirstOrDefaultAsync(r => r.UID == id);
-                if (Check == null) return BadRequest($"Không tìm thấy seeker có id: {id}");
-                var Recruitment = await recruitmentRepository.GetSeekerRecruitment(id);
-                return Ok(Recruitment);
-            }
-            catch { return BadRequest(); }
-        }
-
-        [HttpGet("Recruitment-job")]
-        public async Task<IActionResult> GetRecruitmentJob([Required] int id)
-        {
-            try
-            {
-                var Check = await appDbContext.Job.FirstOrDefaultAsync(r => r.job_id == id);
-                if (Check == null) return BadRequest($"Không tìm thấy job có id: {id}");
-                var Recruitment = await recruitmentRepository.GetRecruitmentJob(id);
-                return Ok(Recruitment);
-            }
-            catch { return BadRequest(); }
-        }
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateRecruitment(CreateRecruitment createRecruitment)
-        {
-            try
-            {
-                var Seeker = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == createRecruitment.seeker_id);
-                var Job = await appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == createRecruitment.job_id);
-                var Recruitment = await appDbContext.Recruitment.FirstOrDefaultAsync(r => r.account_id == createRecruitment.seeker_id && r.job_id == createRecruitment.job_id);
-                if (Seeker == null && Job == null) return BadRequest($"Không tìm thấy seeker có id: {createRecruitment.seeker_id} và job có id: {createRecruitment.job_id}");
-                else if (Seeker == null) return BadRequest($"Không tìm thấy seeker có id: {createRecruitment.seeker_id}");
-                else if (Job == null) return BadRequest($"Không tìm thấy job có id: {createRecruitment.job_id}");
-                else if (Recruitment != null) return BadRequest("Đã tồn tại recruitment");
-                else
-                {
-                    var Add = await recruitmentRepository.CreateRecruitment(createRecruitment);
-                    return Ok(Add);
-                }
-            }
-            catch { return BadRequest(); }
-        }
-
-        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateRecruitment([Required] int seeker, [Required] int job, UpdateRecruitment updateRecruitment)
-        {
-            try
-            {
-                var Seeker = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == seeker);
-                var Job = await appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == job);
-                if (Seeker == null && Job == null) return BadRequest($"Không tìm thấy seeker có id: {seeker} và job có id: {job}");
-                else if (Seeker == null) return BadRequest($"Không tìm thấy seeker có id: {seeker}");
-                else if (Job == null) return BadRequest($"Không tìm thấy job có id: {job}");
-                else
-                {
-                    var Update = await recruitmentRepository.UpdateRecruitment(seeker, job, updateRecruitment);
-                    return Ok(Update);
-                }
-            }
-            catch { return BadRequest(); }
+            catch { return BadRequest ("Đăng kí không thành công"); }
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteRecruitment([Required] int seeker, [Required] int job)
+        public async Task<IActionResult> Delete (int job_id)
         {
             try
             {
-                var Seeker = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.account_id == seeker);
-                var Job = await appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == job);
-                if (Seeker == null && Job == null) return BadRequest($"Không tìm thấy seeker có id: {seeker} và job có id: {job}");
-                else if (Seeker == null) return BadRequest($"Không tìm thấy seeker có id: {seeker}");
-                else if (Job == null) return BadRequest($"Không tìm thấy job có id: {job}");
-                else
-                {
-                    var Delete = await recruitmentRepository.DeleteRecruitment(seeker, job);
-                    return Ok(Delete);
-                }
+                var userId = User.FindFirst("Id")?.Value;
+                var delete = await recruitmentRepository.Delete(userId!, job_id);
+                if (delete == null) { return NotFound ("Không tìm thấy đăng kí công việc"); }
+                return Ok("Xóa thành công");
+            }
+            catch { return BadRequest("Cập nhật thất bại"); }
+        }
 
+        [HttpGet("Seeker")]
+        public async Task<IActionResult> Seeker()
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var employer = await appDbContext.Recruitment.FindAsync(userId);
+                if (employer == null) { return NotFound("Chưa có công việc đă đăng kí"); }
+                var listRecruitment = await recruitmentRepository.Seeker(userId!);
+                return Ok(listRecruitment);
             }
             catch { return BadRequest(); }
         }
 
+        [HttpPatch ("Status")]
+        public async Task<IActionResult> Status (int job_id)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var updateStatus = await recruitmentRepository.Status(userId!, job_id);
+                if (updateStatus == null) { return NotFound("Không tìm thấy công việc đã ứng tuyển"); }
+                return Ok("Cập nhật thành công");
+            }
+            catch { return BadRequest("Cập nhật thất bại"); }
+        }
     }
 }
-*/

@@ -4,8 +4,9 @@ namespace FindJobAPI.Repository.Interfaces
 {
     public interface IEmployer_Repository
     {
-        Task<List<EmployerDTO>> GetAll();
-        Task<EmployerNoId> GetById(int id);
-        Task<EmployerNoId> UpdateEmployer(int id, EmployerNoId employerNoId);
+        Task<EmployerDTO> Get(string userId);
+        Task<Image> Image(string userId, Image image);
+        Task<Cover> ImageCover(string userId, Cover cover);
+        Task<InforEmployer> Infor (string userId, InforEmployer inforEmployer);
     }
 }

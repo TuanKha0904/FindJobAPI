@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AdminController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;

@@ -1,6 +1,7 @@
-﻿/*using FindJobAPI.Data;
+﻿using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class JobController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -21,79 +23,155 @@ namespace FindJobAPI.Controllers
             _jobRepository = jobRepository;
         }
 
-        [HttpGet("Get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("AllJobPost")]
+        public async Task<IActionResult> AllJobPost()
         {
             try
             {
-                var Job = await _jobRepository.GetAll();
-                return Ok(Job);
+                var listJob = await _jobRepository.AllJobPost();
+                return Ok(listJob);
             }
             catch { return BadRequest(); }
         }
 
-        [HttpGet("Get-one")]
-        public async Task<IActionResult> GetJobById([Required] int id)
+        [HttpGet("AllJobWait")]
+        public async Task<IActionResult> AllJobWait()
         {
             try
             {
-                var Job = await _jobRepository.GetById(id);
-                if (Job == null)
-                    return BadRequest($"Không tìm thấy job có id: {id}");
-                return Ok(Job);
+                var listJob = await _jobRepository.AllJobWait();
+                return Ok(listJob);
             }
             catch { return BadRequest(); }
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateJob(CreateJob createJob)
+        [HttpGet("AllJobTimeout")]
+        public async Task<IActionResult> AllJobTimeOut()
         {
             try
             {
-                var ExistingEmployer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.account_id == createJob.account_id);
-                var ExistingType = await _appDbContext.Type.FirstOrDefaultAsync(t => t.type_id == createJob.type_id);
-                var ExistingIndustry = await _appDbContext.Industry.FirstOrDefaultAsync(i => i.industry_id == createJob.industry_id);
-                if (ExistingEmployer == null && ExistingType == null && ExistingIndustry == null)
-                    return BadRequest("Employer, Type and Industry not found");
-                else if (ExistingEmployer == null)
-                    return BadRequest("Employer not found");
-                else if (ExistingType == null)
-                    return BadRequest("Type not found");
-                else if (ExistingIndustry == null)
-                    return BadRequest("Industry not found");
-                if (createJob.deadline < DateTime.Now)
-                    return BadRequest("Deadline must more than today");
-                var Job = await _jobRepository.CreateJob(createJob);
-                return Ok(Job);
+                var listJob = await _jobRepository.AllJobTimeOut();
+                return Ok(listJob);
             }
             catch { return BadRequest(); }
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateJob([Required] int id, UpdateJob updateJob)
+        [HttpGet("JobDetail")]
+        public async Task<IActionResult> JobDetail(int jobId)
         {
             try
             {
-                var Job = await _jobRepository.UpdateJob(id, updateJob);
-                if (Job == null)
-                    return BadRequest($"Không tìm thấy job có id: {id}");
-                return Ok(Job);
+                var jobDetail = await _jobRepository.JobDetail(jobId);
+                if (jobDetail == null) return BadRequest("Không tìm thấy công việc");
+                return Ok(jobDetail);
+            }
+            catch { return BadRequest(); }
+        }
+
+        [HttpGet ("JobPostList")]
+        public async Task<IActionResult> JobPostList()
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var jobPostList = await _jobRepository.JobPostList(userId!);
+                return Ok(jobPostList);
+            }
+            catch { return BadRequest(); }
+
+        }
+
+        [HttpGet("JobWaitList")]
+        public async Task<IActionResult> JobWaitList()
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var jobPostList = await _jobRepository.JobWaitList(userId!);
+                return Ok(jobPostList);
+            }
+            catch { return BadRequest(); }
+
+        }
+
+        [HttpGet("ApplyList")]
+        public async Task<IActionResult> ApplyList(int job_id)
+        {
+            try
+            {
+                var ApplyList = await _jobRepository.ApplyList(job_id);
+                return Ok(ApplyList);
+            }
+            catch { return BadRequest() ;}
+        }
+
+        [HttpGet("Receive")]
+        public async Task<IActionResult> Receive(int job_id)
+        {
+            try
+            {
+                var listReceive = await _jobRepository.Receive(job_id);
+                return Ok(listReceive);
+            }
+            catch { return BadRequest(); }
+        }
+
+
+        [HttpPost("Post")]
+        public async Task<IActionResult> Post (CreateJob createJob)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var create = await _jobRepository.CreateJob(userId!, createJob);
+                if (create == null) { return BadRequest("Không tìm thấy tài khoản nhà tuyển dụng"); }
+                return Ok(create);
+            }
+            catch { return BadRequest(); }
+        }
+
+        [HttpPost("Search")]
+        public async Task<IActionResult> Search(int industry_id, int type_id, int location_id)
+        {
+            try
+            {
+                var searchJob = await _jobRepository.Search(industry_id, type_id, location_id);
+                return Ok(searchJob);
+            }
+            catch { return BadRequest() ; }
+        }
+
+        [HttpPut ("Update")]
+        public async Task<IActionResult> Update(int job_id, UpdateJob updateJob)
+        {
+            try
+            {
+                var location = await _appDbContext.Location.FindAsync(updateJob.Location_id);
+                if (location == null) { return BadRequest("Không tìm thấy vị trí"); }
+                var industry = await _appDbContext.Industry.FindAsync(updateJob.Industry_id);
+                if (industry == null) { return BadRequest("Không tìm thấy ngành công việc"); }
+                var type= await _appDbContext.Type.FindAsync(updateJob.Type_id);
+                if (type == null) { return BadRequest("Không tìm thấy loại công việc"); }
+
+                var jobUpdate = await _jobRepository.Update(job_id, updateJob);
+                if (jobUpdate == null) { return BadRequest("Không tìm thấy công việc"); }
+                return Ok("Cập nhật thành công");
             }
             catch { return BadRequest(); }
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteJob([Required] int id)
+        public async Task<IActionResult> Delete(int jobId)
         {
             try
             {
-                var job = await _jobRepository.DeleteJob(id);
-                if (job == null)
-                    return BadRequest($"Không tìm thấy job có id: {id}");
-                return Ok(job);
+                var deleteJob = await _jobRepository.Delete(jobId);
+                if (deleteJob == null) { return BadRequest("Không tìm thấy công việc cần xóa"); }
+                return Ok("Xóa thành công");
             }
-            catch { return BadRequest(); }
+            catch { return BadRequest("Xóa thất bại"); }
         }
+
+        
     }
 }
-*/

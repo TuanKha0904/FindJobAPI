@@ -73,11 +73,11 @@ builder.Services.AddScoped<IIndustry_Repository, Industry_Repository>();
 builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
 builder.Services.AddScoped<ILocation_Repository, Location_Repository>();
 builder.Services.AddScoped<ISeeker_Repository, Seeker_Repository>();
-/*builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
+builder.Services.AddScoped<IEmployer_Repository, Employer_Repository>();
 builder.Services.AddScoped<IJob_Repository, Job_Repository>();
 builder.Services.AddScoped<IRecruitment_Repository, Recruitment_Repository>();
-builder.Services.AddScoped<IJob_Detail_Repository, Job_Detail_Repository>();
-*/
+builder.Services.AddScoped<IRecruitmentNoAccount_Repository, RecruitmentNoAccountRepository>();
+
 
 
 

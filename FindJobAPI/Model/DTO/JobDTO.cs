@@ -3,51 +3,95 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FindJobAPI.Model.DTO
 {
-    public class JobDTO
-    {
-        public int job_id { get; set; }
-        public int account_id { get; set; }
-        public int type_id { get; set; }
-        public int industry_id { get; set; }
-        public DateTime posted_date { get; set; }
-        public DateTime deadline { get; set; }
-    }
-
-    public class JobNoId
-    {
-        public int account_id { get; set; }
-        public int type_id { get; set; }
-        public int industry_id { get; set; }
-        public DateTime posted_date { get; set; }
-        public DateTime deadline { get; set; }
-    }
-
     public class CreateJob
     {
-        [Required(ErrorMessage = "Please enter employer for create job!")]
-        public int account_id { get; set; }
+        [Required(ErrorMessage = "không được bỏ trống Tên công việc")]
+        public string? JobTitle { get; set; }
+        public string? JobDescription { get; set;}
 
-        [Required(ErrorMessage = "Please enter type of job!")]
-        public int type_id { get; set; }
+        [Required(ErrorMessage = "Hãy nhập lương")]
+        [DataType(DataType.Currency, ErrorMessage = "Hãy nhập giá trị là tiền tệ")]
+        public float Minimum_Salary { get; set; }
 
-        [Required(ErrorMessage = "Please enter industry of job!")]
-        public int industry_id { get; set; }
+        [Required(ErrorMessage = "Hãy nhập lương")]
+        [DataType(DataType.Currency, ErrorMessage = "Hãy nhập giá trị là tiền tệ")]
+        public float Maximum_Salary { get;set; }
+        public string? Requirement { get; set;}
 
-        [Required(ErrorMessage = "Please enter deadline for job!")]
-        public DateTime deadline { get; set; }
+        [Required(ErrorMessage = "không được bỏ trống vị trí")]
+        public int Location_id { get; set; }
 
+        [Required(ErrorMessage = "Vui lòng chọn lĩnh vực")]
+        public int Industry_id { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn loại công việc")]
+        public int Type_id { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng thiết lập thời hạn")]
+        public string? Deadline { get; set; }
+
+    }
+
+    public class AllJob
+    {
+        public int id { get; set; }
+        public string? JobTitle { get; set; }
+        public string? Location { get; set; }
+        public string? Requirement { get; set; }
+        public float? Minimum_Salary { get; set; }
+        public float? Maximum_Salary { get; set; }
+    }
+
+    public class JobDetail
+    {
+        public string? jobTitle { get; set; }
+        public string? jobDescription { get; set; }
+        public float minimum_salary { get; set; }
+        public float maximum_salary { get; set;}
+        public string? requirement { get; set; }
+        public string? location { get; set; }
+        public string? deadline { get; set; }
+        public string? industry { get; set; }
+        public string? type { get; set; }
+        public string? posted_date { get; set; }
+        public string? employer_name { get; set; }
+        public string? email { get; set; }
+        public string? website { get; set; }
+        public string? contact { get; set; }
+        public string? address { get; set; }
+    }
+
+    public class ListJob
+    {
+        public int id { get; set; }
+        public string? jobTitle { get; set; }    
+        public float minimum_salary { get; set; }
+        public float maximum_salary { get; set; }
+        public string? location { get; set; }
+        public string? industry { get; set; }
+        public string? type { get; set; }
+        public string? logo { get; set; }
+        public string? deadline { get; set; }
     }
 
     public class UpdateJob
     {
-        [Required (ErrorMessage = "Type job not null")]
-        public int type_id { get; set; }
+        public string? JobTitle { get; set; }
+        public string? JobDescription { get; set; }
+        public float Minimum_Salary { get; set; }
+        public float Maximum_Salary { get; set; }
+        public string? Requirement { get; set; }
+        public int Location_id { get; set; }
+        public int Industry_id { get; set; }
+        public int Type_id { get; set; }
+        public string? Deadline { get; set; }
+    }
 
-        [Required(ErrorMessage = "Industry of job not null")]
-        public int industry_id { get; set; }
-
-        [Required(ErrorMessage = "Deadline job not null")]
-        public DateTime deadline { get; set; }
-
+    public class ApplyList
+    {
+        public string? UID { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }
