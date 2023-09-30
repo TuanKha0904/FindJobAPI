@@ -44,7 +44,7 @@ namespace FindJobAPI.Controllers
                 var accessToken = User.FindFirst("Id")?.Value;
                 if (accessToken == null)
                 {
-                    return BadRequest("Không tìm thấy account");
+                    return BadRequest("Không tìm thấy người dùng");
                 }
                 var account = await _accountRepository.Login(accessToken);
                 return Ok(account);
@@ -59,7 +59,7 @@ namespace FindJobAPI.Controllers
             {
                 var userId = User.FindFirst("Id")?.Value;
                 var inforUpdate = await _accountRepository.Infor(userId!, infor);
-                if (inforUpdate == null) return BadRequest("Không tìm thấy account");
+                if (inforUpdate == null) return BadRequest("Không tìm thấy người dùng");
                 return Ok("Cập nhật thành công");
             }
             catch { return BadRequest("Cập nhật thất bại"); }
@@ -72,10 +72,10 @@ namespace FindJobAPI.Controllers
             {
                 var userId = User.FindFirst("Id")?.Value;
                 var inforUpdate = await _accountRepository.Photo(userId!, photo);
-                if (inforUpdate == null) return BadRequest("Không tìm thấy account");
+                if (inforUpdate == null) return BadRequest("Không tìm thấy người dùng");
                 return Ok("Cập nhật thành công");
             }
-            catch { return BadRequest("Cập nhật thất bại"); }
+            catch { return BadRequest("Cập nhật thất bại!. Không tìm thấy đường dẫn hình ảnh"); }
         }
 
         [HttpPatch("Password")]
@@ -85,7 +85,7 @@ namespace FindJobAPI.Controllers
             {
                 var userId = User.FindFirst("Id")?.Value;
                 var updatePassword = await _accountRepository.Password(userId!, password);
-                if (updatePassword == null) return BadRequest("Không tìm thấy account");
+                if (updatePassword == null) return BadRequest("Không tìm thấy người dùng");
                 return Ok("Cập nhật thành công");
             }
             catch { return BadRequest("Cập nhật thất bại"); }
@@ -99,7 +99,7 @@ namespace FindJobAPI.Controllers
             {
                 var DeleteAccount = await _accountRepository.DeleteAccount(userId);
                 if (DeleteAccount == null)
-                    return BadRequest("Không tìm thấy account");
+                    return BadRequest("Không tìm thấy người dùng");
                 return Ok("Xóa thành công");
             }
             catch { return BadRequest("Xóa thất bại"); }

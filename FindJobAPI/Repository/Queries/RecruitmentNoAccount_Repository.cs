@@ -3,6 +3,8 @@ using FindJobAPI.Model.Domain;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using PhoneNumbers;
+using System.Net;
 
 namespace FindJobAPI.Repository.Queries
 {
@@ -16,7 +18,7 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<Create> Post(Create create)
         {
-            var jobDomain = await _context.Job.FindAsync(create.job_id);
+            var jobDomain = await _context.Job.FirstOrDefaultAsync(j => j.job_id == create.job_id && j.status == true);
             if (jobDomain == null) { return null!; }
             var recruitment = new recruitment_no_account()
             {
@@ -24,13 +26,18 @@ namespace FindJobAPI.Repository.Queries
                 fullname = create.name,
                 email = create.email,
                 phone_number = create.phone,
-                birthday = DateTime.Parse(create.birthday!).Date,
-                address = create.address,
-                major = create.major,
-                experience = create.experience,
-                skills = create.skills,
-                education = create.education
+                birthday = DateTime.Parse(create.birthday!).Date
             };
+            if (!string.IsNullOrEmpty(create.address))
+                recruitment.address = create.address;
+            if (!string.IsNullOrEmpty(create.major))
+                recruitment.major = create.major;
+            if (!string.IsNullOrEmpty(create.experience))
+                recruitment.experience = create.experience;
+            if (!string.IsNullOrEmpty(create.skills))
+                recruitment.skills = create.skills;
+            if (!string.IsNullOrEmpty(create.education))
+                recruitment.education = create.education;
             _context.Recruitment_No_Accounts.Add(recruitment);
             await _context.SaveChangesAsync();
             return create;
@@ -66,7 +73,7 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<recruitment_no_account> Status(int id, int job_id)
         {
-            var recruitment = await _context.Recruitment_No_Accounts.FindAsync(id, job_id);
+            var recruitment = await _context.Recruitment_No_Accounts.FirstOrDefaultAsync( r => r.recruitment_ID == id && r.job_id == job_id);
             if (recruitment == null) return null!;
             recruitment.status = true;
             await _context.SaveChangesAsync();

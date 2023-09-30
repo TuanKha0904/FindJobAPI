@@ -68,6 +68,18 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
+        [HttpPatch("Status")]
+        public async Task<IActionResult> Status (int jobId)
+        {
+            try
+            {
+                var updateStatus = await _jobRepository.Status(jobId);
+                if (updateStatus == null) return BadRequest("Không tìm thấy công việc");
+                return Ok("Cập nhật thành công");
+            }
+            catch { return BadRequest("Cập nhật thất bại"); }
+        }
+
         [HttpGet ("JobPostList")]
         public async Task<IActionResult> JobPostList()
         {
@@ -87,12 +99,26 @@ namespace FindJobAPI.Controllers
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var jobPostList = await _jobRepository.JobWaitList(userId!);
-                return Ok(jobPostList);
+                var jobWaitList = await _jobRepository.JobWaitList(userId!);
+                return Ok(jobWaitList);
             }
             catch { return BadRequest(); }
 
         }
+
+        [HttpGet("JobTimeoutList")]
+        public async Task<IActionResult> JobTimeoutList()
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var jobTimeoutList = await _jobRepository.JobTimeoutList(userId!);
+                return Ok(jobTimeoutList);
+            }
+            catch { return BadRequest(); }
+
+        }
+
 
         [HttpGet("ApplyList")]
         public async Task<IActionResult> ApplyList(int job_id)
@@ -122,6 +148,13 @@ namespace FindJobAPI.Controllers
         {
             try
             {
+                var location = await _appDbContext.Location.FindAsync(createJob.Location_id);
+                if (location == null) return BadRequest("Không tìm thấy vị trí này");
+                var industry = await _appDbContext.Industry.FindAsync(createJob.Industry_id);
+                if (industry == null) return BadRequest("Không tìm thấy lĩnh vực này");
+                var type = await _appDbContext.Type.FindAsync(createJob.Type_id);
+                if (type == null) return BadRequest("Không tìm thấy loại công việc này");
+
                 var userId = User.FindFirst("Id")?.Value;
                 var create = await _jobRepository.CreateJob(userId!, createJob);
                 if (create == null) { return BadRequest("Không tìm thấy tài khoản nhà tuyển dụng"); }
@@ -146,16 +179,25 @@ namespace FindJobAPI.Controllers
         {
             try
             {
-                var location = await _appDbContext.Location.FindAsync(updateJob.Location_id);
-                if (location == null) { return BadRequest("Không tìm thấy vị trí"); }
-                var industry = await _appDbContext.Industry.FindAsync(updateJob.Industry_id);
-                if (industry == null) { return BadRequest("Không tìm thấy ngành công việc"); }
-                var type= await _appDbContext.Type.FindAsync(updateJob.Type_id);
-                if (type == null) { return BadRequest("Không tìm thấy loại công việc"); }
+                if(updateJob.Location_id == 0 || updateJob.Type_id == 0 || updateJob.Industry_id == 0) 
+                {
+                    var jobUpdate = await _jobRepository.Update(job_id, updateJob);
+                    if (jobUpdate == null) { return BadRequest("Không tìm thấy công việc"); }
+                    return Ok("Cập nhật thành công");
 
-                var jobUpdate = await _jobRepository.Update(job_id, updateJob);
-                if (jobUpdate == null) { return BadRequest("Không tìm thấy công việc"); }
-                return Ok("Cập nhật thành công");
+                }
+                else
+                {
+                    var location = await _appDbContext.Location.FindAsync(updateJob.Location_id);
+                    if (location == null) { return BadRequest("Không tìm thấy vị trí"); }
+                    var industry = await _appDbContext.Industry.FindAsync(updateJob.Industry_id);
+                    if (industry == null) { return BadRequest("Không tìm thấy ngành công việc"); }
+                    var type = await _appDbContext.Type.FindAsync(updateJob.Type_id);
+                    if (type == null) { return BadRequest("Không tìm thấy loại công việc"); }
+                    var jobUpdate = await _jobRepository.Update(job_id, updateJob);
+                    if (jobUpdate == null) { return BadRequest("Không tìm thấy công việc"); }
+                    return Ok("Cập nhật thành công");
+                }
             }
             catch { return BadRequest(); }
         }

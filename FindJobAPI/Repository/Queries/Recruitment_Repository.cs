@@ -20,7 +20,7 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<recruitment> Post(string userId, int job_id)
         {
-            var job = await _appDbContext.Job.FindAsync(job_id);
+            var job = await _appDbContext.Job.FirstOrDefaultAsync(j => j.job_id == job_id && j.status == true);
             if (job == null) { return null!; }
             var recruitment = new recruitment()
             {
@@ -62,7 +62,7 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<recruitment> Status(string userId, int job_id)
         {
-            var recruitment = await _appDbContext.Recruitment.FindAsync(userId, job_id);
+            var recruitment = await _appDbContext.Recruitment.FirstOrDefaultAsync( r => r.UID == userId && r.job_id == job_id);
             if (recruitment == null) return null!;
             recruitment.status = true;
             await _appDbContext.SaveChangesAsync();

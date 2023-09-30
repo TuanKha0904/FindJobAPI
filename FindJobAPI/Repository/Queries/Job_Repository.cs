@@ -22,7 +22,7 @@ namespace FindJobAPI.Repository.Queries
         public async Task<List<AllJob>> AllJobPost()
         {
             var allJobDomain =  _appDbContext.Job.AsQueryable();
-            var listJob = await allJobDomain.Where(job => job.status == true).Select(job => new AllJob(){
+            var listJob = await allJobDomain.Where(job => job.status == true && job.deadline >= DateTime.Now.Date).Select(job => new AllJob(){
                 id = job.job_id,
                 JobTitle = job.job_title,
                 Location = job.location!.location_name,
@@ -36,7 +36,7 @@ namespace FindJobAPI.Repository.Queries
         public async Task<List<AllJob>> AllJobWait()
         {
             var allJobDomain = _appDbContext.Job.AsQueryable();
-            var listJob = await allJobDomain.Where(job => job.status == false).Select(job => new AllJob()
+            var listJob = await allJobDomain.Where(job => job.status == false && job.deadline >= DateTime.Now.Date).Select(job => new AllJob()
             {
                 id = job.job_id,
                 JobTitle = job.job_title,
@@ -65,34 +65,43 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<JobDetail> JobDetail(int jobId)
         {
-            var jobDomain = await _appDbContext.Job.FirstOrDefaultAsync(j =>  j.job_id == jobId);
-            if (jobDomain == null) { return null!; }
-            var jobDetail = new JobDetail()
+            var jobDomain = _appDbContext.Job.AsQueryable();
+            var jobDetail =  await jobDomain.Where(j => j.job_id == jobId).Select(job => new JobDetail()
             {
-                jobTitle = jobDomain.job_title,
-                jobDescription = jobDomain.job_description,
-                minimum_salary = jobDomain.minimum_salary,
-                maximum_salary = jobDomain.maximum_salary,
-                requirement = jobDomain.requirement,
-                location = jobDomain.location!.location_name,
-                deadline = jobDomain.deadline.ToString("dd-MM-yyyy"),
-                industry = jobDomain.industry!.industry_name,
-                type = jobDomain.type!.type_name,
-                posted_date = jobDomain.posted_date.ToString("dd-MM-yyyy"),
-                employer_name = jobDomain.employer!.employer_name,
-                email = jobDomain.employer.email,
-                website = jobDomain.employer.employer_website,
-                contact = jobDomain.employer.contact_phone,
-                address = jobDomain.employer.employer_address
-            };
+                jobTitle = job.job_title,
+                jobDescription = job.job_description,
+                minimum_salary = job.minimum_salary,
+                maximum_salary = job.maximum_salary,
+                requirement = job.requirement,
+                location = job.location!.location_name,
+                deadline = job.deadline.ToString("dd-MM-yyyy"),
+                industry = job.industry!.industry_name,
+                type = job.type!.type_name,
+                posted_date = job.posted_date.ToString("dd-MM-yyyy"),
+                employer_name = job.employer!.employer_name,
+                email = job.employer!.email,
+                website = job.employer!.employer_website,
+                contact = job.employer!.contact_phone,
+                address = job.employer!.employer_address
+            }).FirstOrDefaultAsync();
+            if (jobDetail == null) { return null!; }
             return jobDetail;
+        }
+
+        public async Task<job> Status(int job_id)
+        {
+            var jobDomain = await _appDbContext.Job.FindAsync(job_id);
+            if (jobDomain == null) { return null!; }
+            jobDomain.status = true;
+            await _appDbContext.SaveChangesAsync();
+            return jobDomain;
         }
 
         public async Task<List<ListJob>> JobPostList(string userId)
         {
             var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
             var allJob = _appDbContext.Job.AsQueryable();
-            var listJob = await allJob.Where(j => j.status == true && j.UID == userId).Select(job => new ListJob()
+            var listJob = await allJob.Where(j => j.status == true && j.UID == userId && j.deadline >= DateTime.Now.Date).Select(job => new ListJob()
             {
                 id = job.job_id,
                 jobTitle = job.job_title,
@@ -111,7 +120,26 @@ namespace FindJobAPI.Repository.Queries
         {
             var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
             var allJob = _appDbContext.Job.AsQueryable();
-            var listJob = await allJob.Where(j => j.status == false && j.UID == userId).Select(job => new ListJob()
+            var listJob = await allJob.Where(j => j.status == false && j.UID == userId && j.deadline >= DateTime.Now.Date).Select(job => new ListJob()
+            {
+                id = job.job_id,
+                jobTitle = job.job_title,
+                minimum_salary = job.minimum_salary,
+                maximum_salary = job.maximum_salary,
+                location = job.location!.location_name,
+                industry = job.industry!.industry_name,
+                type = job.type!.type_name,
+                logo = employer!.employer_image,
+                deadline = job.deadline.ToString("dd-MM-yyyy"),
+            }).ToListAsync();
+            return listJob;
+        }
+
+        public async Task<List<ListJob>> JobTimeoutList(string userId)
+        {
+            var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
+            var allJob = _appDbContext.Job.AsQueryable();
+            var listJob = await allJob.Where(j => j.status == false && j.UID == userId && j.deadline < DateTime.Now.Date).Select(job => new ListJob()
             {
                 id = job.job_id,
                 jobTitle = job.job_title,
@@ -138,6 +166,22 @@ namespace FindJobAPI.Repository.Queries
                     Email = recruitment.seeker.Email,
                     PhoneNumber = recruitment.seeker.PhoneNumber
                 }).ToListAsync() ;
+            foreach (var apply in accountRecruitment)
+            {
+                if (apply.Name == null || apply.Email == null || apply.PhoneNumber == null)
+                {
+                    var accountFB = await GetUserDataFromFirebase(apply.UID!);
+
+                    if (apply.Name == null)
+                        apply.Name = accountFB?.DisplayName;
+
+                    if (apply.Email == null)
+                        apply.Email = accountFB?.Email;
+
+                    if (apply.PhoneNumber == null)
+                        apply.PhoneNumber = accountFB?.PhoneNumber;
+                }
+            }
             var noAccountRecruitment = await recruimentNoAccount.Where(r => r.job_id == job_id && r.status == false)
                 .Select(recruitment => new ApplyList()
                 {
@@ -148,6 +192,18 @@ namespace FindJobAPI.Repository.Queries
                 }).ToListAsync();
            var listRecruitment = accountRecruitment.Concat(noAccountRecruitment).ToList() ;
             return listRecruitment;
+        }
+        private async Task<UserRecord> GetUserDataFromFirebase(string uid)
+        {
+            try
+            {
+                var userRecord = await _firebaseAuth.GetUserAsync(uid);
+                return userRecord;
+            }
+            catch
+            {
+                return null!;
+            }
         }
 
         public async Task<List<ApplyList>> Receive(int job_id)
@@ -162,6 +218,22 @@ namespace FindJobAPI.Repository.Queries
                     Email = recruitment.seeker.Email,
                     PhoneNumber = recruitment.seeker.PhoneNumber
                 }).ToListAsync();
+            foreach (var apply in accountRecruitment)
+            {
+                if (apply.Name == null || apply.Email == null || apply.PhoneNumber == null)
+                {
+                    var accountFB = await GetUserDataFromFirebase(apply.UID!);
+
+                    if (apply.Name == null)
+                        apply.Name = accountFB?.DisplayName;
+
+                    if (apply.Email == null)
+                        apply.Email = accountFB?.Email;
+
+                    if (apply.PhoneNumber == null)
+                        apply.PhoneNumber = accountFB?.PhoneNumber;
+                }
+            }
             var noAccountRecruitment = await recruimentNoAccount.Where(r => r.job_id == job_id && r.status == true)
                 .Select(recruitment => new ApplyList()
                 {
@@ -251,9 +323,12 @@ namespace FindJobAPI.Repository.Queries
             {
                 _appDbContext.Job.Remove(job);
                 await _appDbContext.SaveChangesAsync();
+                return job;
             }
             return null!;
         }
+
+
 
     }
 }

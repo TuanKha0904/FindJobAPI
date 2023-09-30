@@ -36,7 +36,7 @@ namespace FindJobAPI.Repository.Queries
                         Email = user.Email,
                         Password = user.PasswordHash,
                         DateCreate = user.UserMetaData.CreationTimestamp!.Value.ToShortDateString(),
-                    }) ; 
+                    });
                 }
             }
             return listAccount;
@@ -100,7 +100,17 @@ namespace FindJobAPI.Repository.Queries
                 Uid = accountDomain.Uid,
             };
             if (!string.IsNullOrEmpty(infor.Name)) updateArgs.DisplayName = infor.Name;
-            if (!string.IsNullOrEmpty(infor.PhoneNumber)) updateArgs.PhoneNumber = infor.PhoneNumber;
+            if (!string.IsNullOrEmpty(infor.PhoneNumber))
+            {
+                if(infor.PhoneNumber.StartsWith("0")) 
+                {
+                    updateArgs.PhoneNumber = "+84" + infor.PhoneNumber.Substring(1);
+                }
+                else
+                {
+                    updateArgs.PhoneNumber = infor.PhoneNumber;
+                }
+            }
             UserRecord userRecord = await _firebaseAuth.UpdateUserAsync(updateArgs);
             return userRecord;
         }

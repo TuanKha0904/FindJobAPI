@@ -84,6 +84,7 @@ namespace FindJobAPI.Model.DTO
         public int Location_id { get; set; }
         public int Industry_id { get; set; }
         public int Type_id { get; set; }
+        [DataType(DataType.DateTime, ErrorMessage = "Thời gian không chính xác")]
         public string? Deadline { get; set; }
     }
 

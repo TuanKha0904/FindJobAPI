@@ -31,7 +31,7 @@ namespace FindJobAPI.Controllers
                 if (recruitment == null) { return  NotFound("Không tìm thấy công việc cần đăng kí"); }
                 return Ok("Đăng kí thành công");
             }
-            catch { return BadRequest("Cập nhật thất bại"); }
+            catch { return BadRequest("Đăng kí thất bại"); }
         }
 
         [HttpGet("Get")]
@@ -64,7 +64,7 @@ namespace FindJobAPI.Controllers
             try
             {
                 var updateStatus = await recruitmentNoAccount_Repository.Status(id, job_id);
-                if (updateStatus == null) { return NotFound("Không tìm thấy công việc đã ứng tuyển"); }
+                if (updateStatus == null) { return NotFound("Không tìm thấy công việc hoặc người dùng đã ứng tuyển"); }
                 return Ok("Cập nhật thành công");
             }
             catch { return BadRequest("Cập nhật thất bại"); }

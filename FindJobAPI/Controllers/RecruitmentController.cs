@@ -29,8 +29,8 @@ namespace FindJobAPI.Controllers
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var jobDomain = await appDbContext.Recruitment.FindAsync (job_id, userId);
-                if (jobDomain == null) { return Ok("Bạn đã đăng kí công việc này"); }
+                var jobDomain = await appDbContext.Recruitment.FirstOrDefaultAsync( j=> j.job_id == job_id && j.UID == userId);
+                if (jobDomain != null) { return Ok("Bạn đã đăng kí công việc này"); }
                 var create = await recruitmentRepository.Post(userId!, job_id);
                 if (create == null) { return NotFound("Không tìm thấy công việc này"); }
                 return Ok("Đăng kí thành công");
@@ -57,7 +57,7 @@ namespace FindJobAPI.Controllers
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var employer = await appDbContext.Recruitment.FindAsync(userId);
+                var employer = await appDbContext.Recruitment.FirstOrDefaultAsync(r => r.UID == userId);
                 if (employer == null) { return NotFound("Chưa có công việc đă đăng kí"); }
                 var listRecruitment = await recruitmentRepository.Seeker(userId!);
                 return Ok(listRecruitment);
@@ -66,13 +66,12 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPatch ("Status")]
-        public async Task<IActionResult> Status (int job_id)
+        public async Task<IActionResult> Status (string userId, int job_id)
         {
             try
             {
-                var userId = User.FindFirst("Id")?.Value;
-                var updateStatus = await recruitmentRepository.Status(userId!, job_id);
-                if (updateStatus == null) { return NotFound("Không tìm thấy công việc đã ứng tuyển"); }
+                var updateStatus = await recruitmentRepository.Status(userId, job_id);
+                if (updateStatus == null) { return NotFound("Không tìm thấy công việc hoặc người dùng đã ứng tuyển"); }
                 return Ok("Cập nhật thành công");
             }
             catch { return BadRequest("Cập nhật thất bại"); }
