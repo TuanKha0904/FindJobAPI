@@ -23,7 +23,7 @@ namespace FindJobAPI.Repository.Queries
                 location_id = location.location_id,
                 location = location.location_name
             }).ToListAsync();
-            return ListLocation;
+            return ListLocation.OrderBy(l=>l.location).ToList();
         }
 
         public async Task<LocationNoId> CreateLocation(LocationNoId locationNoId)

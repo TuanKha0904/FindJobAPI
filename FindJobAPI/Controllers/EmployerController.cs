@@ -88,6 +88,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPatch("Infor")]
+        [CheckAdmin("admin", "True")]
         public async Task<IActionResult> Infor(InforEmployer infor)
         {
             try

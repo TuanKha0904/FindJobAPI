@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using FirebaseAdmin.Messaging;
 
 namespace FindJobAPI.Controllers
 {
@@ -24,33 +25,36 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("AllJobPost")]
-        public async Task<IActionResult> AllJobPost()
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> AllJobPost(int pageNumber = 1, int pageSize = 20)
         {
             try
             {
-                var listJob = await _jobRepository.AllJobPost();
+                var listJob = await _jobRepository.AllJobPost(pageNumber, pageSize);
                 return Ok(listJob);
             }
             catch { return BadRequest(); }
         }
 
         [HttpGet("AllJobWait")]
-        public async Task<IActionResult> AllJobWait()
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> AllJobWait(int pageNumber = 1, int pageSize = 20)
         {
             try
             {
-                var listJob = await _jobRepository.AllJobWait();
+                var listJob = await _jobRepository.AllJobWait(pageNumber, pageSize);
                 return Ok(listJob);
             }
             catch { return BadRequest(); }
         }
 
         [HttpGet("AllJobTimeout")]
-        public async Task<IActionResult> AllJobTimeOut()
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> AllJobTimeOut(int pageNumber = 1, int pageSize = 20)
         {
             try
             {
-                var listJob = await _jobRepository.AllJobTimeOut();
+                var listJob = await _jobRepository.AllJobTimeOut(pageNumber, pageSize);
                 return Ok(listJob);
             }
             catch { return BadRequest(); }
@@ -69,6 +73,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPatch("Status")]
+        [CheckAdmin("admin", "True")]
         public async Task<IActionResult> Status (int jobId)
         {
             try
@@ -81,25 +86,28 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet ("JobPostList")]
-        public async Task<IActionResult> JobPostList()
+        public async Task<IActionResult> JobPostList(int pageNumber = 1, int pageSize = 5)
         {
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var jobPostList = await _jobRepository.JobPostList(userId!);
+                var jobPostList = await _jobRepository.JobPostList(userId!, pageNumber, pageSize);
                 return Ok(jobPostList);
             }
-            catch { return BadRequest(); }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 
         [HttpGet("JobWaitList")]
-        public async Task<IActionResult> JobWaitList()
+        public async Task<IActionResult> JobWaitList(int pageNumber = 1, int pageSize = 5)
         {
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var jobWaitList = await _jobRepository.JobWaitList(userId!);
+                var jobWaitList = await _jobRepository.JobWaitList(userId!, pageNumber, pageSize);
                 return Ok(jobWaitList);
             }
             catch { return BadRequest(); }
@@ -107,12 +115,12 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("JobTimeoutList")]
-        public async Task<IActionResult> JobTimeoutList()
+        public async Task<IActionResult> JobTimeoutList(int pageNumber = 1, int pageSize = 5)
         {
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var jobTimeoutList = await _jobRepository.JobTimeoutList(userId!);
+                var jobTimeoutList = await _jobRepository.JobTimeoutList(userId!, pageNumber, pageSize);
                 return Ok(jobTimeoutList);
             }
             catch { return BadRequest(); }
@@ -121,22 +129,22 @@ namespace FindJobAPI.Controllers
 
 
         [HttpGet("ApplyList")]
-        public async Task<IActionResult> ApplyList(int job_id)
+        public async Task<IActionResult> ApplyList(int job_id, int pageNumber = 1, int pageSize = 5)
         {
             try
             {
-                var ApplyList = await _jobRepository.ApplyList(job_id);
+                var ApplyList = await _jobRepository.ApplyList(job_id, pageNumber, pageSize);
                 return Ok(ApplyList);
             }
             catch { return BadRequest() ;}
         }
 
         [HttpGet("Receive")]
-        public async Task<IActionResult> Receive(int job_id)
+        public async Task<IActionResult> Receive(int job_id, int pageNumber = 1, int pageSize = 10)
         {
             try
             {
-                var listReceive = await _jobRepository.Receive(job_id);
+                var listReceive = await _jobRepository.Receive(job_id, pageNumber, pageSize);
                 return Ok(listReceive);
             }
             catch { return BadRequest(); }
@@ -164,11 +172,11 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Search")]
-        public async Task<IActionResult> Search(int industry_id, int type_id, int location_id)
+        public async Task<IActionResult> Search(int industry_id, int type_id, int location_id, int pageNumber = 1, int pageSize = 5)
         {
             try
             {
-                var searchJob = await _jobRepository.Search(industry_id, type_id, location_id);
+                var searchJob = await _jobRepository.Search(industry_id, type_id, location_id, pageNumber, pageSize);
                 return Ok(searchJob);
             }
             catch { return BadRequest() ; }

@@ -5,6 +5,7 @@ using FindJobAPI.Repository.Interfaces;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace FindJobAPI.Repository.Queries
 {
@@ -19,10 +20,14 @@ namespace FindJobAPI.Repository.Queries
             _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
-        public async Task<List<AllJob>> AllJobPost()
+        public async Task<List<AllJob>> AllJobPost(int pageNumber, int pageSize)
         {
-            var allJobDomain =  _appDbContext.Job.AsQueryable();
-            var listJob = await allJobDomain.Where(job => job.status == true && job.deadline >= DateTime.Now.Date).Select(job => new AllJob(){
+            var allJobDomain =  _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJobDomain
+                .Where(job => job.status == true && job.deadline >= DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new AllJob(){
                 id = job.job_id,
                 JobTitle = job.job_title,
                 Location = job.location!.location_name,
@@ -33,10 +38,14 @@ namespace FindJobAPI.Repository.Queries
             return listJob;
         }
 
-        public async Task<List<AllJob>> AllJobWait()
+        public async Task<List<AllJob>> AllJobWait(int pageNumber, int pageSize)
         {
-            var allJobDomain = _appDbContext.Job.AsQueryable();
-            var listJob = await allJobDomain.Where(job => job.status == false && job.deadline >= DateTime.Now.Date).Select(job => new AllJob()
+            var allJobDomain = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJobDomain
+                .Where(job => job.status == false && job.deadline >= DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new AllJob()
             {
                 id = job.job_id,
                 JobTitle = job.job_title,
@@ -48,10 +57,14 @@ namespace FindJobAPI.Repository.Queries
             return listJob;
         }
 
-        public async Task<List<AllJob>> AllJobTimeOut()
+        public async Task<List<AllJob>> AllJobTimeOut(int pageNumber, int pageSize)
         {
-            var allJobDomain = _appDbContext.Job.AsQueryable();
-            var listJob = await allJobDomain.Where(job => job.deadline.Date < DateTime.Now.Date).Select(job => new AllJob()
+            var allJobDomain = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJobDomain
+                .Where(job => job.deadline.Date < DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new AllJob()
             {
                 id = job.job_id,
                 JobTitle = job.job_title,
@@ -97,11 +110,16 @@ namespace FindJobAPI.Repository.Queries
             return jobDomain;
         }
 
-        public async Task<List<ListJob>> JobPostList(string userId)
+        public async Task<List<ListJob>> JobPostList(string userId, int pageNumber, int pageSize)
         {
             var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
-            var allJob = _appDbContext.Job.AsQueryable();
-            var listJob = await allJob.Where(j => j.status == true && j.UID == userId && j.deadline >= DateTime.Now.Date).Select(job => new ListJob()
+            if (employer == null) throw new Exception(message:"Không tìm thấy nhà tuyển dụng");
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJob
+                .Where(j => j.status == true && j.UID == userId && j.deadline >= DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new ListJob()
             {
                 id = job.job_id,
                 jobTitle = job.job_title,
@@ -116,11 +134,16 @@ namespace FindJobAPI.Repository.Queries
             return listJob;
         }
 
-        public async Task<List<ListJob>> JobWaitList(string userId)
+        public async Task<List<ListJob>> JobWaitList(string userId, int pageNumber, int pageSize)
         {
             var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
-            var allJob = _appDbContext.Job.AsQueryable();
-            var listJob = await allJob.Where(j => j.status == false && j.UID == userId && j.deadline >= DateTime.Now.Date).Select(job => new ListJob()
+            if (employer == null) throw new Exception(message:"Không tìm thấy nhà tuyển dụng");
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJob
+                .Where(j => j.status == false && j.UID == userId && j.deadline >= DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new ListJob()
             {
                 id = job.job_id,
                 jobTitle = job.job_title,
@@ -135,11 +158,16 @@ namespace FindJobAPI.Repository.Queries
             return listJob;
         }
 
-        public async Task<List<ListJob>> JobTimeoutList(string userId)
+        public async Task<List<ListJob>> JobTimeoutList(string userId, int pageNumber, int pageSize)
         {
             var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
-            var allJob = _appDbContext.Job.AsQueryable();
-            var listJob = await allJob.Where(j => j.status == false && j.UID == userId && j.deadline < DateTime.Now.Date).Select(job => new ListJob()
+            if (employer == null) throw new Exception(message:"Không tìm thấy nhà tuyển dụng");
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJob
+                .Where(j => j.status == false && j.UID == userId && j.deadline < DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new ListJob()
             {
                 id = job.job_id,
                 jobTitle = job.job_title,
@@ -154,9 +182,9 @@ namespace FindJobAPI.Repository.Queries
             return listJob;
         }
 
-        public async Task<List<ApplyList>> ApplyList(int job_id)
+        public async Task<List<ApplyList>> ApplyList(int job_id, int pageNumber, int pageSize)
         {
-            var recruitmentAccount = _appDbContext.Recruitment.AsQueryable();
+            var recruitmentAccount = _appDbContext.Recruitment.AsQueryable().OrderByDescending(r=>r.registation_date);
             var recruimentNoAccount = _appDbContext.Recruitment_No_Accounts.AsQueryable();
             var accountRecruitment = await recruitmentAccount.Where(r => r.job_id == job_id && r.status == false)
                 .Select(recruitment => new ApplyList()
@@ -190,8 +218,8 @@ namespace FindJobAPI.Repository.Queries
                     Email = recruitment.email,
                     PhoneNumber = recruitment.phone_number
                 }).ToListAsync();
-           var listRecruitment = accountRecruitment.Concat(noAccountRecruitment).ToList() ;
-            return listRecruitment;
+           var listRecruitment = accountRecruitment.Concat(noAccountRecruitment).ToList(); ;
+            return listRecruitment.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
         }
         private async Task<UserRecord> GetUserDataFromFirebase(string uid)
         {
@@ -206,9 +234,9 @@ namespace FindJobAPI.Repository.Queries
             }
         }
 
-        public async Task<List<ApplyList>> Receive(int job_id)
+        public async Task<List<ApplyList>> Receive(int job_id, int pageNumber, int pageSize)
         {
-            var recruitmentAccount = _appDbContext.Recruitment.AsQueryable();
+            var recruitmentAccount = _appDbContext.Recruitment.AsQueryable().OrderByDescending(r=>r.registation_date);
             var recruimentNoAccount = _appDbContext.Recruitment_No_Accounts.AsQueryable();
             var accountRecruitment = await recruitmentAccount.Where(r => r.job_id == job_id && r.status == true)
                 .Select(recruitment => new ApplyList()
@@ -243,7 +271,7 @@ namespace FindJobAPI.Repository.Queries
                     PhoneNumber = recruitment.phone_number
                 }).ToListAsync();
             var listRecruitment = accountRecruitment.Concat(noAccountRecruitment).ToList();
-            return listRecruitment;
+            return listRecruitment.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
         }
 
         public async Task<CreateJob> CreateJob(string userId, CreateJob createJob)
@@ -272,9 +300,9 @@ namespace FindJobAPI.Repository.Queries
             return createJob;
         }
 
-        public async Task<List<AllJob>> Search(int industry_id, int type_id, int location_id)
+        public async Task<List<AllJob>> Search(int industry_id, int type_id, int location_id, int pageNumber, int pageSize)
         {
-            var allJob = _appDbContext.Job.AsQueryable();
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
             var searchJob = await allJob
                 .Where(j => j.industry_id == industry_id || j.type_id == type_id || j.location_id == location_id)
                 .Select(job => new AllJob()
@@ -286,7 +314,7 @@ namespace FindJobAPI.Repository.Queries
                     Minimum_Salary = job.minimum_salary,
                     Maximum_Salary = job.maximum_salary
                 }).ToListAsync();
-            return searchJob;
+            return searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public async Task<UpdateJob> Update(int job_id, UpdateJob updateJob)

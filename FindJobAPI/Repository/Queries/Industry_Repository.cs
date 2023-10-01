@@ -24,7 +24,7 @@ namespace FindJobAPI.Repository.Queries
                 industry_id = industry.industry_id,
                 industry = industry.industry_name
             }).ToListAsync();
-            return ListIndustry;
+            return ListIndustry.OrderBy(i=>i.industry).ToList();
         }
 
         public async Task<IndustryNoId> CreateIndustry(IndustryNoId industryNoId)

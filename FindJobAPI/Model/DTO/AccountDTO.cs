@@ -34,4 +34,9 @@ namespace FindJobAPI.Model.DTO
     {
         public string? password { get; set; }
     }
+
+    public class GetUser
+    {
+        public string? idToken { get; set; }
+    }
 }

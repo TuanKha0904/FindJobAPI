@@ -52,14 +52,14 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Seeker")]
-        public async Task<IActionResult> Seeker()
+        public async Task<IActionResult> Seeker(int pageNumber, int pageSize = 5)
         {
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
                 var employer = await appDbContext.Recruitment.FirstOrDefaultAsync(r => r.UID == userId);
                 if (employer == null) { return NotFound("Chưa có công việc đă đăng kí"); }
-                var listRecruitment = await recruitmentRepository.Seeker(userId!);
+                var listRecruitment = await recruitmentRepository.Seeker(userId!, pageNumber, pageSize);
                 return Ok(listRecruitment);
             }
             catch { return BadRequest(); }

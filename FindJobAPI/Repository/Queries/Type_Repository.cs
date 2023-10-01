@@ -23,7 +23,7 @@ namespace FindJobAPI.Repository.Queries
                 type_id = type.type_id,
                 type_name = type.type_name
             }).ToListAsync();
-            return ListType;
+            return ListType.OrderBy(t=>t.type_name).ToList();
         }
 
         public async Task<TypeNoId> CreateType(TypeNoId typeNoId)

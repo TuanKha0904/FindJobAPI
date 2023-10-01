@@ -58,6 +58,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Infor")]
+        [CheckAdmin("admin", "True")]
         public async Task<IActionResult> Infor(string userId)
         {
             try

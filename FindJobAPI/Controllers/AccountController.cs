@@ -1,4 +1,5 @@
-﻿using FindJobAPI.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using FindJobAPI.Data;
 using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,6 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -22,11 +22,15 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("All")]
-        public async Task<IActionResult> GetAllAccounts()
+        [Authorize]
+        [CheckAdmin("admin","True")]
+        public async Task<IActionResult> GetAllAccounts(int pageNumber, 
+            [Range(1, 20, ErrorMessage = "Số trang phải từ 1 đến 20")]
+            int pageSize = 20 , bool sortDateCreate = true)
         {
             try
             {
-                var allAccount = await _accountRepository.GetAll();
+                var allAccount = await _accountRepository.GetAll(sortDateCreate, pageNumber, pageSize);
                 return Ok(allAccount);
 
             }
@@ -36,8 +40,9 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login()
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Post()
         {
             try
             {
@@ -46,19 +51,32 @@ namespace FindJobAPI.Controllers
                 {
                     return BadRequest("Không tìm thấy người dùng");
                 }
-                var account = await _accountRepository.Login(accessToken);
+                var account = await _accountRepository.Post(accessToken);
                 return Ok(account);
             }
             catch { return BadRequest(); }
         }
 
+        [HttpPost("Login")]
+        [Authorize]
+        public async Task<IActionResult> Login (string email,  string password)
+        {
+            try
+            {
+                var login = await _accountRepository.Login(email, password);
+                return Ok(login);
+            }
+            catch { return BadRequest(); }
+        }
+
         [HttpPatch("Infor")]
-        public async Task<IActionResult> UpdateAccount(Infor infor)
+        [Authorize]
+        public async Task<IActionResult> UpdateAccount(Infor info)
         {
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var inforUpdate = await _accountRepository.Infor(userId!, infor);
+                var inforUpdate = await _accountRepository.Info(userId!, info);
                 if (inforUpdate == null) return BadRequest("Không tìm thấy người dùng");
                 return Ok("Cập nhật thành công");
             }
@@ -66,6 +84,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPatch("Photo")]
+        [Authorize]
         public async Task<IActionResult> Photo(Photo photo)
         {
             try
@@ -79,6 +98,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPatch("Password")]
+        [Authorize]
         public async Task<IActionResult> Password (Password password)
         {
             try
@@ -93,6 +113,8 @@ namespace FindJobAPI.Controllers
 
 
         [HttpDelete("Delete")]
+        [Authorize]
+        [CheckAdmin("admin", "True")]
         public async Task<IActionResult> DeleteAccount(string userId)
         {
             try

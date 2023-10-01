@@ -58,6 +58,7 @@ namespace FindJobAPI
             new(FirebaseUserClaimType.Username, claims.GetValueOrDefault("name", "").ToString() ?? string.Empty),
             new(FirebaseUserClaimType.Avatar, claims.GetValueOrDefault("picture", "").ToString() ?? string.Empty),
             new(FirebaseUserClaimType.Phone, claims.GetValueOrDefault("phone", "").ToString() ?? string.Empty),
+            new(FirebaseUserClaimType.Admin, claims.GetValueOrDefault("admin", "").ToString() ?? string.Empty),
         };
         }
     }
@@ -69,5 +70,6 @@ namespace FindJobAPI
         public const string Username = "username";
         public const string Avatar = "avatar";
         public const string Phone = "phone";
+        public const string Admin = "admin";
     }
 }

@@ -43,10 +43,14 @@ namespace FindJobAPI.Repository.Queries
             return recruitment;
         }
 
-        public async Task<List<Seeker>> Seeker(string userId)
+        public async Task<List<Seeker>> Seeker(string userId, int pageNumber, int pageSize)
         {
-            var allRecruitment =  _appDbContext.Recruitment.AsQueryable();
-            var listRecruitment = await allRecruitment.Where(r => r.UID == userId).Select(recruitment => new Seeker()
+            var allRecruitment =  _appDbContext.Recruitment.AsQueryable().OrderByDescending(r => r.registation_date);
+            var listRecruitment = await allRecruitment
+                .Where(r => r.UID == userId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(recruitment => new Seeker()
             {
                 id = recruitment.job_id,
                 job_title = recruitment.job!.job_title,

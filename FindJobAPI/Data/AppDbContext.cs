@@ -58,7 +58,6 @@ namespace FindJobAPI.Data
 
         public DbSet<account> Account { get; set; }
         public DbSet<job> Job { get; set; }
-        public DbSet<admin> Admin { get; set; }
         public DbSet<employer> Employer { get; set; }
         public DbSet<seeker> Seeker { get; set; }
         public DbSet<industry> Industry { get; set; }

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace FindJobAPI.Data.FinJobAPI_DB
+namespace FindJobAPI.Data.FindJobAPI_DB
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230927164807_initial")]
-    partial class initial
+    [Migration("20231001070316_InitialDB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,25 +32,6 @@ namespace FindJobAPI.Data.FinJobAPI_DB
                     b.HasKey("UID");
 
                     b.ToTable("Account");
-                });
-
-            modelBuilder.Entity("FindJobAPI.Model.Domain.admin", b =>
-                {
-                    b.Property<int>("admin_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("admin_id"), 1L, 1);
-
-                    b.Property<string>("password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("admin_id");
-
-                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("FindJobAPI.Model.Domain.employer", b =>

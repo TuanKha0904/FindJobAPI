@@ -64,10 +64,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+    options.EnableSensitiveDataLogging();
 });
 
 // Register Repository
-builder.Services.AddScoped<IAdmin_repository, admin_repository>();
 builder.Services.AddScoped<IType_Repository, Type_Repository>();
 builder.Services.AddScoped<IIndustry_Repository, Industry_Repository>();
 builder.Services.AddScoped<IAccount_Repository, Account_Repository>();
