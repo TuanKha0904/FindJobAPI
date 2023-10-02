@@ -45,7 +45,7 @@ namespace FindJobAPI.Repository.Queries
                         UID = user.Uid,
                         Email = user.Email,
                         Password = user.PasswordHash,
-                        DateCreate = user.UserMetaData.CreationTimestamp!.Value.ToShortDateString(),
+                        DateCreate = user.UserMetaData.CreationTimestamp!.Value.ToString("dd-MM-yyyy"),
                     });
                 }
             }

@@ -26,7 +26,7 @@ namespace FindJobAPI.Controllers
         [CheckAdmin("admin","True")]
         public async Task<IActionResult> GetAllAccounts(int pageNumber, 
             [Range(1, 20, ErrorMessage = "Số trang phải từ 1 đến 20")]
-            int pageSize = 20 , bool sortDateCreate = true)
+            int pageSize = 20 , bool sortDateCreate = false)
         {
             try
             {
