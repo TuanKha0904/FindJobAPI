@@ -10,8 +10,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["FindJobAPI/FindJobAPI/FindJobAPI.csproj", "FindJobAPI/FindJobAPI"]
-RUN dotnet restore "FindJobAPI/FindJobAPI/FindJobAPI.csproj"
+COPY ["FindJobAPI/FindJobAPI.csproj", "FindJobAPI/"]
+RUN dotnet restore "FindJobAPI/FindJobAPI.csproj"
 COPY . .
 WORKDIR "/src/FindJobAPI"
 RUN dotnet build "FindJobAPI.csproj" -c Release -o /app/build
