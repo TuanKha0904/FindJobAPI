@@ -58,7 +58,6 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Login")]
-        [Authorize]
         public async Task<IActionResult> Login (string email,  string password)
         {
             try
