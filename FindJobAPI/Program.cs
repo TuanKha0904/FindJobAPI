@@ -78,10 +78,24 @@ builder.Services.AddScoped<IJob_Repository, Job_Repository>();
 builder.Services.AddScoped<IRecruitment_Repository, Recruitment_Repository>();
 builder.Services.AddScoped<IRecruitmentNoAccount_Repository, RecruitmentNoAccountRepository>();
 
+//Add CORS service
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("FindJobPolicy", builder =>
+    {
+        builder
+        .AllowAnyOrigin() // enable all origins
+        .AllowAnyHeader() // enable all headers
+        .AllowAnyMethod(); // enable all method
+    });
+});
+
 
 
 
 var app = builder.Build();
+
+app.UseCors("FindJobPolicy");
 
 app.UseSwagger();
 app.UseSwaggerUI();
