@@ -22,8 +22,5 @@ namespace FindJobAPI
                 context.Result = new UnauthorizedObjectResult(new {Message = "Không có quyền sử dụng"});
             }
         }
-
-
-
     }
 }

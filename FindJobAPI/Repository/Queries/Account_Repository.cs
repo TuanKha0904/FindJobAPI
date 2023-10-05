@@ -124,7 +124,8 @@ namespace FindJobAPI.Repository.Queries
             var token = JsonConvert.DeserializeObject<GetUser>(user);
             var dataResponse = new GetUser()
             {
-                idToken = token!.idToken
+                idToken = token!.idToken,
+        
             };
             return dataResponse!;
         }
