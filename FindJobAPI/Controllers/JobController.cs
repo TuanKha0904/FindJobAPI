@@ -72,7 +72,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPatch("Status")]
+        [HttpPut("Status")]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> Status (int jobId)
         {

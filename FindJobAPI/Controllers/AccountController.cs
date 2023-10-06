@@ -68,7 +68,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPatch("Infor")]
+        [HttpPut("Infor")]
         [Authorize]
         public async Task<IActionResult> UpdateAccount(Infor info)
         {
@@ -82,7 +82,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Cập nhật thất bại"); }
         }
 
-        [HttpPatch("Photo")]
+        [HttpPut("Photo")]
         [Authorize]
         public async Task<IActionResult> Photo(Photo photo)
         {
@@ -96,7 +96,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Cập nhật thất bại!. Không tìm thấy đường dẫn hình ảnh"); }
         }
 
-        [HttpPatch("Password")]
+        [HttpPut("Password")]
         [Authorize]
         public async Task<IActionResult> Password (Password password)
         {

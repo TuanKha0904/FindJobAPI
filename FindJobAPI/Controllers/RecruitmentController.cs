@@ -65,7 +65,7 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPatch ("Status")]
+        [HttpPut ("Status")]
         public async Task<IActionResult> Status (string userId, int job_id)
         {
             try

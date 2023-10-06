@@ -53,7 +53,7 @@ namespace FindJobAPI.Controllers
         }
 
 
-        [HttpPatch("Image")]
+        [HttpPut("Image")]
         public async Task<IActionResult> Image(Image image)
         {
             try
@@ -70,7 +70,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPatch("ImageCover")]
+        [HttpPut("ImageCover")]
         public async Task<IActionResult> ImageCover(Cover cover)
         {
             try
@@ -87,7 +87,7 @@ namespace FindJobAPI.Controllers
             }
         }
 
-        [HttpPatch("Infor")]
+        [HttpPut("Infor")]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> Infor(InforEmployer infor)
         {
