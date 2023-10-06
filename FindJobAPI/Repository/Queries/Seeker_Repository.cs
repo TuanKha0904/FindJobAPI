@@ -42,7 +42,7 @@ namespace FindJobAPI.Repository.Queries
                 seeker.Email = seekerDomain.Email;
             if (seekerDomain.PhoneNumber == null)
             {
-                seeker.Phone_Number = "0" + accountFB.PhoneNumber.Substring(3);
+                seeker.Phone_Number = accountFB.PhoneNumber;
             }
             else
                 seeker.Phone_Number = seekerDomain.PhoneNumber;
@@ -99,7 +99,7 @@ namespace FindJobAPI.Repository.Queries
             else
                 seekerInfor.email = seekerDomain.Email;
             if (seekerDomain.PhoneNumber == null)
-                seekerInfor.phoneNumber = "0" + seekerFB.PhoneNumber.Substring(3);
+                seekerInfor.phoneNumber = seekerFB.PhoneNumber;
             else
                 seekerInfor.phoneNumber = seekerDomain.PhoneNumber;
             return seekerInfor;
