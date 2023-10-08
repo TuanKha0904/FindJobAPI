@@ -47,7 +47,7 @@ namespace FindJobAPI.Repository.Queries
                 .Select(job => new AllJob(){
                 id = job.job_id,
                 JobTitle = job.job_title,
-                Location = job.location!.location_name,
+                Location = job.location,
                 Requirement = job.requirement,
                 Minimum_Salary = job.minimum_salary,
                 Maximum_Salary = job.maximum_salary
@@ -66,7 +66,7 @@ namespace FindJobAPI.Repository.Queries
             {
                 id = job.job_id,
                 JobTitle = job.job_title,
-                Location = job.location!.location_name,
+                Location = job.location,
                 Requirement = job.requirement,
                 Minimum_Salary = job.minimum_salary,
                 Maximum_Salary = job.maximum_salary
@@ -85,7 +85,7 @@ namespace FindJobAPI.Repository.Queries
             {
                 id = job.job_id,
                 JobTitle = job.job_title,
-                Location = job.location!.location_name,
+                Location = job.location,
                 Requirement = job.requirement,
                 Minimum_Salary = job.minimum_salary,
                 Maximum_Salary = job.maximum_salary
@@ -103,7 +103,7 @@ namespace FindJobAPI.Repository.Queries
                 minimum_salary = job.minimum_salary,
                 maximum_salary = job.maximum_salary,
                 requirement = job.requirement,
-                location = job.location!.location_name,
+                location = job.location,
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
@@ -142,7 +142,7 @@ namespace FindJobAPI.Repository.Queries
                 jobTitle = job.job_title,
                 minimum_salary = job.minimum_salary,
                 maximum_salary = job.maximum_salary,
-                location = job.location!.location_name,
+                location = job.location,
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
                 logo = employer!.employer_image,
@@ -166,7 +166,7 @@ namespace FindJobAPI.Repository.Queries
                 jobTitle = job.job_title,
                 minimum_salary = job.minimum_salary,
                 maximum_salary = job.maximum_salary,
-                location = job.location!.location_name,
+                location = job.location,
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
                 logo = employer!.employer_image,
@@ -190,7 +190,7 @@ namespace FindJobAPI.Repository.Queries
                 jobTitle = job.job_title,
                 minimum_salary = job.minimum_salary,
                 maximum_salary = job.maximum_salary,
-                location = job.location!.location_name,
+                location = job.location,
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
                 logo = employer!.employer_image,
@@ -301,9 +301,9 @@ namespace FindJobAPI.Repository.Queries
                 job_title = createJob.JobTitle,
                 minimum_salary = createJob.Minimum_Salary,
                 maximum_salary = createJob.Maximum_Salary,
-                location_id = createJob.Location_id,
+                location = createJob.Location,
                 industry_id = createJob.Industry_id,
-                type_id = createJob.Location_id,
+                type_id = createJob.Type_id,
                 deadline = DateTime.Parse(createJob.Deadline!),
                 posted_date = DateTime.Now.Date,
                 status = false
@@ -317,16 +317,16 @@ namespace FindJobAPI.Repository.Queries
             return createJob;
         }
 
-        public async Task<List<AllJob>> Search(int industry_id, int type_id, int location_id, int pageNumber, int pageSize)
+        public async Task<List<AllJob>> Search(int industry_id, int type_id, string location, int pageNumber, int pageSize)
         {
             var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
             var searchJob = await allJob
-                .Where(j => j.industry_id == industry_id || j.type_id == type_id || j.location_id == location_id)
+                .Where(j => j.industry_id == industry_id || j.type_id == type_id || j.location == location)
                 .Select(job => new AllJob()
                 {
                     id = job.job_id,
                     JobTitle = job.job_title,
-                    Location = job.location!.location_name,
+                    Location = job.location,
                     Requirement = job.requirement,
                     Minimum_Salary = job.minimum_salary,
                     Maximum_Salary = job.maximum_salary
@@ -348,8 +348,8 @@ namespace FindJobAPI.Repository.Queries
                 jobDomain.maximum_salary = updateJob.Maximum_Salary;
             if (!string.IsNullOrEmpty(updateJob.Requirement))
                 jobDomain.requirement = updateJob.Requirement;
-            if(updateJob.Location_id != 0)
-                jobDomain.location_id = updateJob.Location_id;
+            if(!string.IsNullOrEmpty(updateJob.Location))
+                jobDomain.location = updateJob.Location;
             if(updateJob.Industry_id != 0)
                 jobDomain.industry_id = updateJob.Industry_id;
             if(updateJob.Type_id != 0)

@@ -56,7 +56,7 @@ namespace FindJobAPI.Repository.Queries
                 job_title = recruitment.job!.job_title,
                 minimum_salary = recruitment.job.minimum_salary,
                 maximum_salary = recruitment.job.maximum_salary,
-                location = recruitment.job.location!.location_name,
+                location = recruitment.job.location,
                 industry = recruitment.job.industry!.industry_name,
                 type = recruitment.job.type!.type_name,
                 logo = recruitment.job.employer!.employer_image

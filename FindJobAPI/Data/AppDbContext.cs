@@ -46,10 +46,6 @@ namespace FindJobAPI.Data
               .HasOne(j => j.industry)
               .WithMany(j => j.job)
               .HasForeignKey(j => j.industry_id);
-            modelBuilder.Entity<job>()
-                .HasOne(j => j.location)
-                .WithMany(j => j.job)
-                .HasForeignKey(j => j.location_id);
             modelBuilder.Entity<recruitment_no_account>()
               .HasOne(j => j.job)
               .WithMany(j => j.recruitment_no_account)
@@ -64,6 +60,5 @@ namespace FindJobAPI.Data
         public DbSet<recruitment_no_account> Recruitment_No_Accounts { get; set; }
         public DbSet<recruitment> Recruitment { get; set; }
         public DbSet<type> Type { get; set; }
-        public DbSet<location> Location { get; set; }
     }
 }

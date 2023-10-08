@@ -169,8 +169,6 @@ namespace FindJobAPI.Controllers
         {
             try
             {
-                var location = await _appDbContext.Location.FindAsync(createJob.Location_id);
-                if (location == null) return BadRequest("Không tìm thấy vị trí này");
                 var industry = await _appDbContext.Industry.FindAsync(createJob.Industry_id);
                 if (industry == null) return BadRequest("Không tìm thấy lĩnh vực này");
                 var type = await _appDbContext.Type.FindAsync(createJob.Type_id);
@@ -185,11 +183,11 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Search")]
-        public async Task<IActionResult> Search(int industry_id, int type_id, int location_id, int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> Search(int industry_id, int type_id, string location, int pageNumber = 1, int pageSize = 5)
         {
             try
             {
-                var searchJob = await _jobRepository.Search(industry_id, type_id, location_id, pageNumber, pageSize);
+                var searchJob = await _jobRepository.Search(industry_id, type_id, location, pageNumber, pageSize);
                 return Ok(searchJob);
             }
             catch { return BadRequest() ; }
@@ -200,7 +198,7 @@ namespace FindJobAPI.Controllers
         {
             try
             {
-                if(updateJob.Location_id == 0 || updateJob.Type_id == 0 || updateJob.Industry_id == 0) 
+                if(!string.IsNullOrEmpty(updateJob.Location) || updateJob.Type_id == 0 || updateJob.Industry_id == 0) 
                 {
                     var jobUpdate = await _jobRepository.Update(job_id, updateJob);
                     if (jobUpdate == null) { return BadRequest("Không tìm thấy công việc"); }
@@ -209,8 +207,6 @@ namespace FindJobAPI.Controllers
                 }
                 else
                 {
-                    var location = await _appDbContext.Location.FindAsync(updateJob.Location_id);
-                    if (location == null) { return BadRequest("Không tìm thấy vị trí"); }
                     var industry = await _appDbContext.Industry.FindAsync(updateJob.Industry_id);
                     if (industry == null) { return BadRequest("Không tìm thấy ngành công việc"); }
                     var type = await _appDbContext.Type.FindAsync(updateJob.Type_id);

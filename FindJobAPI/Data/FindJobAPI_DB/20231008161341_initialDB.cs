@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FindJobAPI.Data.FindJobAPI_DB
 {
-    public partial class InitialDB : Migration
+    public partial class initialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,19 +31,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Industry", x => x.industry_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Location",
-                columns: table => new
-                {
-                    location_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    location_name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Location", x => x.location_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,9 +109,9 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                     minimum_salary = table.Column<float>(type: "real", nullable: false),
                     maximum_salary = table.Column<float>(type: "real", nullable: false),
                     requirement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     deadline = table.Column<DateTime>(type: "datetime2", nullable: false),
                     status = table.Column<bool>(type: "bit", nullable: false),
-                    location_id = table.Column<int>(type: "int", nullable: true),
                     industry_id = table.Column<int>(type: "int", nullable: false),
                     type_id = table.Column<int>(type: "int", nullable: false),
                     posted_date = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -143,11 +130,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                         principalTable: "Industry",
                         principalColumn: "industry_id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Job_Location_location_id",
-                        column: x => x.location_id,
-                        principalTable: "Location",
-                        principalColumn: "location_id");
                     table.ForeignKey(
                         name: "FK_Job_Type_type_id",
                         column: x => x.type_id,
@@ -218,11 +200,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
                 column: "industry_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Job_location_id",
-                table: "Job",
-                column: "location_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Job_type_id",
                 table: "Job",
                 column: "type_id");
@@ -262,9 +239,6 @@ namespace FindJobAPI.Data.FindJobAPI_DB
 
             migrationBuilder.DropTable(
                 name: "Industry");
-
-            migrationBuilder.DropTable(
-                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "Type");

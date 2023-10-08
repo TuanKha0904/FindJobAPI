@@ -19,7 +19,7 @@ namespace FindJobAPI.Model.DTO
         public string? Requirement { get; set;}
 
         [Required(ErrorMessage = "không được bỏ trống vị trí")]
-        public int Location_id { get; set; }
+        public string? Location { get; set; }
 
         [Required(ErrorMessage = "Vui lòng chọn lĩnh vực")]
         public int Industry_id { get; set; }
@@ -91,7 +91,7 @@ namespace FindJobAPI.Model.DTO
         public float Minimum_Salary { get; set; }
         public float Maximum_Salary { get; set; }
         public string? Requirement { get; set; }
-        public int Location_id { get; set; }
+        public string? Location { get; set; }
         public int Industry_id { get; set; }
         public int Type_id { get; set; }
         [DataType(DataType.DateTime, ErrorMessage = "Thời gian không chính xác")]
