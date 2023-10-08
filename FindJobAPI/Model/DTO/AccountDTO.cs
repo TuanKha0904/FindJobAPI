@@ -6,7 +6,7 @@ namespace FindJobAPI.Model.DTO
     {
         public string? UID { get; set; }
         public string? Email { get; set; }
-        public string? Password { get; set; }
+        public string? Name { get; set; }
         public string? DateCreate { get; set; }
     }
 

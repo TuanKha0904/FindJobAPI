@@ -28,24 +28,19 @@ namespace FindJobAPI.Repository.Queries
 
         public async Task<List<AllAccountDTO>> GetAll(bool isDescending, int pageNumber, int pageSize)
         {
-            var listUsersOptions = new ListUsersOptions
-            {
-                PageSize = pageSize,
-                PageToken = pageNumber > 1 ? (pageNumber - 1).ToString() : null
-            };
-            var allAccount = _firebaseAuth.ListUsersAsync(listUsersOptions);
+            var allAccount =  _context.Account.ToList();
             var listAccount = new List<AllAccountDTO>();
-            await foreach (var user in allAccount)
+            foreach (var user in allAccount)
             {
-                var userData = await GetUserDataFromFirebase(user.Uid);
+                var userData = await GetUserDataFromFirebase(user.UID!);
                 if (userData != null)
                 {
                     listAccount.Add(new AllAccountDTO
                     {
-                        UID = user.Uid,
-                        Email = user.Email,
-                        Password = user.PasswordHash,
-                        DateCreate = user.UserMetaData.CreationTimestamp!.Value.ToString("dd-MM-yyyy"),
+                        UID = user.UID!,
+                        Email = userData.Email,
+                        Name = userData.DisplayName,
+                        DateCreate = userData.UserMetaData.CreationTimestamp!.Value.ToString("dd-MM-yyyy"),
                     });
                 }
             }
