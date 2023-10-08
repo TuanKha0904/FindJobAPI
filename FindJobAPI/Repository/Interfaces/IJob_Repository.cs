@@ -5,6 +5,7 @@ namespace FindJobAPI.Repository.Interfaces
 {
     public interface IJob_Repository
     {
+        Task<List<All>> GetAll();
         Task<CreateJob> CreateJob(string userId, CreateJob createJob);
         Task<List<AllJob>> AllJobPost(int pageNumber, int pageSize);
         Task<List<AllJob>> AllJobWait(int pageNumber, int pageSize);

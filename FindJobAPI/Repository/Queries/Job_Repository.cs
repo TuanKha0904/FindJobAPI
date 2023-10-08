@@ -20,6 +20,23 @@ namespace FindJobAPI.Repository.Queries
             _firebaseAuth = FirebaseAuth.GetAuth(firebaseApp);
         }
 
+        public async Task<List<All>> GetAll()
+        {
+            var allJobDomain = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
+            var listJob = await allJobDomain
+                .Skip(0)
+                .Take(10)
+                .Select(job => new All()
+                {
+                    id = job.job_id,
+                    employer_name = job.employer!.employer_name,
+                    title = job.job_title,
+                    posted_date = job.posted_date.ToString("dd-MM-yyyy"),
+                    status = job.status ? "Approved" : "Waiting"
+                }).ToListAsync(); 
+            return listJob;
+        }
+
         public async Task<List<AllJob>> AllJobPost(int pageNumber, int pageSize)
         {
             var allJobDomain =  _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);

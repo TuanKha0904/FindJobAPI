@@ -32,6 +32,16 @@ namespace FindJobAPI.Model.DTO
 
     }
 
+    public class All
+    {
+        public int id { get; set; }
+        public string? employer_name { get; set; }
+        public string? title { get; set; }
+        public string? posted_date { get; set; }
+        public string? status { get; set; }
+
+    }
+
     public class AllJob
     {
         public int id { get; set; }

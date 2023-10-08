@@ -24,6 +24,19 @@ namespace FindJobAPI.Controllers
             _jobRepository = jobRepository;
         }
 
+        [HttpGet("GetAll")]
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var listJob = await _jobRepository.GetAll();
+                return Ok(listJob);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+
         [HttpGet("AllJobPost")]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> AllJobPost(int pageNumber = 1, int pageSize = 20)
