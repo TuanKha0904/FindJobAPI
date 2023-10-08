@@ -126,5 +126,17 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Xóa thất bại"); }
         }
 
+        [HttpGet("QuantityAccount")]
+        [Authorize]
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> QuantityAccount()
+        {
+            try
+            {
+                var count = await _accountRepository.AccountQuantity();
+                return Ok(count);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
     }
 }

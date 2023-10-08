@@ -222,6 +222,17 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Xóa thất bại"); }
         }
 
-        
+        [HttpGet("CountJob")]
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> CountJob()
+        {
+            try
+            {
+                var count = await _jobRepository.CountJob();
+                return Ok(count);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
     }
 }

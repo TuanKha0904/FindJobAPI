@@ -356,7 +356,9 @@ namespace FindJobAPI.Repository.Queries
             return null!;
         }
 
-
-
+        public async Task<int> CountJob()
+        {
+            return await _appDbContext.Job.CountAsync(j=>j.status==true);
+        }
     }
 }

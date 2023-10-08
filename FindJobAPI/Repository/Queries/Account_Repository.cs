@@ -196,5 +196,11 @@ namespace FindJobAPI.Repository.Queries
             await _firebaseAuth.DeleteUserAsync(userId);
             return accountDomain;
         }
+
+        public async Task<int> AccountQuantity()
+        {
+            var account = await _context.Account.CountAsync();
+            return account;
+        }
     }
 }

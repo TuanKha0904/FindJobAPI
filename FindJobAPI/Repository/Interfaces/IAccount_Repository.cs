@@ -13,5 +13,6 @@ namespace FindJobAPI.Repository.Interfaces
         Task<UserRecord> Photo(string userId, Photo photo);
         Task<UserRecord> Password(string userId, Password password);
         Task<account> DeleteAccount(string userId);
+        Task<int> AccountQuantity();
     }
 }
