@@ -145,7 +145,7 @@ namespace FindJobAPI.Repository.Queries
                     location = job.location,
                     industry = job.industry!.industry_name,
                     type = job.type!.type_name,
-                    logo = employer!.employer_image,
+                    logo = employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
                     deadline = job.deadline.ToString("dd-MM-yyyy"),
                     status = job.status ? "Approved" : "Waiting"  
                 }).ToListAsync();
@@ -170,7 +170,7 @@ namespace FindJobAPI.Repository.Queries
                 location = job.location,
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
-                logo = employer!.employer_image,
+                logo = employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
                 status = job.status ? "Approved" : "Waiting"
                 }).ToListAsync();
@@ -195,7 +195,7 @@ namespace FindJobAPI.Repository.Queries
                 location = job.location,
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
-                logo = employer!.employer_image,
+                logo = employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
                 status = job.status ? "Approved" : "Waiting"
                 }).ToListAsync();
@@ -220,7 +220,7 @@ namespace FindJobAPI.Repository.Queries
                 location = job.location,
                 industry = job.industry!.industry_name,
                 type = job.type!.type_name,
-                logo = employer!.employer_image,
+                logo = employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
                 status = job.status ? "Approved" : "Waiting"
                 }).ToListAsync();
