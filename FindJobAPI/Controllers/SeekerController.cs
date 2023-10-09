@@ -64,13 +64,13 @@ namespace FindJobAPI.Controllers
             try
             {
                 var seekerInfor = await seeker_Repository.Infor(userId);
-                if (seekerInfor != null)
-                    return Ok(seekerInfor);
-                else { return BadRequest("Không tìm thấy tài khoản"); }
+                if (seekerInfor == null)
+                    return BadRequest("Không tìm thấy tài khoản");
+                return Ok(seekerInfor);
             }
-            catch
+            catch (Exception ex) 
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }
