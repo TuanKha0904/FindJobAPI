@@ -98,6 +98,23 @@ namespace FindJobAPI.Controllers
             catch { return BadRequest("Cập nhật thất bại"); }
         }
 
+        [HttpGet("AllJob")]
+        public async Task<IActionResult> AllJob(int pageNumber = 1, int pageSize = 5)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var allJob = await _jobRepository.AllJob(userId!, pageNumber, pageSize);
+                return Ok(allJob);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
         [HttpGet ("JobPostList")]
         public async Task<IActionResult> JobPostList(int pageNumber = 1, int pageSize = 5)
         {
