@@ -127,6 +127,31 @@ namespace FindJobAPI.Repository.Queries
             return jobDomain;
         }
 
+        public async Task<List<ListJob>> AllJob(string userId, int pageNumber, int pageSize)
+        {
+            var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
+            if (employer == null) { throw new Exception(message: "Không tìm thấy nhà tuyển dụng"); }
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j => j.posted_date);
+            var listJob = await allJob
+                 .Where(j => j.UID == userId && j.deadline >= DateTime.Now.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(job => new ListJob()
+                {
+                    id = job.job_id,
+                    jobTitle = job.job_title,
+                    minimum_salary = job.minimum_salary,
+                    maximum_salary = job.maximum_salary,
+                    location = job.location,
+                    industry = job.industry!.industry_name,
+                    type = job.type!.type_name,
+                    logo = employer!.employer_image,
+                    deadline = job.deadline.ToString("dd-MM-yyyy"),
+                    status = job.status ? "Approved" : "Waiting"  
+                }).ToListAsync();
+            return listJob;
+        }
+
         public async Task<List<ListJob>> JobPostList(string userId, int pageNumber, int pageSize)
         {
             var employer = await _appDbContext.Employer.FirstOrDefaultAsync(e => e.UID == userId);
@@ -147,7 +172,8 @@ namespace FindJobAPI.Repository.Queries
                 type = job.type!.type_name,
                 logo = employer!.employer_image,
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
-            }).ToListAsync();
+                status = job.status ? "Approved" : "Waiting"
+                }).ToListAsync();
             return listJob;
         }
 
@@ -171,7 +197,8 @@ namespace FindJobAPI.Repository.Queries
                 type = job.type!.type_name,
                 logo = employer!.employer_image,
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
-            }).ToListAsync();
+                status = job.status ? "Approved" : "Waiting"
+                }).ToListAsync();
             return listJob;
         }
 
@@ -195,7 +222,8 @@ namespace FindJobAPI.Repository.Queries
                 type = job.type!.type_name,
                 logo = employer!.employer_image,
                 deadline = job.deadline.ToString("dd-MM-yyyy"),
-            }).ToListAsync();
+                status = job.status ? "Approved" : "Waiting"
+                }).ToListAsync();
             return listJob;
         }
 

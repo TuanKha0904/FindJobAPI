@@ -11,6 +11,7 @@ namespace FindJobAPI.Repository.Interfaces
         Task<List<AllJob>> AllJobWait(int pageNumber, int pageSize);
         Task<List<AllJob>> AllJobTimeOut(int pageNumber, int pageSize);
         Task<JobDetail> JobDetail(int jobId);
+        Task<List<ListJob>> AllJob(string userId, int pageNumber, int pageSize);
         Task<List<ListJob>> JobPostList (string userId, int pageNumber, int pageSize);
         Task<List<ListJob>> JobWaitList(string userId, int pageNumber, int pageSize);
         Task<List<ListJob>> JobTimeoutList(string userId, int pageNumber, int pageSize);

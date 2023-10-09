@@ -82,6 +82,7 @@ namespace FindJobAPI.Model.DTO
         public string? type { get; set; }
         public string? logo { get; set; }
         public string? deadline { get; set; }
+        public string? status { get; set; }
     }
 
     public class UpdateJob
