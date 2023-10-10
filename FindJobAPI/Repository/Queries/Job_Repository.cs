@@ -112,7 +112,8 @@ namespace FindJobAPI.Repository.Queries
                 email = job.employer!.email,
                 website = job.employer!.employer_website,
                 contact = job.employer!.contact_phone,
-                address = job.employer!.employer_address
+                address = job.employer!.employer_address,
+                logo = job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
             }).FirstOrDefaultAsync();
             if (jobDetail == null) { return null!; }
             return jobDetail;

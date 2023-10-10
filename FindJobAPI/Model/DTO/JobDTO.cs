@@ -69,6 +69,7 @@ namespace FindJobAPI.Model.DTO
         public string? website { get; set; }
         public string? contact { get; set; }
         public string? address { get; set; }
+        public string? logo { get; set; }
     }
 
     public class ListJob
