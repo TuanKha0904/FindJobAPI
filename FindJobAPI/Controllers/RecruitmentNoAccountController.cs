@@ -31,7 +31,7 @@ namespace FindJobAPI.Controllers
                 if (recruitment == null) { return  NotFound("Không tìm thấy công việc cần đăng kí"); }
                 return Ok("Đăng kí thành công");
             }
-            catch { return BadRequest("Đăng kí thất bại"); }
+            catch(Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpGet("Get")]
