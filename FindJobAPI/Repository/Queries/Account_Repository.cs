@@ -187,6 +187,8 @@ namespace FindJobAPI.Repository.Queries
                 return null!;
             }
             _context.Account.Remove(accountDomain);
+            _context.Seeker.RemoveRange(_context.Seeker.Where(s => s.UID == userId));
+            _context.Employer.RemoveRange(_context.Employer.Where(e => e.UID == userId));
             await _context.SaveChangesAsync();
             await _firebaseAuth.DeleteUserAsync(userId);
             return accountDomain;
