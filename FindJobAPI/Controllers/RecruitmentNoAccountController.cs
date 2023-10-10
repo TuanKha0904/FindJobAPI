@@ -11,7 +11,6 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RecruitmentNoAccountController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -35,6 +34,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Get")]
+        [Authorize]
         public async Task<IActionResult>Get (int id)
         {
             try
@@ -47,6 +47,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -59,6 +60,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Status")]
+        [Authorize]
         public async Task<IActionResult> Status(int id, int job_id)
         {
             try
