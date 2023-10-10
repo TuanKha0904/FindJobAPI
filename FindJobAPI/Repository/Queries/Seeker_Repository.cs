@@ -88,7 +88,7 @@ namespace FindJobAPI.Repository.Queries
             {
                 birthday = seekerDomain.birthday?.ToString("dd-MM-yyyy"),
                 address = seekerDomain.address,
-                photo = seekerFB.PhotoUrl
+                photo = seekerFB.PhotoUrl ?? "https://i.ibb.co/TqjSRg0/th.jpg",
             };
             if (seekerDomain.Name == null)
                 seekerInfor.name = seekerFB.DisplayName;

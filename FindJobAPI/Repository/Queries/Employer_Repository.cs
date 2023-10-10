@@ -30,8 +30,8 @@ namespace FindJobAPI.Repository.Queries
                 employer_website = employerDomain.employer_website,
                 employer_address = employerDomain.employer_address,
                 employer_about = employerDomain.employer_about,
-                employer_image = employerDomain.employer_image,
-                image_cover = employerDomain.employer_image_cover
+                employer_image = employerDomain.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
+                image_cover = employerDomain.employer_image_cover ?? "https://i.ibb.co/d0mPWbw/Untitled-design.png"
             };
             if (employerDomain.email == null)
                 employer.email = employerFB.Email;
