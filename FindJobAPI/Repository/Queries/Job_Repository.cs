@@ -406,5 +406,25 @@ namespace FindJobAPI.Repository.Queries
         {
             return await _appDbContext.Job.CountAsync(j=>j.status==true);
         }
+
+        public async Task<List<ListJob>> FindJob(int pageNumber, int pageSize)
+        {
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j => j.posted_date);
+            var searchJob = await allJob
+                .Where(j => j.status == true && j.deadline >= DateTime.Now.Date)
+                .Select(job => new ListJob()
+                {
+                    id = job.job_id,
+                    jobTitle = job.job_title,
+                    minimum_salary = job.minimum_salary,
+                    maximum_salary = job.maximum_salary,
+                    location = job.location,
+                    industry = job.industry!.industry_name,
+                    type = job.type!.type_name,
+                    logo = job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
+                    deadline = job.deadline.ToString("dd-MM-yyyy"),
+                }).ToListAsync();
+            return searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+        }
     }
 }

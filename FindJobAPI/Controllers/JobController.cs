@@ -12,7 +12,6 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class JobController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -25,6 +24,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> GetAll()
         {
@@ -38,6 +38,7 @@ namespace FindJobAPI.Controllers
 
 
         [HttpGet("AllJobPost")]
+        [Authorize]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> AllJobPost(int pageNumber = 1, int pageSize = 20)
         {
@@ -50,6 +51,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("AllJobWait")]
+        [Authorize]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> AllJobWait(int pageNumber = 1, int pageSize = 20)
         {
@@ -62,6 +64,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("AllJobTimeout")]
+        [Authorize]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> AllJobTimeOut(int pageNumber = 1, int pageSize = 20)
         {
@@ -86,6 +89,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Status")]
+        [Authorize]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> Status (int jobId)
         {
@@ -99,6 +103,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("AllJob")]
+        [Authorize]
         public async Task<IActionResult> AllJob(int pageNumber = 1, int pageSize = 5)
         {
             try
@@ -116,6 +121,7 @@ namespace FindJobAPI.Controllers
 
 
         [HttpGet ("JobPostList")]
+        [Authorize]
         public async Task<IActionResult> JobPostList(int pageNumber = 1, int pageSize = 5)
         {
             try
@@ -132,6 +138,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("JobWaitList")]
+        [Authorize]
         public async Task<IActionResult> JobWaitList(int pageNumber = 1, int pageSize = 5)
         {
             try
@@ -145,6 +152,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("JobTimeoutList")]
+        [Authorize]
         public async Task<IActionResult> JobTimeoutList(int pageNumber = 1, int pageSize = 5)
         {
             try
@@ -159,6 +167,7 @@ namespace FindJobAPI.Controllers
 
 
         [HttpGet("ApplyList")]
+        [Authorize]
         public async Task<IActionResult> ApplyList(int job_id, int pageNumber = 1, int pageSize = 5)
         {
             try
@@ -170,6 +179,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Receive")]
+        [Authorize]
         public async Task<IActionResult> Receive(int job_id, int pageNumber = 1, int pageSize = 10)
         {
             try
@@ -182,6 +192,7 @@ namespace FindJobAPI.Controllers
 
 
         [HttpPost("Post")]
+        [Authorize]
         public async Task<IActionResult> Post (CreateJob createJob)
         {
             try
@@ -211,6 +222,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut ("Update")]
+        [Authorize]
         public async Task<IActionResult> Update(int job_id, UpdateJob updateJob)
         {
             try
@@ -237,6 +249,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
+        [Authorize]
         public async Task<IActionResult> Delete(int jobId)
         {
             try
@@ -249,6 +262,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("CountJob")]
+        [Authorize]
         [CheckAdmin("admin", "True")]
         public async Task<IActionResult> CountJob()
         {
@@ -259,6 +273,22 @@ namespace FindJobAPI.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
+
+        [HttpGet("FindAJob")]
+        public async Task<IActionResult> FindAJob(int pageNumber = 1, int pageSize = 10)
+        {
+            try
+            {
+                var allJob = await _jobRepository.FindJob( pageNumber, pageSize);
+                return Ok(allJob);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
     }
 }
