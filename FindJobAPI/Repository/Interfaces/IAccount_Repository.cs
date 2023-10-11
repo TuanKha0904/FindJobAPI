@@ -14,5 +14,6 @@ namespace FindJobAPI.Repository.Interfaces
         Task<UserRecord> Password(string userId, Password password);
         Task<account> DeleteAccount(string userId);
         Task<int> AccountQuantity();
+        Task<string> AddAdmin(string userId);
     }
 }

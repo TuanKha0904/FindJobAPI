@@ -213,5 +213,17 @@ namespace FindJobAPI.Repository.Queries
             var account = await _context.Account.CountAsync();
             return account;
         }
+
+        public async Task<string> AddAdmin(string userId)
+        {
+            var accountDomain = await _context.Account.FirstOrDefaultAsync(a => a.UID == userId);
+            if (accountDomain == null) return null!;
+            var claims = new Dictionary<string, object>()
+            {
+               { "admin", "True" }
+            };
+            await _firebaseAuth.SetCustomUserClaimsAsync(userId, claims);
+            return "Cập nhật thành công";
+        }
     }
 }

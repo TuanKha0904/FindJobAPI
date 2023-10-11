@@ -138,5 +138,20 @@ namespace FindJobAPI.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
+
+        [HttpPut("AddAdmin")]
+        [Authorize]
+        [CheckAdmin("admin", "True")]
+        public async Task<IActionResult> AddAdmin(string userId)
+        {
+            try
+            {
+                var add = await _accountRepository.AddAdmin(userId);
+                if (add == null) return BadRequest("Không tìm thấy người dùng");
+                return Ok(add);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
     }
 }
