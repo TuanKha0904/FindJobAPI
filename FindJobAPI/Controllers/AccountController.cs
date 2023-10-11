@@ -123,7 +123,7 @@ namespace FindJobAPI.Controllers
                     return BadRequest("Không tìm thấy người dùng");
                 return Ok("Xóa thành công");
             }
-            catch { return BadRequest("Xóa thất bại"); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpGet("QuantityAccount")]

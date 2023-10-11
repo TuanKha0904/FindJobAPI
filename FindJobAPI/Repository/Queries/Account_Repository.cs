@@ -186,10 +186,23 @@ namespace FindJobAPI.Repository.Queries
             {
                 return null!;
             }
-            _context.Job.RemoveRange(_context.Job.Where(j => j.UID == userId));
-            _context.Seeker.RemoveRange(accountDomain.seekers!);
-            _context.Employer.RemoveRange(accountDomain.employers!);
+
+            // Lấy ra danh sách các công việc mà account đã tạo
+            var jobsCreatedByAccount = _context.Job.Where(j => j.UID == userId).ToList();
+
+            // Xóa tất cả các công việc và các đối tượng liên quan của account
+            foreach (var job in jobsCreatedByAccount)
+            {
+                // Xóa tất cả các lượt ứng tuyển vào công việc này
+                _context.Recruitment.RemoveRange(_context.Recruitment.Where(a => a.job_id == job.job_id));
+                _context.Recruitment_No_Accounts.RemoveRange(_context.Recruitment_No_Accounts.Where(a => a.job_id == job.job_id));
+                // Xóa công việc
+                _context.Job.Remove(job);
+            }
+
             _context.Account.Remove(accountDomain);
+            _context.Seeker.RemoveRange(_context.Seeker.Where(s => s.UID == userId));
+            _context.Employer.RemoveRange(_context.Employer.Where(e => e.UID == userId));
             await _context.SaveChangesAsync();
             await _firebaseAuth.DeleteUserAsync(userId);
             return accountDomain;
