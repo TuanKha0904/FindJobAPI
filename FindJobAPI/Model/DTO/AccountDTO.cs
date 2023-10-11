@@ -38,5 +38,6 @@ namespace FindJobAPI.Model.DTO
     public class GetUser
     {
         public string? idToken { get; set; }
+        public bool isAdmin { get; set; }
     }
 }

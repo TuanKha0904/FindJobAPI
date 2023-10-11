@@ -8,6 +8,7 @@ using FirebaseAdmin.Auth;
 using System.Net.WebSockets;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FindJobAPI.Repository.Queries
 {
@@ -115,14 +116,31 @@ namespace FindJobAPI.Repository.Queries
             };
             var content = new StringContent(JsonConvert.SerializeObject(data), System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{Api}accounts:signInWithPassword?key={ApiKey}", content);
-            var user = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<GetUser>(user);
-            var dataResponse = new GetUser()
+            if (response.IsSuccessStatusCode)
             {
-                idToken = token!.idToken,
-        
-            };
-            return dataResponse!;
+                var user = await response.Content.ReadAsStringAsync();
+                var token = JsonConvert.DeserializeObject<GetUser>(user);
+
+                // Trích xuất thông tin claims từ ID token
+                var jwtHandler = new JwtSecurityTokenHandler();
+                var tokenS = jwtHandler.ReadToken(token!.idToken) as JwtSecurityToken;
+
+                // Kiểm tra quyền admin
+                bool isAdmin = tokenS!.Claims.Any(claim => claim.Type == "admin" && claim.Value == "True");
+
+                var dataResponse = new GetUser
+                {
+                    idToken = token.idToken,
+                };
+                if(isAdmin) dataResponse.isAdmin = true;
+                else dataResponse.isAdmin = false;
+                return dataResponse;
+            }
+            else
+            {
+                // Xử lý lỗi đăng nhập
+                return null!;
+            }
         }
 
         public async Task<UserRecord> Info(string userId, Infor info)

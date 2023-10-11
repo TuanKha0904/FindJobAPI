@@ -63,9 +63,10 @@ namespace FindJobAPI.Controllers
             try
             {
                 var login = await _accountRepository.Login(email, password);
+                if (login == null) return BadRequest("Sai tài khoản hoặc mật khẩu");
                 return Ok(login);
             }
-            catch { return BadRequest(); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPut("Infor")]
@@ -152,6 +153,5 @@ namespace FindJobAPI.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-
     }
 }
