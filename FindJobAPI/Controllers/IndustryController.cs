@@ -8,7 +8,6 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class IndustryController : ControllerBase
     {
         private readonly AppDbContext appDbContext;
@@ -30,6 +29,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize]
         public async Task<IActionResult> CreateIndustry(IndustryNoId industryNoId)
         {
             var IndustryDomain = await industry_repository.CreateIndustry(industryNoId);
@@ -39,6 +39,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize]
         public async Task<IActionResult> UpdateIndustry(int id, IndustryNoId industryNoId)
         {
             var IndustryDomain = await industry_repository.UpdateIndustry(id, industryNoId);
@@ -48,6 +49,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
+        [Authorize]
         public async Task<IActionResult> DeleteIndustry(int id)
         {
             var industryDomain = await industry_repository.DeleteIndustry(id);

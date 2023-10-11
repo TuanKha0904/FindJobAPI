@@ -8,7 +8,6 @@ namespace FindJobAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class TypeController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -35,6 +34,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize]
         public async Task<IActionResult> CreateType(TypeNoId typeNoId)
         {
             try
@@ -53,6 +53,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize]
         public async Task<IActionResult> UpdateType(int id, TypeNoId typeNoId)
         {
             try
@@ -71,6 +72,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
+        [Authorize]
         public async Task<IActionResult> DeleteType(int id)
         {
             try
