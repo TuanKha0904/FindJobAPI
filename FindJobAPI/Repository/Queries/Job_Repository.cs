@@ -346,20 +346,42 @@ namespace FindJobAPI.Repository.Queries
             return createJob;
         }
 
-        public async Task<List<AllJob>> Search(int industry_id, int type_id, string location, int pageNumber, int pageSize)
+        public async Task<List<ListJob>> Search(Search search, int pageNumber, int pageSize)
         {
-            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j=>j.posted_date);
-            var searchJob = await allJob
-                .Where(j => j.industry_id == industry_id || j.type_id == type_id || j.location == location)
-                .Select(job => new AllJob()
+            var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j => j.posted_date);
+
+            var query = allJob.AsQueryable();
+
+            if (search?.industry_id != null && search.industry_id != 0)
+            {
+                query = query.Where(j => j.industry_id == search.industry_id);
+            }
+
+            if (search?.type_id != null && search.type_id != 0)
+            {
+                query = query.Where(j => j.type_id == search.type_id);
+            }
+
+            if (!string.IsNullOrEmpty(search?.location))
+            {
+                query = query.Where(j => j.location == search.location);
+            }
+
+            var searchJob = await query
+                .Select(job => new ListJob()
                 {
                     id = job.job_id,
-                    JobTitle = job.job_title,
-                    Location = job.location,
-                    Requirement = job.requirement,
-                    Minimum_Salary = job.minimum_salary,
-                    Maximum_Salary = job.maximum_salary
-                }).ToListAsync();
+                    jobTitle = job.job_title,
+                    minimum_salary = job.minimum_salary,
+                    maximum_salary = job.maximum_salary,
+                    location = job.location,
+                    industry = job.industry!.industry_name,
+                    type = job.type!.type_name,
+                    logo = job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
+                    deadline = job.deadline.ToString("dd-MM-yyyy")
+                })
+                .ToListAsync();
+
             return searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
 

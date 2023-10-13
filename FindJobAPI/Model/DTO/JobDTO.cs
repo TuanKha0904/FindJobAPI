@@ -107,4 +107,11 @@ namespace FindJobAPI.Model.DTO
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
     }
+
+    public class Search
+    {
+        public int industry_id { get; set; }
+        public int type_id { get; set; }
+        public string? location { get; set; }
+    }
 }

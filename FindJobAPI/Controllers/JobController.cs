@@ -211,11 +211,11 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpPost("Search")]
-        public async Task<IActionResult> Search(int industry_id, int type_id, string location, int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> Search(Search search, int pageNumber = 1, int pageSize = 5)
         {
             try
             {
-                var searchJob = await _jobRepository.Search(industry_id, type_id, location, pageNumber, pageSize);
+                var searchJob = await _jobRepository.Search(search, pageNumber, pageSize);
                 return Ok(searchJob);
             }
             catch { return BadRequest() ; }
