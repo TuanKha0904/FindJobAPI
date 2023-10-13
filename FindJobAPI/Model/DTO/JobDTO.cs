@@ -113,5 +113,6 @@ namespace FindJobAPI.Model.DTO
         public int industry_id { get; set; }
         public int type_id { get; set; }
         public string? location { get; set; }
+        public float salary { get; set; }
     }
 }

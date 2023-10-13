@@ -362,6 +362,11 @@ namespace FindJobAPI.Repository.Queries
                 query = query.Where(j => j.type_id == search.type_id);
             }
 
+            if(search?.salary != null && search.salary != 0)
+            {
+                query = query.Where(j => j.minimum_salary <= search.salary && search.salary <= j.maximum_salary);
+            }
+
             if (!string.IsNullOrEmpty(search?.location))
             {
                 query = query.Where(j => j.location == search.location);
