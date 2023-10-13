@@ -57,8 +57,6 @@ namespace FindJobAPI.Controllers
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
-                var employer = await appDbContext.Recruitment.FirstOrDefaultAsync(r => r.UID == userId);
-                if (employer == null) { return NotFound("Chưa có công việc đă đăng kí"); }
                 var listRecruitment = await recruitmentRepository.Seeker(userId!, pageNumber, pageSize);
                 return Ok(listRecruitment);
             }
