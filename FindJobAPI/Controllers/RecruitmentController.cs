@@ -62,7 +62,7 @@ namespace FindJobAPI.Controllers
                 var listRecruitment = await recruitmentRepository.Seeker(userId!, pageNumber, pageSize);
                 return Ok(listRecruitment);
             }
-            catch { return BadRequest(); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPut ("Status")]

@@ -59,8 +59,8 @@ namespace FindJobAPI.Repository.Queries
                 location = recruitment.job.location,
                 industry = recruitment.job.industry!.industry_name,
                 type = recruitment.job.type!.type_name,
-                logo = recruitment.job.employer!.employer_image
-            }).ToListAsync();
+                logo = recruitment.job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png"
+                }).ToListAsync();
             return listRecruitment;
         }
 
