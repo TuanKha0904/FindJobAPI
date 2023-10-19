@@ -4,8 +4,9 @@ using FindJobAPI.Model.DTO;
 using FindJobAPI.Repository.Interfaces;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
-
+using System.Net;
 namespace FindJobAPI.Repository.Queries
 {
     public class Recruitment_Repository : IRecruitment_Repository

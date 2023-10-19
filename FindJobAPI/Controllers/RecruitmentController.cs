@@ -29,6 +29,11 @@ namespace FindJobAPI.Controllers
             try
             {
                 var userId = User.FindFirst("Id")?.Value;
+                var cv = await appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == userId);
+                if (cv!.Name == null || cv.Email == null || cv.PhoneNumber == null || cv.birthday == null || cv.address == null || cv.education == null || cv.major == null || cv.experience == null || cv.skills == null)
+                {
+                    return BadRequest ("Hãy cập nhật thông tin trước khi xin việc!");
+                }
                 var jobDomain = await appDbContext.Recruitment.FirstOrDefaultAsync( j=> j.job_id == job_id && j.UID == userId);
                 if (jobDomain != null) { return Ok("Bạn đã đăng kí công việc này"); }
                 var create = await recruitmentRepository.Post(userId!, job_id);
@@ -52,7 +57,7 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpGet("Seeker")]
-        public async Task<IActionResult> Seeker(int pageNumber, int pageSize = 5)
+        public async Task<IActionResult> Seeker(int pageNumber = 1, int pageSize = 5)
         {
             try
             {
