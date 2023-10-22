@@ -114,6 +114,7 @@ namespace FindJobAPI.Repository.Queries
                 contact = job.employer!.contact_phone,
                 address = job.employer!.employer_address,
                 logo = job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
+                status = job.status ? "Approved" : "Waiting"
             }).FirstOrDefaultAsync();
             if (jobDetail == null) { return null!; }
             return jobDetail;
