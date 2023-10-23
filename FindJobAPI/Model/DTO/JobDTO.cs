@@ -61,8 +61,8 @@ namespace FindJobAPI.Model.DTO
         public string? requirement { get; set; }
         public string? location { get; set; }
         public string? deadline { get; set; }
-        public string? industry { get; set; }
-        public string? type { get; set; }
+        public industry? industry { get; set; }
+        public type? type { get; set; }
         public string? posted_date { get; set; }
         public string? employer_name { get; set; }
         public string? email { get; set; }
