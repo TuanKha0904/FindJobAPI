@@ -26,6 +26,7 @@ namespace FindJobAPI.Repository.Queries
                 fullname = create.name,
                 email = create.email,
                 phone_number = create.phone,
+                status = false,
                 birthday = DateTime.Parse(create.birthday!).Date
             };
             if (!string.IsNullOrEmpty(create.address))
