@@ -280,15 +280,17 @@ namespace FindJobAPI.Controllers
             try
             {
                 var allJob = await _jobRepository.FindJob( pageNumber, pageSize);
-                return Ok(allJob);
+                var response = new
+                {
+                    jobQuantity = allJob.Item1,
+                    jobList = allJob.Item2
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
-
-
     }
 }

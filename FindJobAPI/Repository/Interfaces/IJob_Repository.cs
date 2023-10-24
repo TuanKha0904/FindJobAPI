@@ -22,6 +22,6 @@ namespace FindJobAPI.Repository.Interfaces
         Task<List<ApplyList>> Receive(int job_id, int pageNumber, int pageSize);
         Task<job> Status(int job_id);
         Task<int> CountJob();
-        Task<List<ListJob>> FindJob(int pageNumber, int pageSize);
+        Task<(int ,List<ListJob>)> FindJob(int pageNumber, int pageSize);
     }
 }

@@ -436,7 +436,7 @@ namespace FindJobAPI.Repository.Queries
             return await _appDbContext.Job.CountAsync(j=>j.status==true);
         }
 
-        public async Task<List<ListJob>> FindJob(int pageNumber, int pageSize)
+        public async Task<(int, List<ListJob>)> FindJob(int pageNumber, int pageSize)
         {
             var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j => j.posted_date);
             var searchJob = await allJob
@@ -453,7 +453,8 @@ namespace FindJobAPI.Repository.Queries
                     logo = job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png",
                     deadline = job.deadline.ToString("dd-MM-yyyy"),
                 }).ToListAsync();
-            return searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            int jobQuantity = searchJob.Count;
+            return (jobQuantity,searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList());
         }
     }
 }
