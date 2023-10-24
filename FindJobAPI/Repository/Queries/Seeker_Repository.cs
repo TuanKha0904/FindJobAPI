@@ -122,11 +122,13 @@ namespace FindJobAPI.Repository.Queries
                     Experience = seekerDomain.experience,
                     Major = seekerDomain.major,
                     Skills = seekerDomain.skills,
+                    photo = "https://i.ibb.co/TqjSRg0/th.jpg"
                 };
             }
             else
             {
-                var seekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == userId);
+                var seekerDomain = await _appDbContext.Seeker.Include(s => s.account).FirstOrDefaultAsync(s => s.UID == userId);
+                var user = await GetUserDataFromFirebase(userId);
                 if (seekerDomain == null) return null!;
                 return new CV()
                 {
@@ -138,8 +140,22 @@ namespace FindJobAPI.Repository.Queries
                     Education = seekerDomain.education,
                     Experience = seekerDomain.experience,
                     Major = seekerDomain.major,
-                    Skills = seekerDomain.skills
+                    Skills = seekerDomain.skills,
+                    photo = user.PhotoUrl
                 };
+            }
+        }
+
+        private async Task<UserRecord> GetUserDataFromFirebase(string uid)
+        {
+            try
+            {
+                var userRecord = await _firebaseAuth.GetUserAsync(uid);
+                return userRecord;
+            }
+            catch
+            {
+                return null!;
             }
         }
     }
