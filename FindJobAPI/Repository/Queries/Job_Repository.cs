@@ -352,6 +352,7 @@ namespace FindJobAPI.Repository.Queries
             var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j => j.posted_date);
 
             var query = allJob.AsQueryable();
+            query = query.Where(j => j.status == true);
 
             if (search?.industry_id != null && search.industry_id != 0)
             {
