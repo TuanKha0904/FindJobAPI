@@ -14,6 +14,7 @@ namespace FindJobAPI.Model.DTO
         public string? Skills { get; set; }
         public string? Education { get; set; }
         public string? Major { get; set; }
+        public string? photo { get; set; }
     }
 
     public class InforSeeker

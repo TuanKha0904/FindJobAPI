@@ -104,5 +104,43 @@ namespace FindJobAPI.Repository.Queries
                 seekerInfor.phoneNumber = seekerDomain.PhoneNumber;
             return seekerInfor;
         }
+
+        public async Task<CV> InforApply(string userId)
+        {
+            if (Int32.TryParse(userId, out var temp))
+            {
+                var seekerDomain = await _appDbContext.Recruitment_No_Accounts.FirstOrDefaultAsync(s => s.recruitment_ID == temp);
+                if (seekerDomain == null) return null!;
+                return new CV()
+                {
+                    Name = seekerDomain.fullname,
+                    Email = seekerDomain.email,
+                    Phone_Number = seekerDomain.phone_number,
+                    Birthday = seekerDomain.birthday!.Value.ToString("dd-MM-yyyy"),
+                    Address = seekerDomain.address,
+                    Education = seekerDomain.education,
+                    Experience = seekerDomain.experience,
+                    Major = seekerDomain.major,
+                    Skills = seekerDomain.skills,
+                };
+            }
+            else
+            {
+                var seekerDomain = await _appDbContext.Seeker.FirstOrDefaultAsync(s => s.UID == userId);
+                if (seekerDomain == null) return null!;
+                return new CV()
+                {
+                    Name = seekerDomain.Name,
+                    Email = seekerDomain.Email,
+                    Phone_Number = seekerDomain.PhoneNumber,
+                    Birthday = seekerDomain.birthday!.Value.ToString("dd-MM-yyyy"),
+                    Address = seekerDomain.address,
+                    Education = seekerDomain.education,
+                    Experience = seekerDomain.experience,
+                    Major = seekerDomain.major,
+                    Skills = seekerDomain.skills
+                };
+            }
+        }
     }
 }

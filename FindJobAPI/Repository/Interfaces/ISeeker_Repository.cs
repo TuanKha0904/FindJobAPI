@@ -7,5 +7,6 @@ namespace FindJobAPI.Repository.Interfaces
         Task<CV> CV(string userId);
         Task<CV> CVUpdate(string userId, CV cV);
         Task<InforSeeker> Infor(string userId);
+        Task<CV> InforApply(string userId);
     }
 }

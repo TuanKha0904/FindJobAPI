@@ -73,5 +73,17 @@ namespace FindJobAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("CVInfor")]
+        public async Task<IActionResult> CVInfor(string userId)
+        {
+            try
+            {
+                var seekerCVInfor = await seeker_Repository.InforApply(userId);
+                if (seekerCVInfor == null) return BadRequest("Không tìm thấy thông tin này");
+                return Ok(seekerCVInfor);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
     }
 }
