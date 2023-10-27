@@ -44,7 +44,7 @@ namespace FindJobAPI.Repository.Queries
             return recruitment;
         }
 
-        public async Task<List<Seeker>> Seeker(string userId, int pageNumber, int pageSize)
+        public async Task<(int, List<Seeker>)> Seeker(string userId, int pageNumber, int pageSize)
         {
             var allRecruitment =  _appDbContext.Recruitment.AsQueryable().OrderByDescending(r => r.registation_date);
             var listRecruitment = await allRecruitment
@@ -62,7 +62,8 @@ namespace FindJobAPI.Repository.Queries
                 type = recruitment.job.type!.type_name,
                 logo = recruitment.job.employer!.employer_image ?? "https://i.ibb.co/qdz9N2N/FJ.png"
                 }).ToListAsync();
-            return listRecruitment;
+            var countHistory = listRecruitment.Count;
+            return (countHistory, listRecruitment);
         }
 
         public async Task<recruitment> Status(string userId, int job_id)

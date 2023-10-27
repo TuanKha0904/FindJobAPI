@@ -63,7 +63,12 @@ namespace FindJobAPI.Controllers
             {
                 var userId = User.FindFirst("Id")?.Value;
                 var listRecruitment = await recruitmentRepository.Seeker(userId!, pageNumber, pageSize);
-                return Ok(listRecruitment);
+                var respone = new
+                {
+                    countHistory = listRecruitment.Item1,
+                    listHistory = listRecruitment.Item2
+                };
+                return Ok(respone);
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }

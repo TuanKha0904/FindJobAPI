@@ -7,7 +7,7 @@ namespace FindJobAPI.Repository.Interfaces
     {
         Task<recruitment> Post(string userId, int job_id);
         Task<recruitment> Delete(string userId, int job_id);
-        Task<List<Seeker>> Seeker(string userId, int pageNumber, int pageSize);
+        Task<(int, List<Seeker>)> Seeker(string userId, int pageNumber, int pageSize);
         Task<recruitment> Status(string userId, int job_id);
     }
 }
