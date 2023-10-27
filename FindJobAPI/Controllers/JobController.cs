@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using FirebaseAdmin.Messaging;
+using System;
 
 namespace FindJobAPI.Controllers
 {
@@ -201,8 +202,13 @@ namespace FindJobAPI.Controllers
                 if (industry == null) return BadRequest("Không tìm thấy lĩnh vực này");
                 var type = await _appDbContext.Type.FindAsync(createJob.Type_id);
                 if (type == null) return BadRequest("Không tìm thấy loại công việc này");
-
                 var userId = User.FindFirst("Id")?.Value;
+                var infor = await _appDbContext.Employer.FirstOrDefaultAsync(i => i.UID == userId);
+                if (infor!.employer_name == null || infor.email == null || infor.contact_phone == null || infor.employer_address == null)
+                {
+                    return BadRequest("Hãy cập nhật thông tin trước khi đăng tuyển công việc!");
+                }
+
                 var create = await _jobRepository.CreateJob(userId!, createJob);
                 if (create == null) { return BadRequest("Không tìm thấy tài khoản nhà tuyển dụng"); }
                 return Ok(create);
