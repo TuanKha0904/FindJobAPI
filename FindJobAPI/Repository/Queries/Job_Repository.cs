@@ -347,7 +347,7 @@ namespace FindJobAPI.Repository.Queries
             return createJob;
         }
 
-        public async Task<List<ListJob>> Search(Search search, int pageNumber, int pageSize)
+        public async Task<(int, List<ListJob>)> Search(Search search, int pageNumber, int pageSize)
         {
             var allJob = _appDbContext.Job.AsQueryable().OrderByDescending(j => j.posted_date);
 
@@ -388,8 +388,8 @@ namespace FindJobAPI.Repository.Queries
                     deadline = job.deadline.ToString("dd-MM-yyyy")
                 })
                 .ToListAsync();
-
-            return searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            int jobQuantity = searchJob.Count;
+            return (jobQuantity, searchJob.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList());
         }
 
         public async Task<UpdateJob> Update(int job_id, UpdateJob updateJob)

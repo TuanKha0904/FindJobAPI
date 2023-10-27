@@ -216,7 +216,12 @@ namespace FindJobAPI.Controllers
             try
             {
                 var searchJob = await _jobRepository.Search(search, pageNumber, pageSize);
-                return Ok(searchJob);
+                var response = new
+                {
+                    jobQuantity = searchJob.Item1,
+                    jobList = searchJob.Item2
+                };
+                return Ok(response);
             }
             catch { return BadRequest() ; }
         }
