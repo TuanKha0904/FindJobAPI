@@ -44,12 +44,11 @@ namespace FindJobAPI.Controllers
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete (int job_id)
+        public async Task<IActionResult> Delete (string userId, int job_id)
         {
             try
             {
-                var userId = User.FindFirst("Id")?.Value;
-                var delete = await recruitmentRepository.Delete(userId!, job_id);
+                var delete = await recruitmentRepository.Delete(userId, job_id);
                 if (delete == null) { return NotFound ("Không tìm thấy đăng kí công việc"); }
                 return Ok("Xóa thành công");
             }

@@ -74,5 +74,6 @@ namespace FindJobAPI.Repository.Queries
             await _appDbContext.SaveChangesAsync();
             return recruitment;
         }
+
     }
 }
