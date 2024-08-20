@@ -1,6 +1,5 @@
 using FindJobAPI.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
 using FindJobAPI.Repository.Interfaces;
 using FindJobAPI.Repository.Queries;
 using FirebaseAdmin;
@@ -8,9 +7,7 @@ using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FindJobAPI;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,12 +55,12 @@ builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddScheme<AuthenticationSchemeOptions, FirebaseAuthenticationHandler>(JwtBearerDefaults.AuthenticationScheme,
-        options => { });
+        _ => { });
 
 // Register DB
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException());
     options.EnableSensitiveDataLogging();
 });
 
@@ -80,9 +77,9 @@ builder.Services.AddScoped<IRecruitmentNoAccount_Repository, RecruitmentNoAccoun
 //Add CORS service
 builder.Services.AddCors(option =>
 {
-    option.AddPolicy("FindJobPolicy", builder =>
+    option.AddPolicy("FindJobPolicy", policyBuilder =>
     {
-        builder
+        policyBuilder
         .AllowAnyOrigin() // enable all origins
         .AllowAnyHeader() // enable all headers
         .AllowAnyMethod(); // enable all method
